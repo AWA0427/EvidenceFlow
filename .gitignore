@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-ssr/
+coverage/
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+Thumbs.db
+.edge-profile/
+.pydeps/
+.ref-*
+data/
+
+.tmp-body.json

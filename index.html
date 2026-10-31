@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="证析 EvidenceFlow：可审计的 AI 经营决策台。AI 说的每个数字，都能点回原文。"
+    />
+    <meta name="theme-color" content="#f7fbf3" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>证析 EvidenceFlow · 可审计的 AI 经营决策台</title>
+    <script>
+      // 在 React 挂载前应用主题，避免深浅色切换闪屏。
+      (function () {
+        try {
+          var raw = localStorage.getItem('evidenceflow-settings');
+          var state = raw ? (JSON.parse(raw).state || {}) : {};
+          var mode = state.mode || 'system';
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var dark = mode === 'dark' || (mode === 'system' && prefersDark);
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+          if (state.accent) document.documentElement.style.setProperty('--accent', state.accent);
+          if (state.fontScale) document.documentElement.style.fontSize = 16 * Number(state.fontScale) + 'px';
+          if (state.reducedMotion) document.documentElement.dataset.motion = 'reduced';
+          if (state.highContrast) document.documentElement.dataset.contrast = 'high';
+        } catch (error) {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot-screen">
+        <div class="boot-seal">证</div>
+        <p>正在整理证据链…</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
