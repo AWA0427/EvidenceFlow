@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "证析 EvidenceFlow — 可审计的 AI 经营决策台",
+  "description": "证析 EvidenceFlow — 可审计的 AI 经营分析工作台",
   "scripts": {
     "dev": "tsx server/index.ts",
     "build": "tsc --noEmit && vite build",
