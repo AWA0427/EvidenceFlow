@@ -6,6 +6,9 @@
 
 **核心原则：AI 说出的每个数字，都能点回原文。**
 
+- 在线演示：https://evidenceflow-yvnk.onrender.com
+- 代码仓库：https://github.com/AWA0427/EvidenceFlow
+
 ## 功能
 
 - **证据链**：每个数字都能回到原文段落，查看公式、状态和置信度。
