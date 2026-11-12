@@ -60,8 +60,8 @@ export function Landing() {
             <button type="button" onClick={() => scrollTo('about')} className="hover:text-[var(--ink)]">关于</button>
             <button type="button" onClick={() => scrollTo('login')} className="hover:text-[var(--ink)]">登录</button>
           </nav>
-          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
-            进入工作台 <ArrowRight className="h-4 w-4" />
+          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
+            在线演示 <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </header>
@@ -112,8 +112,8 @@ export function Landing() {
                 上传会议纪要、复盘或 CSV。证析先找数字和原文，再算公式、查行业基准，最后告诉你哪些结论能用。
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
-                  打开工作台 <ArrowRight className="h-4 w-4" />
+                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
+                  进入在线演示 <ArrowRight className="h-4 w-4" />
                 </button>
                 <button type="button" className="btn btn-ghost btn-lg" onClick={() => scrollTo('login')}>
                   登录

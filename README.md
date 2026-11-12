@@ -94,6 +94,23 @@ evidenceflow/
 - pnpm ≥ 9（推荐 11；没有 pnpm 时可用 npm）
 - Chrome / Edge（语音功能需要）
 
+## 在线演示
+
+推荐部署到 Render（免费 Web Service，支持 Express + SSE，不用买服务器）：
+
+1. 登录 [Render](https://render.com/)，New → Blueprint；
+2. 连接 GitHub 仓库 `AWA0427/EvidenceFlow`；
+3. Render 会自动读取根目录的 `render.yaml`；
+4. 部署完成后访问 `https://<service-name>.onrender.com`；
+5. 如果要启用实时 AI，在 Render 环境变量里添加 `DEEPSEEK_API_KEY`，不要提交到仓库。
+
+说明：
+
+- Render 免费实例闲置后会休眠，第一次打开可能需要几十秒唤醒；
+- 在线演示默认 `DEMO_MODE=true`、`AUTH_REQUIRED=false`，三个内置示例无需登录；
+- GitHub Pages 只能托管静态文件，不能运行 Express、SSE、登录和数据接口，所以本项目不能只靠 GitHub Pages 上线；
+- 不需要买服务器，也不需要买域名；`onrender.com` 免费子域名足够作为比赛演示地址。
+
 ## 安装运行
 
 ```powershell

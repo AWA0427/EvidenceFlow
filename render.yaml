@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: evidenceflow
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install -g pnpm@11.28.5 && pnpm install --frozen-lockfile && pnpm build
+    startCommand: node ./node_modules/tsx/dist/cli.mjs ./server/index.ts
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "true"
+      - key: AUTH_REQUIRED
+        value: "false"
+      - key: ALLOW_CLIENT_KEY
+        value: "false"
+      - key: COOKIE_SECURE
+        value: "true"
