@@ -51,7 +51,7 @@ export function Settings() {
 
   const sections: Array<{ id: Section; label: string; icon: typeof KeyRound; note: string }> = [
     { id: 'api', label: 'API 与模型', icon: KeyRound, note: 'Key / Base URL / Model' },
-    { id: 'appearance', label: '外观与无障碍', icon: Palette, note: '深浅色 / 背景 / 字号' },
+    { id: 'appearance', label: '外观', icon: Palette, note: '主题 / 底色 / 字号' },
     { id: 'data', label: '数据与隐私', icon: Database, note: '导出 / 清除 / 存储' },
     { id: 'about', label: '关于本项目', icon: ShieldCheck, note: '版本与边界' },
   ];
@@ -62,7 +62,7 @@ export function Settings() {
         <div className="kicker">Settings</div>
         <h1 className="display-md mt-3">设置</h1>
         <p className="mt-2 max-w-2xl text-[12px] leading-6 text-[var(--muted)]">
-          这里改主题、字号和模型。设置会保存到当前浏览器；临时 Key 只在当前标签页有效。
+          这里改主题、底色、字号和模型。设置会保存到当前浏览器；临时 Key 只在当前标签页有效。
         </p>
       </div>
 
@@ -184,6 +184,13 @@ function ApiSection({
   const settings = useSettingsStore();
   const serverReady = Boolean(config?.hasServerKey);
   const clientKeyAllowed = config?.allowClientKey !== false;
+  const sessionKeyReady = clientKeyAllowed && savedKey;
+  const keyReady = serverReady || sessionKeyReady;
+  const keyStatus = serverReady
+    ? '服务端 Key 已配置'
+    : sessionKeyReady
+      ? '当前会话 Key 已配置'
+      : '未配置 Key';
 
   return (
     <>
@@ -193,8 +200,8 @@ function ApiSection({
             <span className="label">Model gateway</span>
             <h2 className="mt-0.5 font-serif text-lg font-bold">API 与模型</h2>
           </div>
-          <span className={cn('chip', serverReady ? 'chip-verified' : 'chip-warning')}>
-            <span className="status-dot" /> {serverReady ? '服务端 Key 已配置' : '未配置服务端 Key'}
+          <span className={cn('chip', keyReady ? 'chip-verified' : 'chip-warning')}>
+            <span className="status-dot" /> {keyStatus}
           </span>
         </div>
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUp, Bot, Loader2, MessageSquareText, Mic, MicOff, Minimize2, Quote, Sparkles, Volume2, Wrench, X } from 'lucide-react';
+import { ArrowUp, Bot, Check, ChevronDown, Loader2, MessageSquareText, Mic, MicOff, Minimize2, Quote, Sparkles, Volume2, Wrench, X } from 'lucide-react';
 import type { AnalysisResult, ChatCitation, ChatMessage, ToolCall } from '@shared/types';
 import { streamChat } from '../lib/api';
 import { cn } from '../lib/format';
@@ -10,7 +10,13 @@ interface ChatDockProps {
   onCitation: (claimId: string) => void;
 }
 
-const SUGGESTIONS = ['当前最大的经营风险是什么？', '这个数字在行业里算正常吗？', '下一步应该先做什么？'];
+const SUGGESTIONS = [
+  '当前最大的经营风险是什么？',
+  '这个数字在行业里算正常吗？',
+  '下一步应该先做什么？',
+  '库存和退货率哪个更该先处理？',
+  '这套结论里哪一条最不可靠？',
+];
 
 interface SpeechRecognitionResultLike {
   0: { transcript: string };
@@ -47,6 +53,8 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
   const [streaming, setStreaming] = useState(false);
   const [listening, setListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedSuggestions, setSelectedSuggestions] = useState<string[]>([]);
+  const [expandedCitations, setExpandedCitations] = useState<Record<string, boolean>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -189,17 +197,32 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
     }
   };
 
+  const toggleSuggestion = (suggestion: string) => {
+    setSelectedSuggestions((previous) =>
+      previous.includes(suggestion) ? previous.filter((item) => item !== suggestion) : [...previous, suggestion],
+    );
+  };
+
+  const sendSelected = async () => {
+    const questions = SUGGESTIONS.filter((suggestion) => selectedSuggestions.includes(suggestion));
+    if (questions.length === 0) return;
+    setSelectedSuggestions([]);
+    for (const question of questions) {
+      await send(question);
+    }
+  };
+
   if (!open) {
     return (
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="chat-dock no-print fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[var(--ink)] px-4 py-3 text-[var(--surface)] shadow-[var(--shadow-lg)] transition-transform hover:-translate-y-0.5"
+        className="chat-dock no-print fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-full border border-[var(--accent)] bg-[var(--accent)] px-5 py-3.5 text-[var(--accent-ink)] shadow-[0_12px_30px_-12px_var(--accent)] ring-4 ring-[var(--accent-soft)] transition-transform hover:-translate-y-1"
         aria-label="打开追问证据面板"
       >
-        <MessageSquareText className="h-4 w-4" />
-        <span className="text-[11px] font-semibold">追问证据</span>
-        {messages.length > 0 && <span className="mono text-[9px] opacity-60">{messages.length}</span>}
+        <MessageSquareText className="h-5 w-5" />
+        <span className="text-[12px] font-bold">追问证据</span>
+        {messages.length > 0 && <span className="mono rounded-full bg-black/10 px-1.5 py-0.5 text-[9px] opacity-80">{messages.length}</span>}
       </button>
     );
   }
@@ -248,17 +271,37 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
               </p>
             </div>
             <div className="space-y-1.5">
-              {SUGGESTIONS.map((suggestion) => (
-                <button
-                  key={suggestion}
-                  type="button"
-                  onClick={() => void send(suggestion)}
-                  className="w-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-left text-[10px] text-[var(--ink-soft)] transition-colors hover:border-[var(--accent-border)] hover:bg-[var(--accent-soft)]"
-                >
-                  {suggestion}
-                </button>
-              ))}
+              {SUGGESTIONS.map((suggestion) => {
+                const selected = selectedSuggestions.includes(suggestion);
+                return (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() => toggleSuggestion(suggestion)}
+                    aria-pressed={selected}
+                    className={cn(
+                      'flex w-full items-start gap-2 border px-3 py-2 text-left text-[10px] leading-5 transition-colors',
+                      selected
+                        ? 'border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--ink)]'
+                        : 'border-[var(--line)] bg-[var(--surface)] text-[var(--ink-soft)] hover:border-[var(--accent-border)] hover:bg-[var(--accent-soft)]',
+                    )}
+                  >
+                    <span className={cn('mt-0.5 flex h-3.5 w-3.5 shrink-0 items-center justify-center border', selected ? 'border-[var(--accent)] bg-[var(--accent)] text-white' : 'border-[var(--line-strong)]')}>
+                      {selected && <Check className="h-2.5 w-2.5" />}
+                    </span>
+                    {suggestion}
+                  </button>
+                );
+              })}
             </div>
+            <button
+              type="button"
+              onClick={() => void sendSelected()}
+              disabled={selectedSuggestions.length === 0 || streaming}
+              className="btn btn-primary w-full"
+            >
+              {selectedSuggestions.length > 0 ? `追问选中的 ${selectedSuggestions.length} 个问题` : '先选择要追问的问题'}
+            </button>
           </div>
         )}
 
@@ -277,21 +320,36 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
               </div>
             )}
             {message.citations && message.citations.length > 0 && (
-              <div className="w-full space-y-1">
-                {message.citations.map((citation) => (
-                  <button
-                    key={citation.id}
-                    type="button"
-                    onClick={() => onCitation(citation.id)}
-                    className="flex w-full items-start gap-2 border border-[var(--line)] bg-[var(--surface-2)] px-2 py-1.5 text-left transition-colors hover:border-[var(--accent-border)]"
-                  >
-                    <Quote className="mt-0.5 h-3 w-3 shrink-0 text-[var(--accent)]" />
-                    <span className="min-w-0">
-                      <span className="block truncate text-[9px] font-semibold">{citation.label}</span>
-                      <span className="mt-0.5 line-clamp-2 block text-[8px] leading-4 text-[var(--muted)]">{citation.quote}</span>
-                    </span>
-                  </button>
-                ))}
+              <div className="w-full border border-[var(--line)] bg-[var(--surface-2)]">
+                <button
+                  type="button"
+                  onClick={() => setExpandedCitations((previous) => ({ ...previous, [message.id]: !previous[message.id] }))}
+                  className="flex w-full items-center gap-2 px-2.5 py-2 text-left"
+                  aria-expanded={Boolean(expandedCitations[message.id])}
+                >
+                  <Quote className="h-3 w-3 shrink-0 text-[var(--accent)]" />
+                  <span className="text-[10px] font-semibold">引用原文 {message.citations.length} 条</span>
+                  <span className="ml-auto text-[9px] text-[var(--muted)]">{expandedCitations[message.id] ? '收起' : '展开'}</span>
+                  <ChevronDown className={cn('h-3 w-3 text-[var(--muted)] transition-transform', expandedCitations[message.id] && 'rotate-180')} />
+                </button>
+                {expandedCitations[message.id] && (
+                  <div className="space-y-1 border-t border-[var(--line)] p-1.5">
+                    {message.citations.map((citation) => (
+                      <button
+                        key={citation.id}
+                        type="button"
+                        onClick={() => onCitation(citation.id)}
+                        className="flex w-full items-start gap-2 border border-[var(--line)] bg-[var(--surface)] px-2 py-1.5 text-left transition-colors hover:border-[var(--accent-border)]"
+                      >
+                        <Quote className="mt-0.5 h-3 w-3 shrink-0 text-[var(--accent)]" />
+                        <span className="min-w-0">
+                          <span className="block truncate text-[9px] font-semibold">{citation.label}</span>
+                          <span className="mt-0.5 line-clamp-2 block text-[9px] leading-4 text-[var(--muted)]">{citation.quote}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
             {message.role === 'assistant' && message.content && !message.streaming && (

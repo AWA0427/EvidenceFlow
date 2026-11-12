@@ -10,6 +10,8 @@ import {
   LogIn,
   Menu,
   Moon,
+  PanelLeftClose,
+  PanelLeftOpen,
   Plus,
   Settings,
   Sun,
@@ -30,6 +32,13 @@ const NAV = [
 
 export function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('evidenceflow-sidebar-collapsed') === '1';
+    } catch {
+      return false;
+    }
+  });
   const location = useLocation();
   const navigate = useNavigate();
   const history = useAnalysisStore((state) => state.history);
@@ -42,6 +51,14 @@ export function AppShell() {
   useEffect(() => {
     void check();
   }, [check]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('evidenceflow-sidebar-collapsed', sidebarCollapsed ? '1' : '0');
+    } catch {
+      // localStorage 可能被隐私模式禁用
+    }
+  }, [sidebarCollapsed]);
 
   const title =
     location.pathname.startsWith('/settings')
@@ -56,14 +73,25 @@ export function AppShell() {
   };
 
   return (
-    <div className="app-shell">
+    <div className={cn('app-shell', sidebarCollapsed && 'sidebar-collapsed')}>
       {menuOpen && <div className="overlay z-40 lg:hidden" onClick={() => setMenuOpen(false)} aria-hidden="true" />}
-      <aside className={cn('sidebar', menuOpen && 'open')}>
+      <aside className={cn('sidebar', menuOpen && 'open', sidebarCollapsed && 'collapsed')}>
         <div className="flex h-[var(--header)] items-center justify-between border-b border-[var(--line)] px-5">
           <Logo />
-          <button type="button" className="btn btn-icon btn-quiet lg:hidden" onClick={() => setMenuOpen(false)} aria-label="关闭菜单">
-            <X className="h-4 w-4" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              className="btn btn-icon btn-quiet hidden lg:inline-flex"
+              onClick={() => setSidebarCollapsed(true)}
+              aria-label="收起侧栏"
+              title="收起侧栏"
+            >
+              <PanelLeftClose className="h-4 w-4" />
+            </button>
+            <button type="button" className="btn btn-icon btn-quiet lg:hidden" onClick={() => setMenuOpen(false)} aria-label="关闭菜单">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
         </div>
 
         <div className="px-3 py-4">
@@ -158,6 +186,15 @@ export function AppShell() {
       <div className="min-w-0">
         <header className="topbar">
           <div className="flex min-w-0 items-center gap-3">
+            <button
+              type="button"
+              className="btn btn-icon btn-quiet hidden lg:inline-flex"
+              onClick={() => setSidebarCollapsed((value) => !value)}
+              aria-label={sidebarCollapsed ? '展开侧栏' : '收起侧栏'}
+              title={sidebarCollapsed ? '展开侧栏' : '收起侧栏'}
+            >
+              {sidebarCollapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
+            </button>
             <button type="button" className="btn btn-icon btn-quiet lg:hidden" onClick={() => setMenuOpen(true)} aria-label="打开菜单">
               <Menu className="h-4 w-4" />
             </button>

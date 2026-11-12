@@ -37,7 +37,6 @@ import type { ActionItem, AnalysisResult, ChartSpec, Claim, ClaimStatus, DemoCas
 import { useAnalysisStore } from '../store/analysis';
 import { UploadPanel } from '../components/UploadPanel';
 import { AgentTrace } from '../components/AgentTrace';
-import { AiStatusCard } from '../components/AiStatusCard';
 import { ChartZoomModal } from '../components/ChartZoomModal';
 import { ChartRenderer } from '../components/ChartRenderer';
 import { EvidenceDrawer } from '../components/EvidenceDrawer';
@@ -484,7 +483,6 @@ function DashboardTab({
         </div>
 
         <aside className="space-y-4">
-          <AiStatusCard analysis={analysis} />
           <SafetyCard analysis={analysis} />
           <section className="panel p-4">
             <div className="flex items-center justify-between">

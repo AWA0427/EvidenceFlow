@@ -4,7 +4,7 @@ import { ACCENT_PRESETS, THEME_PRESETS, isLightColor } from '../lib/theme';
 import { useSettingsStore, type ThemeMode } from '../store/settings';
 import { cn } from '../lib/format';
 
-type Tab = 'theme' | 'color' | 'access';
+type Tab = 'theme' | 'color';
 
 export function AppearancePanel() {
   const settings = useSettingsStore();
@@ -42,7 +42,7 @@ export function AppearancePanel() {
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
             <span className="label">Appearance</span>
-            <h2 className="mt-0.5 text-lg font-bold">外观与无障碍</h2>
+            <h2 className="mt-0.5 text-lg font-bold">外观</h2>
           </div>
           <button type="button" className="btn btn-quiet btn-sm" onClick={() => settings.resetAppearance()}>
             <RotateCcw className="h-3 w-3" /> 恢复默认
@@ -53,7 +53,6 @@ export function AppearancePanel() {
           {[
             ['theme', '主题'],
             ['color', '颜色'],
-            ['access', '无障碍'],
           ].map(([value, label]) => (
             <button
               key={value}
@@ -116,13 +115,28 @@ export function AppearancePanel() {
               </select>
             </Field>
 
-            <Field label="字号" hint="影响全站文字大小">
-              <select className="select" value={settings.fontScale} onChange={(event) => settings.setFontScale(Number(event.target.value))}>
-                {[0.9, 1, 1.1, 1.2].map((scale) => (
-                  <option key={scale} value={scale}>{Math.round(scale * 100)}%</option>
-                ))}
-              </select>
-            </Field>
+          </div>
+        )}
+
+        {tab === 'theme' && (
+          <div className="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface-2)] p-3">
+            <div className="flex items-center justify-between gap-3">
+              <span className="field-label mb-0">字号</span>
+              <span className="mono text-[11px] font-semibold text-[var(--accent)]">{Math.round(settings.fontScale * 100)}%</span>
+            </div>
+            <input
+              type="range"
+              min={0.9}
+              max={1.2}
+              step={0.05}
+              value={settings.fontScale}
+              onChange={(event) => settings.setFontScale(Number(event.target.value))}
+              className="mt-2 w-full accent-[var(--accent)]"
+              aria-label="全站字号"
+            />
+            <div className="mt-1 flex justify-between text-[9px] text-[var(--muted-2)]">
+              <span>90%</span><span>影响全站文字大小</span><span>120%</span>
+            </div>
           </div>
         )}
 
@@ -156,20 +170,6 @@ export function AppearancePanel() {
               <ColorField label="页面背景" value={settings.customBg} onChange={(value) => { settings.setCustomBg(value); settings.setMode('custom'); }} />
               <ColorField label="卡片底色" value={settings.customSurface} onChange={(value) => { settings.setCustomSurface(value); settings.setMode('custom'); }} />
             </div>
-          </div>
-        )}
-
-        {tab === 'access' && (
-          <div className="mt-4 space-y-3">
-            <Field label="字号" hint="90% 到 120%">
-              <select className="select" value={settings.fontScale} onChange={(event) => settings.setFontScale(Number(event.target.value))}>
-                {[0.9, 1, 1.1, 1.2].map((scale) => (
-                  <option key={scale} value={scale}>{Math.round(scale * 100)}%</option>
-                ))}
-              </select>
-            </Field>
-            <Toggle label="减少动效" note="关闭位移动画和过渡" checked={settings.reducedMotion} onChange={settings.setReducedMotion} />
-            <Toggle label="高对比度" note="加深分隔线和状态色" checked={settings.highContrast} onChange={settings.setHighContrast} />
           </div>
         )}
       </section>
