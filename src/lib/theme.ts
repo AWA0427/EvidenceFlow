@@ -130,6 +130,47 @@ function mix(foreground: string, background: string, weight: number): string {
     .join('')}`;
 }
 
+/**
+ * 默认底色不再写死一整片苔绿：强调色变化时，背景/卡面/分隔线
+ * 从强调色混出同一色相的浅色或深色，避免“按钮变蓝、背景还是绿”。
+ * 用户选择鼠尾草/深林/深蓝或自定义底色时，不调用这里。
+ */
+function accentTokens(accent: string, dark: boolean): Record<string, string> {
+  if (dark) {
+    const bg = mix(accent, '#0f1510', 0.14);
+    const surface = mix(accent, '#1a2218', 0.1);
+    const ink = '#f4efe4';
+    return {
+      '--bg': bg,
+      '--bg-elevated': mix(accent, '#151c14', 0.12),
+      '--surface': surface,
+      '--surface-2': mix(accent, '#222c1f', 0.13),
+      '--surface-3': mix(accent, '#2b3727', 0.16),
+      '--ink': ink,
+      '--ink-soft': mix(ink, bg, 0.82),
+      '--muted': mix(ink, bg, 0.58),
+      '--muted-2': mix(ink, bg, 0.42),
+      '--line': mix(accent, bg, 0.18),
+      '--line-strong': mix(accent, bg, 0.28),
+    };
+  }
+  const bg = mix(accent, '#ffffff', 0.075);
+  const ink = '#1c1a16';
+  return {
+    '--bg': bg,
+    '--bg-elevated': mix(accent, '#ffffff', 0.1),
+    '--surface': '#ffffff',
+    '--surface-2': mix(accent, '#ffffff', 0.11),
+    '--surface-3': mix(accent, '#ffffff', 0.17),
+    '--ink': ink,
+    '--ink-soft': mix(ink, bg, 0.82),
+    '--muted': mix(ink, bg, 0.55),
+    '--muted-2': mix(ink, bg, 0.4),
+    '--line': mix(accent, bg, 0.2),
+    '--line-strong': mix(accent, bg, 0.32),
+  };
+}
+
 /** 把设置应用到 CSS 变量；不依赖 React，方便首屏内联脚本复用。 */
 export function applyTheme(input: {
   mode: ThemeMode;
@@ -158,7 +199,19 @@ export function applyTheme(input: {
     (item) => item.mode === effective && item.bg.toLowerCase() === input.customBg.toLowerCase() && item.surface.toLowerCase() === input.customSurface.toLowerCase(),
   );
 
-  if (input.mode === 'custom' || (input.mode !== 'system' && preset)) {
+  // 默认底色跟随强调色；用户明确选了页面预设或自定义底色时，不覆盖。
+  const defaultLightPalette =
+    input.customBg.toLowerCase() === '#f7fbf3' && input.customSurface.toLowerCase() === '#ffffff';
+  const defaultDarkPalette =
+    input.customBg.toLowerCase() === '#0f1510' && input.customSurface.toLowerCase() === '#1a2218';
+  const seedAccent = input.accent.toLowerCase() === '#2e6b34';
+  const followAccent = input.mode !== 'custom' && (defaultLightPalette || defaultDarkPalette) && !seedAccent;
+
+  if (followAccent) {
+    for (const [key, value] of Object.entries(accentTokens(input.accent, effective === 'dark'))) {
+      root.style.setProperty(key, value);
+    }
+  } else if (input.mode === 'custom' || (input.mode !== 'system' && preset)) {
     const bg = input.customBg;
     const surface = input.customSurface;
     const ink = input.mode === 'custom' ? (customIsLight ? '#1c1a16' : '#f4efe4') : preset!.ink;
