@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     region: singapore
-    buildCommand: npm install -g pnpm@11.28.5 && pnpm install --frozen-lockfile && pnpm build
+    buildCommand: npm install -g pnpm@11.28.5 && pnpm install --frozen-lockfile --prod=false && pnpm build
     startCommand: node ./node_modules/tsx/dist/cli.mjs ./server/index.ts
     healthCheckPath: /api/health
     envVars:
