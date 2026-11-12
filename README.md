@@ -96,6 +96,8 @@ evidenceflow/
 
 ## 在线演示
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AWA0427/EvidenceFlow)
+
 推荐部署到 Render（免费 Web Service，支持 Express + SSE，不用买服务器）：
 
 1. 登录 [Render](https://render.com/)，New → Blueprint；
