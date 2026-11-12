@@ -52,14 +52,18 @@ export function Landing() {
           borderLeft: 0,
           borderRight: 0,
           borderTop: 0,
-          background: 'color-mix(in srgb, var(--surface) 96%, transparent)',
+          borderBottom: '1px solid color-mix(in srgb, var(--line) 55%, transparent)',
+          background: 'color-mix(in srgb, var(--bg) 72%, transparent)',
+          boxShadow: 'none',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
         }}
       >
         <div className="container-wide flex h-[72px] items-center justify-between gap-4">
           <Logo />
-          <nav className="hidden items-center gap-7 text-[12px] font-semibold text-[var(--muted)] md:flex">
-            <button type="button" onClick={() => scrollTo('about')} className="hover:text-[var(--ink)]">关于</button>
-            <button type="button" onClick={() => scrollTo('login')} className="hover:text-[var(--ink)]">登录</button>
+          <nav className="hidden items-center gap-1 rounded-full border border-[var(--line)] bg-[color-mix(in_srgb,var(--surface)_55%,transparent)] px-2 py-1 text-[12px] font-semibold text-[var(--muted)] md:flex">
+            <button type="button" onClick={() => scrollTo('about')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">关于</button>
+            <button type="button" onClick={() => scrollTo('login')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">登录</button>
           </nav>
           <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
             在线演示 <ArrowRight className="h-4 w-4" />
@@ -258,8 +262,8 @@ export function Landing() {
             </div>
           </div>
           <div className="flex gap-4 text-[10px] text-[var(--muted)]">
-            <button type="button" onClick={() => scrollTo('about')} className="hover:text-[var(--ink)]">关于</button>
-            <button type="button" onClick={() => scrollTo('login')} className="hover:text-[var(--ink)]">登录</button>
+            <button type="button" onClick={() => scrollTo('about')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">关于</button>
+            <button type="button" onClick={() => scrollTo('login')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">登录</button>
             <span>2026 AI Web 挑战赛</span>
           </div>
         </div>

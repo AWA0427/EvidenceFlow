@@ -94,21 +94,7 @@ export function AppShell() {
           </div>
         </div>
 
-        <div className="px-3 py-4">
-          <button
-            type="button"
-            onClick={() => {
-              navigate('/app?new=1');
-              setMenuOpen(false);
-            }}
-            className="btn btn-primary btn-lg w-full justify-between"
-          >
-            <span className="inline-flex items-center gap-2">
-              <Plus className="h-3.5 w-3.5" /> 新建分析
-            </span>
-            <span className="mono text-[9px] opacity-70">N</span>
-          </button>
-        </div>
+        <div className="py-3" />
 
         <nav className="space-y-0.5 px-2" aria-label="主导航">
           {NAV.map((item) => {
@@ -186,6 +172,7 @@ export function AppShell() {
       <div className="min-w-0">
         <header className="topbar">
           <div className="flex min-w-0 items-center gap-3">
+            {sidebarCollapsed && <span className="hidden lg:inline-flex"><Logo compact /></span>}
             <button
               type="button"
               className="btn btn-icon btn-quiet hidden lg:inline-flex"

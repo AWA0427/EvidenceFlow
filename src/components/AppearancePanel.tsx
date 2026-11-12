@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Check, RotateCcw } from 'lucide-react';
 import { ACCENT_PRESETS, THEME_PRESETS, isLightColor } from '../lib/theme';
 import { useSettingsStore, type ThemeMode } from '../store/settings';
@@ -20,9 +20,16 @@ export function AppearancePanel() {
   const modeOptions: Array<{ value: ThemeMode; label: string }> = [
     { value: 'light', label: '浅色' },
     { value: 'dark', label: '深色' },
-    { value: 'system', label: '跟随系统' },
-    { value: 'custom', label: '自定义' },
   ];
+
+  // 旧版本可能持久化过 system/custom；本轮只保留浅色/深色，自动归一到浅色。
+  useEffect(() => {
+    if (settings.mode === 'system' || settings.mode === 'custom') {
+      settings.setMode('light');
+      settings.setCustomBg('#f7fbf3');
+      settings.setCustomSurface('#ffffff');
+    }
+  }, [settings.mode]);
 
   const changeMode = (mode: ThemeMode) => {
     settings.setMode(mode);
@@ -70,7 +77,7 @@ export function AppearancePanel() {
 
         {tab === 'theme' && (
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <Field label="主题模式" hint="浅色、深色或跟随系统">
+            <Field label="主题模式" hint="浅色或深色">
               <select className="select" value={settings.mode} onChange={(event) => changeMode(event.target.value as ThemeMode)}>
                 {modeOptions.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
@@ -127,7 +134,7 @@ export function AppearancePanel() {
             <input
               type="range"
               min={0.9}
-              max={1.2}
+              max={1.8}
               step={0.05}
               value={settings.fontScale}
               onChange={(event) => settings.setFontScale(Number(event.target.value))}
@@ -135,7 +142,7 @@ export function AppearancePanel() {
               aria-label="全站字号"
             />
             <div className="mt-1 flex justify-between text-[9px] text-[var(--muted-2)]">
-              <span>90%</span><span>影响全站文字大小</span><span>120%</span>
+              <span>90%</span><span>影响全站文字大小</span><span>180%</span>
             </div>
           </div>
         )}
