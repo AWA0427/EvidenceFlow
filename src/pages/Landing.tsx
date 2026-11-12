@@ -8,6 +8,7 @@ import {
   ScanSearch,
   Sparkles,
   TriangleAlert,
+  X,
 } from 'lucide-react';
 import { Logo } from '../components/Logo';
 import { AuthCard } from '../components/AuthCard';
@@ -268,17 +269,19 @@ export function Landing() {
 }
 
 function EvidencePreview() {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="relative mx-auto max-w-[520px]">
       <div className="absolute -inset-3 rotate-2 rounded-[34px] border border-[var(--accent-border)] bg-[color-mix(in_srgb,var(--accent)_5%,transparent)]" />
       <div className="absolute -inset-6 -rotate-1 rounded-[42px] border border-[var(--line)] opacity-60" />
       <div className="glass float-slow absolute -left-5 top-8 z-20 hidden items-center gap-2 px-3 py-2 sm:flex">
         <span className="status-dot text-[var(--verified)]" />
-        <span className="text-[9px] font-semibold">27 条主张</span>
+        <span className="text-[10px] font-semibold">27 条主张</span>
       </div>
       <div className="glass float-slow delay absolute -right-4 bottom-16 z-20 hidden px-3 py-2 sm:block">
         <p className="mono text-[13px] font-semibold text-[var(--verified)]">96.3%</p>
-        <p className="text-[8px] text-[var(--muted)]">引用覆盖</p>
+        <p className="text-[10px] text-[var(--muted)]">引用覆盖</p>
       </div>
 
       <div className="glass relative z-10 overflow-hidden p-4 shadow-[var(--shadow-lg)] sm:p-5">
@@ -286,27 +289,33 @@ function EvidencePreview() {
         <div className="flex items-center justify-between border-b border-[var(--line)] pb-3">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-[var(--verified)]" />
-            <span className="text-[10px] font-bold text-[var(--verified)]">已核对</span>
+            <span className="text-[11px] font-bold text-[var(--verified)]">已核对</span>
           </div>
-          <span className="mono text-[9px] text-[var(--muted-2)]">c-gmv</span>
+          <span className="mono text-[10px] text-[var(--muted-2)]">c-gmv</span>
         </div>
 
-        <p className="mt-4 text-[10px] font-semibold text-[var(--muted)]">Q3 全渠道 GMV</p>
-        <div className="mt-1 flex items-baseline gap-1.5">
-          <span className="metric text-[46px]">1,840</span>
+        <p className="mt-4 text-[11px] font-semibold text-[var(--muted)]">Q3 全渠道 GMV</p>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="group/metric mt-1 flex items-baseline gap-1.5 text-left"
+          aria-label="查看 1,840 万元 GMV 的原文证据"
+        >
+          <span className="metric text-[46px] underline decoration-[var(--accent)]/30 decoration-dotted underline-offset-8 transition-colors group-hover/metric:text-[var(--accent)]">1,840</span>
           <span className="text-[11px] font-semibold text-[var(--muted)]">万元</span>
-        </div>
+          <span className="ml-1 text-[9px] font-semibold text-[var(--accent)] opacity-70">查看原文 ↗</span>
+        </button>
 
         <div className="mt-4 rounded-2xl bg-[var(--surface-2)] px-3 py-2.5">
-          <p className="text-[10px] leading-6 text-[var(--ink-soft)]">
+          <p className="text-[12px] leading-6 text-[var(--ink-soft)]">
             “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元。”
           </p>
-          <p className="mono mt-2 text-[8px] text-[var(--muted-2)]">澄野生活_Q3经营复盘纪要.txt · 第 4 段</p>
+          <p className="mono mt-2 text-[10px] text-[var(--muted-2)]">澄野生活_Q3经营复盘纪要.txt · 第 4 段</p>
         </div>
 
         <div className="mt-3 flex items-center justify-between rounded-xl border border-[var(--line)] px-3 py-2">
-          <span className="mono text-[9px] text-[var(--muted)]">1,840 ÷ 1,600</span>
-          <span className="mono text-[11px] font-semibold text-[var(--verified)]">= 115.0%</span>
+          <span className="mono text-[11px] text-[var(--muted)]">1,840 ÷ 1,600</span>
+          <span className="mono text-[12px] font-semibold text-[var(--verified)]">= 115.0%</span>
         </div>
       </div>
 
@@ -314,14 +323,53 @@ function EvidencePreview() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-[var(--warning)]">
             <TriangleAlert className="h-3.5 w-3.5" />
-            <span className="text-[9px] font-bold">待核实</span>
+            <span className="text-[10px] font-bold">待核实</span>
           </div>
-          <span className="mono text-[9px] text-[var(--muted-2)]">+28.4%</span>
+          <span className="mono text-[10px] text-[var(--muted-2)]">+28.4%</span>
         </div>
-        <p className="mt-2 text-[10px] leading-5 text-[var(--muted)]">
+        <p className="mt-2 text-[11px] leading-5 text-[var(--muted)]">
           同比有引用，但材料没给去年同期绝对值。已从摘要里拦掉。
         </p>
       </div>
+
+      {open && (
+        <div className="fixed inset-0 z-[80] grid place-items-center p-4">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/45 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+            aria-label="关闭证据预览"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="GMV 原文证据"
+            className="relative w-full max-w-lg rounded-3xl border border-[var(--line-strong)] bg-[var(--surface)] p-6 shadow-[var(--shadow-lg)]"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-[var(--verified)]">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span className="text-[11px] font-bold">已核对 · 可回原文</span>
+                </div>
+                <h3 className="mt-3 text-[24px] font-bold tracking-tight">1,840 <span className="text-[12px] font-semibold text-[var(--muted)]">万元</span></h3>
+              </div>
+              <button type="button" className="btn btn-icon btn-quiet" onClick={() => setOpen(false)} aria-label="关闭">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <p className="mt-4 border-l-2 border-[var(--accent)] pl-3 text-[13px] leading-7 text-[var(--ink-soft)]">
+              “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元。”
+            </p>
+            <p className="mono mt-2 text-[10px] text-[var(--muted-2)]">澄野生活_Q3经营复盘纪要.txt · 第 4 段</p>
+            <div className="mt-4 flex items-center justify-between rounded-xl border border-[var(--line)] px-3 py-2.5">
+              <span className="mono text-[11px] text-[var(--muted)]">1,840 ÷ 1,600</span>
+              <span className="mono text-[13px] font-semibold text-[var(--verified)]">= 115.0%</span>
+            </div>
+            <p className="mt-3 text-[11px] leading-5 text-[var(--muted)]">公式由本地计算器复算，不是模型心算；分母和基期都留在原文里。</p>
+          </div>
+        </div>
+      )}
 
       <div className="absolute -left-3 top-24 hidden sm:block">
         <Sparkles className="h-5 w-5 text-[var(--accent)] opacity-60" />

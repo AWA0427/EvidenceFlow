@@ -20,12 +20,12 @@ export function KpiCard({ kpi, index, onEvidence }: { kpi: KPI; index: number; o
         <TrendIcon className="h-3.5 w-3.5" />
         <span className="font-semibold">{kpi.change ?? '—'}</span>
       </div>
-      <p className="mt-2 line-clamp-2 text-[10px] leading-relaxed text-[var(--muted)]">{kpi.description}</p>
+      <p className="mt-2 line-clamp-2 text-[11px] leading-relaxed text-[var(--muted)]">{kpi.description}</p>
       {kpi.claimId && (
         <button
           type="button"
           onClick={() => onEvidence?.(kpi.claimId!)}
-          className="mt-3 inline-flex items-center gap-1 text-[10px] font-semibold text-[var(--accent)] opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+          className="mt-3 inline-flex items-center gap-1 border-t border-[var(--line)] pt-2 text-[11px] font-semibold text-[var(--accent)] transition-colors hover:text-[var(--ink)]"
         >
           查看证据 <span aria-hidden="true">↗</span>
         </button>
