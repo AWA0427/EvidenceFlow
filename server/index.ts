@@ -30,7 +30,7 @@ import {
 } from './lib/auth';
 import { sleep } from './lib/text';
 
-// 先读 .env.local，再读 .env；已存在的系统环境变量优先级最高。
+// 先读 .env.local，再读 .env；已存在的系统环境变量优先级最高
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
@@ -50,7 +50,7 @@ app.use((_req, res, next) => {
   next();
 });
 
-// 简单的内存限流：足够防止评审期间的误触/恶意刷接口，不需要引入 Redis。
+// 简单的内存限流：足够防止评审期间的误触/恶意刷接口，不需要引入 Redis
 const buckets = new Map<string, { count: number; resetAt: number }>();
 function rateLimit(req: Request, res: Response, next: () => void): void {
   const key = req.ip || 'unknown';
@@ -63,7 +63,7 @@ function rateLimit(req: Request, res: Response, next: () => void): void {
   }
   bucket.count += 1;
   if (bucket.count > 30) {
-    res.status(429).json({ error: '请求过于频繁，请稍后再试。' });
+    res.status(429).json({ error: '请求过于频繁，请稍后再试' });
     return;
   }
   next();
@@ -123,12 +123,12 @@ app.get('/api/config', (_req, res) => {
 app.post('/api/auth/login', rateLimit, (req: Request, res: Response) => {
   const { username, password } = req.body as { username?: string; password?: string };
   if (!username || !password) {
-    res.status(400).json({ ok: false, error: '请输入账号和密码。' });
+    res.status(400).json({ ok: false, error: '请输入账号和密码' });
     return;
   }
   const user = verifyUser(username, password);
   if (!user) {
-    res.status(401).json({ ok: false, error: '账号或密码不对。评审账号见登录页提示。' });
+    res.status(401).json({ ok: false, error: '账号或密码不对评审账号见登录页提示' });
     return;
   }
   const session = createSession(user);
@@ -139,7 +139,7 @@ app.post('/api/auth/login', rateLimit, (req: Request, res: Response) => {
 app.post('/api/auth/register', rateLimit, (req: Request, res: Response) => {
   const { username, password, displayName } = req.body as { username?: string; password?: string; displayName?: string };
   if (!username || !password) {
-    res.status(400).json({ ok: false, error: '请输入账号和密码。' });
+    res.status(400).json({ ok: false, error: '请输入账号和密码' });
     return;
   }
   try {
@@ -172,13 +172,13 @@ app.post('/api/test-key', rateLimit, async (req: Request, res: Response) => {
     model: typeof body.model === 'string' ? body.model : undefined,
   });
   if (!config) {
-    res.status(400).json({ ok: false, error: '没有可用的 API Key。' });
+    res.status(400).json({ ok: false, error: '没有可用的 API Key' });
     return;
   }
   try {
     const startedAt = Date.now();
     const reply = await callChatText(config, {
-      system: '你是连通性测试助手。只回复两个字：可用。',
+      system: '你是连通性测试助手只回复两个字：可用',
       user: 'ping',
       temperature: 0,
       maxTokens: 16,
@@ -217,15 +217,15 @@ app.post('/api/analyze', rateLimit, async (req: Request, res: Response) => {
   const hasText = typeof body.text === 'string' && body.text.trim().length >= 8;
 
   if (!demoCaseId && !hasText) {
-    res.status(400).json({ error: '请提供至少 8 个字符的材料，或选择一个示例案例。' });
+    res.status(400).json({ error: '请提供至少 8 个字符的材料，或选择一个示例案例' });
     return;
   }
   if (demoCaseId && !getDemoCase(demoCaseId)) {
-    res.status(404).json({ error: '示例案例不存在。' });
+    res.status(404).json({ error: '示例案例不存在' });
     return;
   }
   if (!demoCaseId && authRequired() && !currentUser(req)) {
-    res.status(401).json({ error: '请先登录，再分析自己的材料。示例案例不需要登录。' });
+    res.status(401).json({ error: '请先登录，再分析自己的材料示例案例不需要登录' });
     return;
   }
 
@@ -258,7 +258,7 @@ app.post('/api/analyze', rateLimit, async (req: Request, res: Response) => {
       if (!config) {
         sendEvent(res, {
           type: 'token',
-          text: '未检测到 API Key，切换到本地启发式模式：只抽取带数字的句子，不生成新的因果判断。',
+          text: '未检测到 API Key，切换到本地启发式模式：只抽取带数字的句子，不生成新的因果判断',
         });
         result = await runLocalAnalysis(body as AnalyzeRequest, {
           onStep: (step) => {
@@ -293,7 +293,7 @@ app.post('/api/analyze', rateLimit, async (req: Request, res: Response) => {
       `[analyze] mode=${result.mode} model=${result.model} claims=${result.claims.length} elapsed=${Date.now() - startedAt}ms`,
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : '分析失败，请稍后重试。';
+    const message = error instanceof Error ? error.message : '分析失败，请稍后重试';
     console.error('[analyze] failed:', message);
     if (!closed) {
       sendEvent(res, { type: 'error', message });
@@ -307,7 +307,7 @@ app.post('/api/analyze', rateLimit, async (req: Request, res: Response) => {
 app.post('/api/chat', rateLimit, async (req: Request, res: Response) => {
   const body = req.body as Partial<ChatRequest>;
   if (!body.question || typeof body.question !== 'string' || !body.analysis || !Array.isArray(body.analysis.claims)) {
-    res.status(400).json({ error: '缺少问题或看板上下文。' });
+    res.status(400).json({ error: '缺少问题或看板上下文' });
     return;
   }
 

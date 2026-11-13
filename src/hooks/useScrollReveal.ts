@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-/** 滚动进入视口时给 [data-reveal] 元素加 is-visible，做缓慢浮现。 */
+/** 滚动进入视口时给 [data-reveal] 元素加 is-visible，做缓慢浮现 */
 export function useScrollReveal(): void {
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));

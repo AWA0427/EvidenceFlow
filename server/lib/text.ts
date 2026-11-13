@@ -1,8 +1,8 @@
 /**
- * 文本、数字与 CSV 的确定性处理工具。
+ * 文本、数字与 CSV 的确定性处理工具
  *
  * 这一层刻意不依赖大模型：数字的解析、归一化和引用定位必须可复现，
- * 否则「证据链」就会退化成另一段由模型编出来的解释。
+ * 否则「证据链」就会退化成另一段由模型编出来的解释
  */
 
 export interface QuoteLocation {
@@ -13,7 +13,7 @@ export interface QuoteLocation {
 
 const PUNCTUATION_MAP: Record<string, string> = {
   '，': ',',
-  '。': '.',
+  '': '.',
   '；': ';',
   '：': ':',
   '！': '!',
@@ -31,14 +31,14 @@ const PUNCTUATION_MAP: Record<string, string> = {
   '　': ' ',
 };
 
-/** 归一化文本，同时保留「归一化下标 -> 原文下标」的映射。 */
+/** 归一化文本，同时保留「归一化下标 -> 原文下标」的映射 */
 function normalizeWithMap(input: string): { text: string; map: number[] } {
   let text = '';
   const map: number[] = [];
   for (let i = 0; i < input.length; i += 1) {
     const raw = input[i];
     const mapped = PUNCTUATION_MAP[raw] ?? raw;
-    // 空白不进入归一化文本，但仍保留下标映射，确保无空格引用也能定位。
+    // 空白不进入归一化文本，但仍保留下标映射，确保无空格引用也能定位
     if (/\s/.test(mapped)) continue;
     text += mapped.toLowerCase();
     map.push(i);
@@ -46,7 +46,7 @@ function normalizeWithMap(input: string): { text: string; map: number[] } {
   return { text, map };
 }
 
-/** 在原文中定位一句话。精确匹配失败时返回 null，由上层决定降级策略。 */
+/** 在原文中定位一句话精确匹配失败时返回 null，由上层决定降级策略 */
 export function locateQuote(source: string, quote: string): QuoteLocation | null {
   const cleanQuote = quote.trim();
   if (!cleanQuote) return null;
@@ -68,7 +68,7 @@ export function locateQuote(source: string, quote: string): QuoteLocation | null
   return { start, end, quote: source.slice(start, end) };
 }
 
-/** 截取引用附近的上下文，供证据抽屉展示。 */
+/** 截取引用附近的上下文，供证据抽屉展示 */
 export function contextAround(source: string, location: QuoteLocation, radius = 90): string {
   const start = Math.max(0, location.start - radius);
   const end = Math.min(source.length, location.end + radius);
@@ -77,7 +77,7 @@ export function contextAround(source: string, location: QuoteLocation, radius = 
 
 const NUMBER_PATTERN = /[-+]?\d[\d,，]*(?:\.\d+)?/;
 
-/** 从「1,840 万元」「7.2%」「118ms」这类字符串中提取数值。 */
+/** 从「1,840 万元」「7.2%」「118ms」这类字符串中提取数值 */
 export function parseNumber(input: string | number | null | undefined): number | null {
   if (typeof input === 'number') return Number.isFinite(input) ? input : null;
   if (!input) return null;
@@ -98,7 +98,7 @@ export function formatPercent(value: number, digits = 1): string {
   return `${formatNumber(value, digits)}%`;
 }
 
-/** 判断一个数值是否在原文中「有迹可循」。 */
+/** 判断一个数值是否在原文中「有迹可循」 */
 export function numberAppearsInText(value: number | null, text: string): boolean {
   if (value === null) return false;
   const candidates = new Set<string>([
@@ -115,7 +115,7 @@ export function numberAppearsInText(value: number | null, text: string): boolean
   return false;
 }
 
-/** 计算两个数的增长率，target 为 0 时返回 null。 */
+/** 计算两个数的增长率，target 为 0 时返回 null */
 export function growthRate(current: number, previous: number): number | null {
   if (!Number.isFinite(current) || !Number.isFinite(previous) || previous === 0) return null;
   return ((current - previous) / Math.abs(previous)) * 100;
@@ -145,7 +145,7 @@ export function sleep(ms: number): Promise<void> {
   });
 }
 
-/** 极简 CSV 解析：支持双引号、逗号、换行；足够覆盖演示与常见导出。 */
+/** 极简 CSV 解析：支持双引号、逗号、换行；足够覆盖演示与常见导出 */
 export function parseCsv(text: string): {
   headers: string[];
   rows: Array<Record<string, string | number | null>>;
@@ -201,7 +201,7 @@ export function parseCsv(text: string): {
   return { headers, rows };
 }
 
-/** 粗略判断文本是否像 CSV，用于自动选择解析器。 */
+/** 粗略判断文本是否像 CSV，用于自动选择解析器 */
 export function looksLikeCsv(text: string): boolean {
   const lines = text.trim().split(/\r?\n/).filter(Boolean);
   if (lines.length < 3) return false;

@@ -7,8 +7,8 @@ interface ErrorBoundaryState {
 }
 
 /**
- * 错误边界：AI 应用最常见的翻车不是接口报错，而是某条结构化数据缺字段导致整页白屏。
- * 这里兜住渲染错误，给评审一个可恢复的出口。
+ * 错误边界：AI 应用最常见的翻车不是接口报错，而是某条结构化数据缺字段导致整页白屏
+ * 这里兜住渲染错误，给评审一个可恢复的出口
  */
 export class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false, message: '' };
@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBound
             </div>
             <h1 className="display-md">这一页的证据链断了</h1>
             <p className="mt-3 text-sm text-[var(--muted)]">
-              渲染时遇到一个未处理的异常。你的本地历史记录不会丢失，可以刷新或回到工作台重新开始。
+              渲染时遇到一个未处理的异常你的本地历史记录不会丢失，可以刷新或回到工作台重新开始
             </p>
             <pre className="mono mt-4 max-h-28 overflow-auto border border-[var(--line)] bg-[var(--surface-2)] p-3 text-left text-[10px] text-[var(--muted)]">
               {this.state.message}

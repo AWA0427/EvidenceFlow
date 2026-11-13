@@ -170,8 +170,8 @@ Windows 也可以直接双击根目录的 `一键启动.bat`，脚本会自动�
 | `DEEPSEEK_BASE_URL` | 否 | 默认 `https://api.deepseek.com` |
 | `DEEPSEEK_MODEL` | 否 | 默认 `deepseek-chat` |
 | `AUTH_REQUIRED` | 否 | true = 自定义材料必须先登录；示例不需要 |
-| `REVIEW_USERNAME` | 否 | 评审账号，默认 `review@evidenceflow.local` |
-| `REVIEW_PASSWORD` | 否 | 评审密码，默认 `EvidenceFlow2026`（仅演示） |
+| `REVIEW_USERNAME` | 否 | 评审账号，由团队私下设置 |
+| `REVIEW_PASSWORD` | 否 | 评审密码，由团队私下设置 |
 | `COOKIE_SECURE` | 否 | HTTPS 部署设 true |
 
 安全约定：仓库只提交 `.env.example`；`.env.local` / `.env` 已忽略；临时 Key 只写 sessionStorage；日志不记录材料与 Key。
@@ -179,8 +179,8 @@ Windows 也可以直接双击根目录的 `一键启动.bat`，脚本会自动�
 ## 登录
 
 - 登录页：`/login`，支持登录和注册
-- 默认评审账号：`review@evidenceflow.local` / `EvidenceFlow2026`
-- 评审账号支持邮箱登录；普通注册仍要求 11 位手机号
+- 评审账号由团队私下提供，不在登录页面展示
+- 登录框接受手机号；后端同时支持评审邮箱，普通注册仍要求 11 位手机号
 - 注册用户保存在 `data/users.json`，密码用 scrypt + 随机盐哈希，不存明文
 - 登录后签发 HttpOnly Session Cookie；会话存在服务端内存，重启服务后失效
 - 不登录也能看三个示例

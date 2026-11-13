@@ -114,7 +114,7 @@ export function Landing() {
                 <span className="text-[var(--accent)]">能查证据的报告</span>
               </h1>
               <p className="mt-5 max-w-lg text-[13px] leading-7 text-[var(--muted)]">
-                上传会议纪要、复盘或 CSV。证析先找数字和原文，再算公式、查行业基准，最后告诉你哪些结论能用。
+                上传会议纪要、复盘或 CSV证析先找数字和原文，再算公式、查行业基准，最后告诉你哪些结论能用
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
@@ -124,7 +124,7 @@ export function Landing() {
                   登录
                 </button>
               </div>
-              <p className="mt-3 text-[10px] text-[var(--muted)]">不用登录也能看三个示例。登录后可以上传自己的材料。</p>
+              <p className="mt-3 text-[10px] text-[var(--muted)]">不用登录也能看三个示例登录后可以上传自己的材料</p>
             </div>
 
             <div
@@ -152,9 +152,9 @@ export function Landing() {
         <section id="about" data-reveal className="border-y border-[var(--line)] bg-[var(--surface)]">
           <div className="container-wide pb-2 pt-10">
             <div className="kicker">关于</div>
-            <h2 className="display-lg mt-3">先看证据，再信结论。</h2>
+            <h2 className="display-lg mt-3">先看证据，再信结论</h2>
             <p className="mt-3 max-w-xl text-[12px] leading-6 text-[var(--muted)]">
-              证析不是直接让 AI 写报告。它先找数字和原文，再算公式、查基准，最后把没证据的结论拦下来。
+              证析不是直接让 AI 写报告它先找数字和原文，再算公式、查基准，最后把没证据的结论拦下来
             </p>
           </div>
           <div className="container-wide grid grid-cols-2 divide-x divide-[var(--line)] border-t border-[var(--line)] md:grid-cols-4">
@@ -186,9 +186,9 @@ export function Landing() {
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
-              { icon: FileUp, step: '01', title: '放材料', body: '粘贴文本，或上传 .txt / .md / .csv。也可以直接选一个示例。' },
-              { icon: ScanSearch, step: '02', title: '看结论', body: '看板给出 KPI、图表、问题和待办。每个数字都能点开。' },
-              { icon: MousePointerClick, step: '03', title: '点数字', body: '点开后看到原文、公式和状态。没证据的结论会被标出来。' },
+              { icon: FileUp, step: '01', title: '放材料', body: '粘贴文本，或上传 .txt / .md / .csv也可以直接选一个示例' },
+              { icon: ScanSearch, step: '02', title: '看结论', body: '看板给出 KPI、图表、问题和待办每个数字都能点开' },
+              { icon: MousePointerClick, step: '03', title: '点数字', body: '点开后看到原文、公式和状态没证据的结论会被标出来' },
             ].map((item) => {
               const Icon = item.icon;
               return (
@@ -207,7 +207,7 @@ export function Landing() {
           </div>
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] px-4 py-3">
-            <p className="text-[11px] text-[var(--muted)]">三个示例已经在工作台里，不用在这里找。</p>
+            <p className="text-[11px] text-[var(--muted)]">三个示例已经在工作台里，不用在这里找</p>
             <button type="button" className="btn btn-primary" onClick={() => navigate('/app?demo=consumer-q3')}>
               打开示例 <ArrowRight className="h-3.5 w-3.5" />
             </button>
@@ -216,8 +216,8 @@ export function Landing() {
 
         <section data-reveal className="container-wide pb-16 text-center lg:pb-24">
           <span className="seal mx-auto">证</span>
-          <h2 className="display-lg mt-5">先看证据，再信结论。</h2>
-          <p className="mt-3 text-[12px] text-[var(--muted)]">打开工作台，点任意数字试试。</p>
+          <h2 className="display-lg mt-5">先看证据，再信结论</h2>
+          <p className="mt-3 text-[12px] text-[var(--muted)]">打开工作台，点任意数字试试</p>
           <div className="mt-5 flex justify-center gap-2">
             <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
               开始 <ArrowRight className="h-4 w-4" />
@@ -234,9 +234,9 @@ export function Landing() {
           <div className="container-wide grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
               <div className="kicker">账号</div>
-              <h2 className="display-lg mt-3">登录后，上传自己的材料。</h2>
+              <h2 className="display-lg mt-3">登录后，上传自己的材料</h2>
               <p className="mt-3 max-w-lg text-[12px] leading-6 text-[var(--muted)]">
-                登录/注册在首页下方慢慢浮现，不用跳来跳去。只看三个示例，仍然不用登录。
+                登录/注册在首页下方慢慢浮现，不用跳来跳去只看三个示例，仍然不用登录
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
@@ -312,7 +312,7 @@ function EvidencePreview() {
 
         <div className="mt-4 rounded-2xl bg-[var(--surface-2)] px-3 py-2.5">
           <p className="text-[12px] leading-6 text-[var(--ink-soft)]">
-            “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元。”
+            “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元”
           </p>
           <p className="mono mt-2 text-[10px] text-[var(--muted-2)]">澄野生活_Q3经营复盘纪要.txt · 第 4 段</p>
         </div>
@@ -332,7 +332,7 @@ function EvidencePreview() {
           <span className="mono text-[10px] text-[var(--muted-2)]">+28.4%</span>
         </div>
         <p className="mt-2 text-[11px] leading-5 text-[var(--muted)]">
-          同比有引用，但材料没给去年同期绝对值。已从摘要里拦掉。
+          同比有引用，但材料没给去年同期绝对值已从摘要里拦掉
         </p>
       </div>
 
@@ -363,14 +363,14 @@ function EvidencePreview() {
               </button>
             </div>
             <p className="mt-4 border-l-2 border-[var(--accent)] pl-3 text-[13px] leading-7 text-[var(--ink-soft)]">
-              “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元。”
+              “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元”
             </p>
             <p className="mono mt-2 text-[10px] text-[var(--muted-2)]">澄野生活_Q3经营复盘纪要.txt · 第 4 段</p>
             <div className="mt-4 flex items-center justify-between rounded-xl border border-[var(--line)] px-3 py-2.5">
               <span className="mono text-[11px] text-[var(--muted)]">1,840 ÷ 1,600</span>
               <span className="mono text-[13px] font-semibold text-[var(--verified)]">= 115.0%</span>
             </div>
-            <p className="mt-3 text-[11px] leading-5 text-[var(--muted)]">公式由本地计算器复算，不是模型心算；分母和基期都留在原文里。</p>
+            <p className="mt-3 text-[11px] leading-5 text-[var(--muted)]">公式由本地计算器复算，不是模型心算；分母和基期都留在原文里</p>
           </div>
         </div>
       )}

@@ -63,10 +63,10 @@ export const useAnalysisStore = create<AnalysisState>()(
             },
           );
           if (!result && get().phase !== 'ready') {
-            set({ phase: 'error', error: get().error || '分析没有返回结果，请重试。' });
+            set({ phase: 'error', error: get().error || '分析没有返回结果，请重试' });
           }
         } catch (error) {
-          set({ phase: 'error', error: error instanceof Error ? error.message : '分析失败，请重试。' });
+          set({ phase: 'error', error: error instanceof Error ? error.message : '分析失败，请重试' });
         }
       },
 
@@ -100,10 +100,10 @@ export const useAnalysisStore = create<AnalysisState>()(
             },
           );
           if (!result && get().phase !== 'ready') {
-            set({ phase: 'error', error: get().error || '分析没有返回结果，请重试。' });
+            set({ phase: 'error', error: get().error || '分析没有返回结果，请重试' });
           }
         } catch (error) {
-          set({ phase: 'error', error: error instanceof Error ? error.message : '分析失败，请重试。' });
+          set({ phase: 'error', error: error instanceof Error ? error.message : '分析失败，请重试' });
         }
       },
 

@@ -33,7 +33,7 @@ export function ChartRenderer({ chart, onEvidence, onExpand }: ChartRendererProp
       onClick={(event) => {
         if (!onExpand) return;
         const target = event.target as Element;
-        // 点柱子/折线仍然回证据；点空白区域放大图表。
+        // 点柱子/折线仍然回证据；点空白区域放大图表
         if (target.closest('rect, circle, path, button')) return;
         onExpand(chart);
       }}

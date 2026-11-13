@@ -1,12 +1,12 @@
 import type { AnalysisResult, AnalyzeRequest, ApiConfigResponse, ChatRequest, StreamEvent } from '@shared/types';
 
 /**
- * 前端 API 客户端。
+ * 前端 API 客户端
  *
  * 安全约定：
  * - 服务端 Key 永远不进入前端；
  * - 用户在设置页填的临时 Key 只写 sessionStorage，关闭标签页即失效；
- * - 所有分析都通过 SSE 返回，前端可以逐阶段展示 Agent 轨迹。
+ * - 所有分析都通过 SSE 返回，前端可以逐阶段展示 Agent 轨迹
  */
 
 export const CLIENT_KEY_STORAGE = 'evidenceflow-session-key';
@@ -137,10 +137,10 @@ export async function streamChat(
 export async function readTextFile(file: File): Promise<string> {
   const extension = file.name.split('.').pop()?.toLowerCase() ?? '';
   if (['pdf', 'png', 'jpg', 'jpeg', 'webp', 'gif'].includes(extension)) {
-    throw new Error('当前基础版支持 .txt / .md / .csv / .json；PDF 与图片识别接口已预留，请在设置中配置视觉模型后接入。');
+    throw new Error('当前基础版支持 .txt / .md / .csv / .json；PDF 与图片识别接口已预留，请在设置中配置视觉模型后接入');
   }
   if (file.size > 2 * 1024 * 1024) {
-    throw new Error('文件超过 2MB，请先精简或分段上传。');
+    throw new Error('文件超过 2MB，请先精简或分段上传');
   }
   return file.text();
 }
@@ -212,7 +212,7 @@ export function analysisToMarkdown(analysis: AnalysisResult): string {
     '',
     '---',
     '',
-    '由证析 EvidenceFlow 生成。所有数字均可在原始材料中追溯。',
+    '由证析 EvidenceFlow 生成所有数字均可在原始材料中追溯',
   ];
   return lines.join('\n');
 }

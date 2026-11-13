@@ -2,20 +2,20 @@ import type { RetrievedBenchmark } from '../../shared/types';
 import { BENCHMARK_CHUNKS, type BenchmarkChunk } from '../knowledge/benchmarks';
 
 /**
- * 轻量 BM25 检索器。
+ * 轻量 BM25 检索器
  *
  * 为什么不用向量库？
  * - 48 小时赛程里，引入 embedding + 向量库会增加部署与冷启动风险；
  * - 评审更关心「检索是否真的发生、引用是否可核对」，而不是用了多贵的向量库；
- * - BM25 对中文短文本 + 行业术语在小型知识库上足够稳定，且完全可解释。
+ * - BM25 对中文短文本 + 行业术语在小型知识库上足够稳定，且完全可解释
  *
- * 如果后续要升级，只需替换 searchBenchmarks 的实现，接口保持不变。
+ * 如果后续要升级，只需替换 searchBenchmarks 的实现，接口保持不变
  */
 
 const K1 = 1.5;
 const B = 0.75;
 
-/** 中文按字 + 二元组切分，英文/数字按词切分。 */
+/** 中文按字 + 二元组切分，英文/数字按词切分 */
 export function tokenize(input: string): string[] {
   const text = input.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ');
   const tokens: string[] = [];
@@ -78,7 +78,7 @@ export function searchBenchmarks(query: string, limit = 3): RetrievedBenchmark[]
     .filter((item) => item.score > 0)
     .sort((a, b) => b.score - a.score);
 
-  // 同一篇文档只保留得分最高的片段，避免引用重复；按文档去重后再取 topK。
+  // 同一篇文档只保留得分最高的片段，避免引用重复；按文档去重后再取 topK
   const seen = new Set<string>();
   const results: RetrievedBenchmark[] = [];
   for (const { chunk, score } of scored) {
@@ -97,7 +97,7 @@ export function searchBenchmarks(query: string, limit = 3): RetrievedBenchmark[]
   return results;
 }
 
-/** 为界面展示提供可解释的检索词。 */
+/** 为界面展示提供可解释的检索词 */
 export function explainQuery(query: string): string[] {
   const counts = new Map<string, number>();
   for (const token of tokenize(query)) {

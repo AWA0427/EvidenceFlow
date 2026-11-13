@@ -34,10 +34,10 @@ import {
 } from './text';
 
 /**
- * 分析流水线。
+ * 分析流水线
  *
  * Demo 与 Live 共用同一套「证据 -> 校验 -> 检索 -> 综合 -> 质疑 -> 闸门」结构，
- * 区别只在于 Claim 的来源：内置案例 or 大模型抽取。
+ * 区别只在于 Claim 的来源：内置案例 or 大模型抽取
  */
 
 export interface AnalysisHooks {
@@ -108,7 +108,7 @@ function step(params: {
   };
 }
 
-/** 安全算术求值器：只允许数字、括号和四则运算，绝不使用 eval。 */
+/** 安全算术求值器：只允许数字、括号和四则运算，绝不使用 eval */
 export function evaluateArithmetic(expression: string): number | null {
   const normalized = expression
     .replace(/[，,]/g, '')
@@ -117,7 +117,7 @@ export function evaluateArithmetic(expression: string): number | null {
     .replace(/−/g, '-')
     .replace(/[=＝]/g, '=')
     .replace(/%/g, '');
-  // 只允许数字、空白、括号和四则运算符；出现字母/函数名/其他符号直接拒绝。
+  // 只允许数字、空白、括号和四则运算符；出现字母/函数名/其他符号直接拒绝
   if (!/^[\d\s()+\-*/]+$/.test(normalized)) return null;
   const tokens = normalized.match(/\d+(?:\.\d+)?|[()+\-*/]/g);
   if (!tokens) return null;
@@ -178,7 +178,7 @@ export function evaluateArithmetic(expression: string): number | null {
   return values.length === 1 && Number.isFinite(values[0]) ? values[0] : null;
 }
 
-/** 校验「公式 -> 值」是否成立，并容忍四舍五入与百分比表示差异。 */
+/** 校验「公式 -> 值」是否成立，并容忍四舍五入与百分比表示差异 */
 export function verifyFormula(formula: string, claimedValue: number | null): { ok: boolean; computed: number | null } {
   if (claimedValue === null) return { ok: false, computed: null };
   const left = formula.split('=')[0]?.trim() ?? formula;
@@ -234,11 +234,11 @@ function buildEvidenceForClaim(params: {
     verified: status === 'verified',
     note:
       status === 'unsupported'
-        ? '原文中未找到可逐字核对的引用，已拦截。'
+        ? '原文中未找到可逐字核对的引用，已拦截'
         : status === 'partial'
           ? hasFormula
-            ? '公式或公式中的输入无法在原文中完整复核，需人工确认。'
-            : '引文存在，但数值未能在引文中直接核对。'
+            ? '公式或公式中的输入无法在原文中完整复核，需人工确认'
+            : '引文存在，但数值未能在引文中直接核对'
           : undefined,
   };
 
@@ -291,8 +291,8 @@ function buildStepsForRun(params: {
       title: '规划分析路径',
       detail:
         source.kind === 'csv'
-          ? '识别为结构化数据：选择「列统计 + 异常检测 + 基准对标」路径。'
-          : '识别为叙事材料：选择「主张抽取 + 数值校验 + 基准检索」路径。',
+          ? '识别为结构化数据：选择「列统计 + 异常检测 + 基准对标」路径'
+          : '识别为叙事材料：选择「主张抽取 + 数值校验 + 基准检索」路径',
       durationMs: 24,
       tools: [
         tool({
@@ -308,7 +308,7 @@ function buildStepsForRun(params: {
       order: 2,
       stage: 'parse',
       title: '解析与脱敏',
-      detail: `读取 ${source.charCount.toLocaleString('zh-CN')} 字符${source.rowCount ? `、${source.rowCount} 行数据` : ''}；PII 脱敏 ${params.piiRedacted} 处。`,
+      detail: `读取 ${source.charCount.toLocaleString('zh-CN')} 字符${source.rowCount ? `、${source.rowCount} 行数据` : ''}；PII 脱敏 ${params.piiRedacted} 处`,
       durationMs: 38,
       tools: [
         tool({
@@ -324,7 +324,7 @@ function buildStepsForRun(params: {
       order: 3,
       stage: 'extract',
       title: '抽取主张',
-      detail: `得到 ${claims.length} 条候选主张；其中 ${verified.length} 条可直接核对，${blocked.length} 条需降级。`,
+      detail: `得到 ${claims.length} 条候选主张；其中 ${verified.length} 条可直接核对，${blocked.length} 条需降级`,
       durationMs: extractionMs,
       tools: [
         tool({
@@ -340,7 +340,7 @@ function buildStepsForRun(params: {
       order: 4,
       stage: 'verify',
       title: '确定性数值校验',
-      detail: '逐条检查引文是否存在、数字是否可回填、公式是否可复算；不通过的主张不会进入高管摘要。',
+      detail: '逐条检查引文是否存在、数字是否可回填、公式是否可复算；不通过的主张不会进入高管摘要',
       durationMs: 31,
       tools: [
         tool({
@@ -356,7 +356,7 @@ function buildStepsForRun(params: {
       order: 5,
       stage: 'retrieve',
       title: '检索行业基准',
-      detail: `BM25 召回 ${benchmarks.length} 条基准片段；引用只用于解释，不替代企业自身数据。`,
+      detail: `BM25 召回 ${benchmarks.length} 条基准片段；引用只用于解释，不替代企业自身数据`,
       durationMs: 18,
       tools: [
         tool({
@@ -372,7 +372,7 @@ function buildStepsForRun(params: {
       order: 6,
       stage: 'analyze',
       title: '综合经营看板',
-      detail: `生成 ${kpis.length} 个 KPI、${charts.length} 个图表；所有图表都可以回到 claim。`,
+      detail: `生成 ${kpis.length} 个 KPI、${charts.length} 个图表；所有图表都可以回到 claim`,
       durationMs: synthesisMs,
       tools: [
         tool({
@@ -388,7 +388,7 @@ function buildStepsForRun(params: {
       order: 7,
       stage: 'critic',
       title: '质疑官复核',
-      detail: `发现 ${blocked.length} 条需要降级或补充证据的主张；质疑记录会显示在证据链中。`,
+      detail: `发现 ${blocked.length} 条需要降级或补充证据的主张；质疑记录会显示在证据链中`,
       durationMs: 27,
       tools: [
         tool({
@@ -405,8 +405,8 @@ function buildStepsForRun(params: {
       stage: 'guard',
       title: '发布闸门',
       detail: params.injectionDetected
-        ? '检测到疑似指令注入；已将来源材料隔离为不可信数据，工具调用仍受白名单约束。'
-        : '检查数值一致性、引用覆盖、待核实主张与 PII；通过后才允许导出报告。',
+        ? '检测到疑似指令注入；已将来源材料隔离为不可信数据，工具调用仍受白名单约束'
+        : '检查数值一致性、引用覆盖、待核实主张与 PII；通过后才允许导出报告',
       durationMs: 22,
       tools: [
         tool({
@@ -449,14 +449,14 @@ function finalizeResult(params: {
     injectionDetected: params.injectionDetected,
   });
 
-  // 发布闸门：如果摘要泄露了被拦截的数字，替换为不含该数字的安全摘要。
+  // 发布闸门：如果摘要泄露了被拦截的数字，替换为不含该数字的安全摘要
   const leaked = summaryLeaksBlockedClaims(params.summary, params.claims);
   let summary = params.summary;
   if (leaked.length > 0) {
     const verified = params.claims.filter((claim) => claim.status === 'verified').slice(0, 4);
-    summary = `高管摘要已触发安全闸门：原摘要引用了 ${leaked.length} 条待核实数据。当前可发布的确定结论为：${verified
+    summary = `高管摘要已触发安全闸门：原摘要引用了 ${leaked.length} 条待核实数据当前可发布的确定结论为：${verified
       .map((claim) => `${claim.metric} ${claim.displayValue}`)
-      .join('；')}。其余结论需补充原始凭证后再发布。`;
+      .join('；')}其余结论需补充原始凭证后再发布`;
   }
 
   const ai: AiRuntimeInfo = {
@@ -472,10 +472,10 @@ function finalizeResult(params: {
     calls: params.aiCalls ?? [],
     note:
       params.mode === 'demo'
-        ? '示例模式不调用大模型：用内置证据 + 本地校验，保证没 Key 也能演示。'
+        ? '示例模式不调用大模型：用内置证据 + 本地校验，保证没 Key 也能演示'
         : params.mode === 'local'
-          ? '未配置 API Key：只做规则抽取和本地校验，没有调用大模型。'
-          : '已调用模型完成抽取/综合；数字仍由本地校验器复核。',
+          ? '未配置 API Key：只做规则抽取和本地校验，没有调用大模型'
+          : '已调用模型完成抽取/综合；数字仍由本地校验器复核',
   };
 
   return {
@@ -502,7 +502,7 @@ function finalizeResult(params: {
   };
 }
 
-/** 演示模式：完整跑通证据链、检索、质疑与安全闸门，不依赖网络。 */
+/** 演示模式：完整跑通证据链、检索、质疑与安全闸门，不依赖网络 */
 export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {}): Promise<AnalysisResult> {
   const startedAt = now();
   const run = buildDemoRun(caseId);
@@ -512,7 +512,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 1,
     stage: 'plan',
     title: '规划分析路径',
-    detail: '识别为叙事材料：选择「主张抽取 + 数值校验 + 基准检索」路径。',
+    detail: '识别为叙事材料：选择「主张抽取 + 数值校验 + 基准检索」路径',
     durationMs: 24,
     tools: [
       tool({
@@ -531,7 +531,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 2,
     stage: 'parse',
     title: '解析与脱敏',
-    detail: `读取 ${run.source.charCount.toLocaleString('zh-CN')} 字符；示例材料已完成 PII 检查。`,
+    detail: `读取 ${run.source.charCount.toLocaleString('zh-CN')} 字符；示例材料已完成 PII 检查`,
     durationMs: 38,
     tools: [
       tool({
@@ -551,7 +551,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 3,
     stage: 'extract',
     title: '抽取主张',
-    detail: `从案例材料中抽取 ${run.claims.length} 条主张，全部带原文引用。`,
+    detail: `从案例材料中抽取 ${run.claims.length} 条主张，全部带原文引用`,
     durationMs: 186,
     tools: [
       tool({
@@ -570,7 +570,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 4,
     stage: 'verify',
     title: '确定性数值校验',
-    detail: `逐条比对引文与公式：${verified.length} 条通过，${run.claims.length - verified.length} 条标记待核实。`,
+    detail: `逐条比对引文与公式：${verified.length} 条通过，${run.claims.length - verified.length} 条标记待核实`,
     durationMs: 31,
     tools: [
       tool({
@@ -590,7 +590,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 5,
     stage: 'retrieve',
     title: '检索行业基准',
-    detail: `BM25 召回 ${benchmarks.length} 条基准片段，用于解释而非替代企业数据。`,
+    detail: `BM25 召回 ${benchmarks.length} 条基准片段，用于解释而非替代企业数据`,
     durationMs: 18,
     tools: [
       tool({
@@ -609,7 +609,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 6,
     stage: 'analyze',
     title: '综合经营看板',
-    detail: `生成 ${run.kpis.length} 个 KPI、${run.charts.length} 个图表。`,
+    detail: `生成 ${run.kpis.length} 个 KPI、${run.charts.length} 个图表`,
     durationMs: 210,
     tools: [
       tool({
@@ -629,7 +629,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 7,
     stage: 'critic',
     title: '质疑官复核',
-    detail: `质疑官拦截 ${blocked.length} 条高风险主张；其中同比口径缺少基期，已从高管摘要移除。`,
+    detail: `质疑官拦截 ${blocked.length} 条高风险主张；其中同比口径缺少基期，已从高管摘要移除`,
     durationMs: 27,
     tools: [
       tool({
@@ -648,7 +648,7 @@ export async function runDemoAnalysis(caseId: string, hooks: AnalysisHooks = {})
     order: 8,
     stage: 'guard',
     title: '发布闸门',
-    detail: '检查数值一致性、引用覆盖、待核实主张与 PII；通过后才允许导出报告。',
+    detail: '检查数值一致性、引用覆盖、待核实主张与 PII；通过后才允许导出报告',
     durationMs: 22,
     tools: [
       tool({
@@ -700,10 +700,10 @@ interface ExtractionResponse {
   claims?: ExtractedClaim[];
 }
 
-/** 无 Key / 模型失败时的启发式抽取：只抓「一句话里同时有指标词和数字」的片段。 */
+/** 无 Key / 模型失败时的启发式抽取：只抓「一句话里同时有指标词和数字」的片段 */
 export function heuristicExtract(text: string): ExtractedClaim[] {
   const sentences = text
-    .split(/(?<=[。！？；\n])/)
+    .split(/(?<=[！？；\n])/)
     .map((sentence) => sentence.trim())
     .filter((sentence) => sentence.length >= 8);
 
@@ -716,7 +716,7 @@ export function heuristicExtract(text: string): ExtractedClaim[] {
     const metricMatch = sentence.match(
       /([\u4e00-\u9fa5A-Za-z0-9（）()·/]{2,24}?)(?:为|是|达到|完成|录得|降至|提升至|增长|下降|环比|同比|：|:)\s*[-+]?[\d,，.]+\s*(?:%|万|亿|元|ms|s|分钟|个|条|点|倍)?/,
     );
-    const metric = (metricMatch?.[1] ?? sentence.slice(0, 16)).replace(/[，。；：]/g, '').trim();
+    const metric = (metricMatch?.[1] ?? sentence.slice(0, 16)).replace(/[，；：]/g, '').trim();
     claims.push({
       metric,
       value: number,
@@ -754,7 +754,7 @@ function defaultChart(claims: Claim[]): ChartSpec[] {
       id: 'chart-auto',
       title: '已核验指标一览',
       type: 'bar',
-      description: '仅展示通过原文或公式校验的数值，未通过的主张不进入图表。',
+      description: '仅展示通过原文或公式校验的数值，未通过的主张不进入图表',
       categories: numeric.map((claim) => claim.metric.slice(0, 12)),
       series: [{ name: '数值', data: numeric.map((claim) => Number(claim.value)), color: 'var(--accent)' }],
       claimIds: numeric.map((claim) => claim.id),
@@ -771,11 +771,11 @@ function defaultAnalysisFromClaims(params: {
   const blocked = params.claims.filter((claim) => claim.status !== 'verified');
   const summary =
     verified.length > 0
-      ? `本次材料共抽取 ${params.claims.length} 条主张，其中 ${verified.length} 条通过原文或公式校验。可确认的关键指标包括：${verified
+      ? `本次材料共抽取 ${params.claims.length} 条主张，其中 ${verified.length} 条通过原文或公式校验可确认的关键指标包括：${verified
           .slice(0, 4)
           .map((claim) => `${claim.metric} ${claim.displayValue}`)
-          .join('；')}。${blocked.length > 0 ? `另有 ${blocked.length} 条主张因缺少引用或基期数据被标记为待核实，未进入高管结论。` : ''}`
-      : '材料中没有找到可逐字核对的量化主张。建议补充带明确数字与口径的经营数据后重新分析。';
+          .join('；')}${blocked.length > 0 ? `另有 ${blocked.length} 条主张因缺少引用或基期数据被标记为待核实，未进入高管结论` : ''}`
+      : '材料中没有找到可逐字核对的量化主张建议补充带明确数字与口径的经营数据后重新分析';
 
   const insights: Insight[] =
     verified.length > 0
@@ -783,7 +783,7 @@ function defaultAnalysisFromClaims(params: {
           {
             id: 'ins-auto-1',
             title: '先看可核对的事实，再谈判断',
-            body: `当前证据最强的是「${verified[0].metric}」：${verified[0].displayValue}。其余结论需要补充分母、时间窗口或对照期后再下判断。`,
+            body: `当前证据最强的是「${verified[0].metric}」：${verified[0].displayValue}其余结论需要补充分母、时间窗口或对照期后再下判断`,
             impact: 'high',
             category: '分析结论',
             claimIds: [verified[0].id],
@@ -801,7 +801,7 @@ function defaultAnalysisFromClaims(params: {
   };
 }
 
-/** 实时模式：DeepSeek 抽取 -> 确定性校验 -> BM25 检索 -> LLM 综合 -> 闸门。 */
+/** 实时模式：DeepSeek 抽取 -> 确定性校验 -> BM25 检索 -> LLM 综合 -> 闸门 */
 export async function runLiveAnalysis(
   request: AnalyzeRequest,
   config: LLMConfig,
@@ -826,7 +826,7 @@ export async function runLiveAnalysis(
     order: 1,
     stage: 'plan',
     title: '规划分析路径',
-    detail: kind === 'csv' ? '识别为结构化数据：列统计 + 指标校验 + 基准对标。' : '识别为叙事材料：主张抽取 + 数值校验 + 基准检索。',
+    detail: kind === 'csv' ? '识别为结构化数据：列统计 + 指标校验 + 基准对标' : '识别为叙事材料：主张抽取 + 数值校验 + 基准检索',
     durationMs: 21,
     tools: [
       tool({
@@ -844,7 +844,7 @@ export async function runLiveAnalysis(
     order: 2,
     stage: 'parse',
     title: '解析与脱敏',
-    detail: `读取 ${source.charCount.toLocaleString('zh-CN')} 字符${source.rowCount ? `、${source.rowCount} 行` : ''}；脱敏 ${redaction.count} 处。`,
+    detail: `读取 ${source.charCount.toLocaleString('zh-CN')} 字符${source.rowCount ? `、${source.rowCount} 行` : ''}；脱敏 ${redaction.count} 处`,
     durationMs: 35,
     tools: [
       tool({
@@ -902,14 +902,14 @@ export async function runLiveAnalysis(
   });
 
   if (claims.length === 0) {
-    throw new Error('模型未能从材料中抽取出可核对的主张。请补充带明确数字和口径的文本，或在设置中切换演示模式。');
+    throw new Error('模型未能从材料中抽取出可核对的主张请补充带明确数字和口径的文本，或在设置中切换演示模式');
   }
 
   const extractStep = step({
     order: 3,
     stage: 'extract',
     title: '抽取主张',
-    detail: `模型抽取 ${claims.length} 条候选主张；每条都必须提供原文引用。`,
+    detail: `模型抽取 ${claims.length} 条候选主张；每条都必须提供原文引用`,
     durationMs: now() - extractionStart,
     tools: [
       tool({
@@ -929,7 +929,7 @@ export async function runLiveAnalysis(
     order: 4,
     stage: 'verify',
     title: '确定性数值校验',
-    detail: `逐条检查引文、数字与公式：${verifiedCount} 条通过，${claims.length - verifiedCount} 条降级。`,
+    detail: `逐条检查引文、数字与公式：${verifiedCount} 条通过，${claims.length - verifiedCount} 条降级`,
     durationMs: now() - verifyStart,
     tools: [
       tool({
@@ -949,7 +949,7 @@ export async function runLiveAnalysis(
     order: 5,
     stage: 'retrieve',
     title: '检索行业基准',
-    detail: `BM25 召回 ${benchmarks.length} 条基准片段。`,
+    detail: `BM25 召回 ${benchmarks.length} 条基准片段`,
     durationMs: now() - retrieveStart,
     tools: [
       tool({
@@ -1027,7 +1027,7 @@ export async function runLiveAnalysis(
     order: 6,
     stage: 'analyze',
     title: '综合经营看板',
-    detail: `生成 ${kpis.length || fallback.kpis.length} 个 KPI、${charts.length || fallback.charts.length} 个图表。`,
+    detail: `生成 ${kpis.length || fallback.kpis.length} 个 KPI、${charts.length || fallback.charts.length} 个图表`,
     durationMs: now() - synthesisStart,
     tools: [
       tool({
@@ -1047,15 +1047,15 @@ export async function runLiveAnalysis(
     if (!claim.criticNote) {
       claim.criticNote =
         claim.status === 'unsupported'
-          ? '原文中未找到可逐字核对的引用，已拦截。'
-          : '引文存在，但数值或公式无法在原文中完整复核，需补充凭证。';
+          ? '原文中未找到可逐字核对的引用，已拦截'
+          : '引文存在，但数值或公式无法在原文中完整复核，需补充凭证';
     }
   }
   const criticStep = step({
     order: 7,
     stage: 'critic',
     title: '质疑官复核',
-    detail: `质疑官标记 ${blocked.length} 条主张，要求补充凭证或降级。`,
+    detail: `质疑官标记 ${blocked.length} 条主张，要求补充凭证或降级`,
     durationMs: now() - criticStart,
     tools: [
       tool({
@@ -1073,7 +1073,7 @@ export async function runLiveAnalysis(
     order: 8,
     stage: 'guard',
     title: '发布闸门',
-    detail: '检查数值一致性、引用覆盖、待核实主张与 PII；通过后才允许导出报告。',
+    detail: '检查数值一致性、引用覆盖、待核实主张与 PII；通过后才允许导出报告',
     durationMs: 19,
     tools: [
       tool({
@@ -1088,7 +1088,7 @@ export async function runLiveAnalysis(
   hooks.onStep?.(guardStep);
 
   const summary = synthesis.summary || fallback.summary;
-  // 如果模型摘要引用了未通过校验的数字，finalizeResult 会触发安全闸门并替换摘要。
+  // 如果模型摘要引用了未通过校验的数字，finalizeResult 会触发安全闸门并替换摘要
   return finalizeResult({
     title: request.title || extraction.title || sourceName,
     subtitle: extraction.subtitle || (kind === 'csv' ? '结构化数据' : '经营材料'),
@@ -1113,10 +1113,10 @@ export async function runLiveAnalysis(
 }
 
 /**
- * 本地启发式模式：没有 API Key 时也能分析用户自己的材料。
+ * 本地启发式模式：没有 API Key 时也能分析用户自己的材料
  *
  * 抽取值依赖正则与数字解析，能力有限，但完全可解释、可离线；
- * 界面会明确标注「本地启发式」，不会伪装成大模型输出。
+ * 界面会明确标注「本地启发式」，不会伪装成大模型输出
  */
 export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisHooks = {}): Promise<AnalysisResult> {
   const startedAt = now();
@@ -1137,7 +1137,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 1,
     stage: 'plan',
     title: '规划分析路径',
-    detail: '未配置模型 Key，切换到本地启发式路径：只抽取带明确数字的句子，不做生成式推断。',
+    detail: '未配置模型 Key，切换到本地启发式路径：只抽取带明确数字的句子，不做生成式推断',
     durationMs: 18,
     tools: [
       tool({
@@ -1155,7 +1155,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 2,
     stage: 'parse',
     title: '解析与脱敏',
-    detail: `读取 ${source.charCount.toLocaleString('zh-CN')} 字符；脱敏 ${redaction.count} 处。`,
+    detail: `读取 ${source.charCount.toLocaleString('zh-CN')} 字符；脱敏 ${redaction.count} 处`,
     durationMs: 26,
     tools: [
       tool({
@@ -1194,7 +1194,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
   });
 
   if (claims.length === 0) {
-    throw new Error('本地模式没有从材料中识别出带数字的句子。请补充明确指标，或在设置中配置 API Key。');
+    throw new Error('本地模式没有从材料中识别出带数字的句子请补充明确指标，或在设置中配置 API Key');
   }
 
   const verified = claims.filter((claim) => claim.status === 'verified');
@@ -1202,7 +1202,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 3,
     stage: 'extract',
     title: '抽取主张',
-    detail: `本地规则抽取 ${claims.length} 条带数字的候选句；不做语义扩写。`,
+    detail: `本地规则抽取 ${claims.length} 条带数字的候选句；不做语义扩写`,
     durationMs: 42,
     tools: [
       tool({
@@ -1220,7 +1220,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 4,
     stage: 'verify',
     title: '确定性数值校验',
-    detail: `逐条回查引文：${verified.length} 条通过，${claims.length - verified.length} 条降级。`,
+    detail: `逐条回查引文：${verified.length} 条通过，${claims.length - verified.length} 条降级`,
     durationMs: 24,
     tools: [
       tool({
@@ -1239,7 +1239,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 5,
     stage: 'retrieve',
     title: '检索行业基准',
-    detail: `BM25 召回 ${benchmarks.length} 条基准片段。`,
+    detail: `BM25 召回 ${benchmarks.length} 条基准片段`,
     durationMs: 14,
     tools: [
       tool({
@@ -1262,7 +1262,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 6,
     stage: 'analyze',
     title: '综合经营看板',
-    detail: `生成 ${fallback.kpis.length} 个 KPI、${fallback.charts.length} 个图表；未配置模型，不生成新的因果判断。`,
+    detail: `生成 ${fallback.kpis.length} 个 KPI、${fallback.charts.length} 个图表；未配置模型，不生成新的因果判断`,
     durationMs: 20,
     tools: [
       tool({
@@ -1281,7 +1281,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 7,
     stage: 'critic',
     title: '质疑官复核',
-    detail: `标记 ${blocked.length} 条需要补充凭证的主张。`,
+    detail: `标记 ${blocked.length} 条需要补充凭证的主张`,
     durationMs: 18,
     tools: [
       tool({
@@ -1299,7 +1299,7 @@ export async function runLocalAnalysis(request: AnalyzeRequest, hooks: AnalysisH
     order: 8,
     stage: 'guard',
     title: '发布闸门',
-    detail: '检查数值一致性、引用覆盖与 PII；本地模式只发布已核对的主张。',
+    detail: '检查数值一致性、引用覆盖与 PII；本地模式只发布已核对的主张',
     durationMs: 12,
     tools: [
       tool({

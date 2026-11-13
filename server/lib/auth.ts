@@ -8,7 +8,7 @@ import type { Request } from 'express';
  * - 用户存在 data/users.json，密码用 scrypt + 随机盐哈希，不存明文；
  * - 登录/注册都由服务端校验；
  * - 会话用随机 token + HttpOnly Cookie，服务端内存保存；
- * - 不依赖数据库，适合比赛演示，也方便后续换成 SQLite/Postgres。
+ * - 不依赖数据库，适合比赛演示，也方便后续换成 SQLite/Postgres
  */
 
 const SESSION_COOKIE = 'ef_session';
@@ -106,7 +106,7 @@ function seedReviewUser(users: UserRecord[]): void {
   writeUsers(users);
 }
 
-// 启动时确保演示账号存在；密码只存哈希。
+// 启动时确保演示账号存在；密码只存哈希
 try {
   const users = readUsers();
   seedReviewUser(users);
@@ -137,18 +137,18 @@ export function registerUser(input: {
   const displayName = (input.displayName || username).trim().slice(0, 20);
 
   if (!/^1[3-9]\d{9}$/.test(username)) {
-    throw new AuthError('请输入 11 位手机号。');
+    throw new AuthError('请输入 11 位手机号');
   }
   if (password.length < 6 || password.length > 64) {
-    throw new AuthError('密码需 6–64 位。');
+    throw new AuthError('密码需 6–64 位');
   }
   if (!displayName) {
-    throw new AuthError('显示名称不能为空。');
+    throw new AuthError('显示名称不能为空');
   }
 
   const users = readUsers();
   if (users.some((user) => user.username.toLowerCase() === username.toLowerCase())) {
-    throw new AuthError('这个账号已被注册。', 409);
+    throw new AuthError('这个账号已被注册', 409);
   }
 
   const salt = crypto.randomBytes(16).toString('hex');

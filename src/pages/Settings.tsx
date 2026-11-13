@@ -62,7 +62,7 @@ export function Settings() {
         <div className="kicker">Settings</div>
         <h1 className="display-md mt-3">设置</h1>
         <p className="mt-2 max-w-2xl text-[12px] leading-6 text-[var(--muted)]">
-          这里改主题、底色、字号和模型。设置会保存到当前浏览器；临时 Key 只在当前标签页有效。
+          这里改主题、底色、字号和模型设置会保存到当前浏览器；临时 Key 只在当前标签页有效
         </p>
       </div>
 
@@ -94,7 +94,7 @@ export function Settings() {
           </nav>
           <div className="mt-3 border border-dashed border-[var(--line-strong)] p-3 text-[9px] leading-5 text-[var(--muted)]">
             <span className="font-semibold text-[var(--ink-soft)]">快捷键：</span>
-            按 <kbd className="mono rounded border border-[var(--line)] px-1">Esc</kbd> 关闭抽屉，<kbd className="mono rounded border border-[var(--line)] px-1">Enter</kbd> 在追问框发送。
+            按 <kbd className="mono rounded border border-[var(--line)] px-1">Esc</kbd> 关闭抽屉，<kbd className="mono rounded border border-[var(--line)] px-1">Enter</kbd> 在追问框发送
           </div>
         </aside>
 
@@ -112,7 +112,7 @@ export function Settings() {
               onSave={() => {
                 setClientKey(keyInput);
                 setSavedKey(Boolean(keyInput.trim()));
-                setTestResult({ ok: true, message: keyInput.trim() ? '临时 Key 已保存到当前标签页。' : '已清除临时 Key。' });
+                setTestResult({ ok: true, message: keyInput.trim() ? '临时 Key 已保存到当前标签页' : '已清除临时 Key' });
               }}
               onTest={async () => {
                 setTesting(true);
@@ -143,7 +143,7 @@ export function Settings() {
                 clearClientKey();
                 setKeyInput('');
                 setSavedKey(false);
-                setTestResult({ ok: true, message: '已清除当前标签页的临时 Key。' });
+                setTestResult({ ok: true, message: '已清除当前标签页的临时 Key' });
               }}
             />
           )}
@@ -216,7 +216,7 @@ function ApiSection({
                 onChange={(event) => settings.setApiBase(event.target.value)}
                 placeholder="https://api.deepseek.com"
               />
-              <p className="field-hint mt-1">DeepSeek 官方地址不带 /v1；OpenAI 兼容网关通常带 /v1。</p>
+              <p className="field-hint mt-1">DeepSeek 官方地址不带 /v1；OpenAI 兼容网关通常带 /v1</p>
             </div>
             <div>
               <label className="field-label" htmlFor="api-model">Model</label>
@@ -227,7 +227,7 @@ function ApiSection({
                 onChange={(event) => settings.setModel(event.target.value)}
                 placeholder="deepseek-chat"
               />
-              <p className="field-hint mt-1">换模型不会改变证据校验逻辑，只改变抽取与解释质量。</p>
+              <p className="field-hint mt-1">换模型不会改变证据校验逻辑，只改变抽取与解释质量</p>
             </div>
           </div>
 
@@ -272,8 +272,8 @@ function ApiSection({
             <div className="mt-1.5 flex flex-wrap items-center gap-2">
               <p className="field-hint">
                 {!clientKeyAllowed
-                  ? '当前服务端已关闭浏览器临时 Key（ALLOW_CLIENT_KEY=false），请使用服务端环境变量配置。'
-                  : '页面不会把 Key 写入 localStorage；关闭标签页即失效。公网部署建议在服务端配置 DEEPSEEK_API_KEY。'}
+                  ? '当前服务端已关闭浏览器临时 Key（ALLOW_CLIENT_KEY=false），请使用服务端环境变量配置'
+                  : '页面不会把 Key 写入 localStorage；关闭标签页即失效公网部署建议在服务端配置 DEEPSEEK_API_KEY'}
               </p>
               {savedKey && clientKeyAllowed && <span className="chip chip-verified">当前会话已保存</span>}
               {keyInput && (
@@ -317,7 +317,7 @@ function ApiSection({
             <div>
               <p className="text-[10px] font-bold">安全边界</p>
               <p className="mt-1 text-[9px] leading-5 text-[var(--muted)]">
-                服务端 Key 永远不会出现在前端 bundle；临时 Key 通过请求头传给 BFF，不写入日志。仓库只提交 <code className="mono">.env.example</code>。
+                服务端 Key 永远不会出现在前端 bundle；临时 Key 通过请求头传给 BFF，不写入日志仓库只提交 <code className="mono">.env.example</code>
               </p>
             </div>
           </div>
@@ -344,7 +344,7 @@ function ApiSection({
             onChange={(event) => settings.setTemperature(Number(event.target.value))}
             className="mt-2 w-full accent-[var(--accent)]"
           />
-          <p className="field-hint mt-1">建议 0.1–0.3。抽取与校验不依赖温度，温度只影响解释文本的措辞。</p>
+          <p className="field-hint mt-1">建议 0.1–0.3抽取与校验不依赖温度，温度只影响解释文本的措辞</p>
         </div>
       </section>
     </>
@@ -554,7 +554,7 @@ function AppearanceSection() {
             <p className="mt-3 text-[10px] text-[var(--muted)]">Q3 全渠道 GMV</p>
             <p className="metric mt-1">1,840<span className="ml-1 text-[11px] font-normal text-[var(--muted)]">万元</span></p>
             <p className="mt-2 border-l-2 border-[var(--accent)] pl-2 text-[10px] leading-5 text-[var(--muted)]">
-              “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元。”
+              “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元”
             </p>
           </div>
           <div className="space-y-2">
@@ -616,7 +616,7 @@ function DataSection({ history, clearHistory }: { history: ReturnType<typeof use
           </div>
         </div>
         <p className="mt-3 text-[11px] leading-6 text-[var(--muted)]">
-          证析默认不建账号、不上传历史到服务器。分析结果保存在当前浏览器的 localStorage，临时 API Key 只存在 sessionStorage。
+          证析默认不建账号、不上传历史到服务器分析结果保存在当前浏览器的 localStorage，临时 API Key 只存在 sessionStorage
         </p>
 
         <div className="mt-4 grid gap-2 sm:grid-cols-3">
@@ -657,7 +657,7 @@ function DataSection({ history, clearHistory }: { history: ReturnType<typeof use
             type="button"
             className="btn btn-ghost btn-sm text-[var(--danger)]"
             onClick={() => {
-              if (window.confirm('确定清除全部本地分析历史？此操作不可撤销。')) {
+              if (window.confirm('确定清除全部本地分析历史？此操作不可撤销')) {
                 history.forEach((item) => clearHistory(item.id));
               }
             }}
@@ -674,11 +674,11 @@ function DataSection({ history, clearHistory }: { history: ReturnType<typeof use
         </div>
         <ul className="mt-3 space-y-2 text-[10px] leading-5 text-[var(--muted)]">
           {[
-            ['API Key 不进入 Git', '只保留 .env.example；.env.local 已在 .gitignore 中。'],
-            ['材料不写入服务端磁盘', '分析在内存中完成；历史只存在浏览器。'],
-            ['PII 脱敏后才发给模型', '手机号、身份证、邮箱、银行卡会先做掩码。'],
-            ['工具调用白名单', '文档中的“请调用工具”不会直接执行。'],
-            ['失败可见', '模型超时会明确降级，不伪装成实时结果。'],
+            ['API Key 不进入 Git', '只保留 .env.example；.env.local 已在 .gitignore 中'],
+            ['材料不写入服务端磁盘', '分析在内存中完成；历史只存在浏览器'],
+            ['PII 脱敏后才发给模型', '手机号、身份证、邮箱、银行卡会先做掩码'],
+            ['工具调用白名单', '文档中的“请调用工具”不会直接执行'],
+            ['失败可见', '模型超时会明确降级，不伪装成实时结果'],
           ].map(([title, body]) => (
             <li key={title} className="flex items-start gap-2">
               <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--verified)]" />
@@ -702,7 +702,7 @@ function AboutSection() {
         </div>
       </div>
       <p className="mt-4 max-w-2xl text-[12px] leading-7 text-[var(--ink-soft)]">
-        AI 说的每个数字，都能点回原文。证析是一套面向经营复盘与决策会的可审计工作台：抽取、校验、检索、质疑、发布闸门各司其职。
+        AI 说的每个数字，都能点回原文证析是一套面向经营复盘与决策会的可审计工作台：抽取、校验、检索、质疑、发布闸门各司其职
       </p>
       <dl className="mt-5 grid gap-3 sm:grid-cols-2">
         {[
@@ -718,7 +718,7 @@ function AboutSection() {
         ))}
       </dl>
       <p className="mt-4 text-[9px] leading-5 text-[var(--muted-2)]">
-        本项目为 2026 全国高校 AI Web 开发挑战赛参赛作品基础版。AI 输出不构成审计、法律或投资建议；正式使用前请由业务负责人复核口径。
+        本项目为 2026 全国高校 AI Web 开发挑战赛参赛作品基础版AI 输出不构成审计、法律或投资建议；正式使用前请由业务负责人复核口径
       </p>
     </section>
   );

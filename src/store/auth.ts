@@ -43,13 +43,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       const json = (await response.json()) as { ok?: boolean; user?: AuthUser; error?: string };
       if (!response.ok || !json.ok) {
-        set({ loading: false, error: json.error || '登录失败，请检查账号和密码。' });
+        set({ loading: false, error: json.error || '登录失败，请检查账号和密码' });
         return false;
       }
       set({ user: json.user ?? { username, displayName: username, role: 'user' }, loading: false, error: null });
       return true;
     } catch (error) {
-      set({ loading: false, error: error instanceof Error ? error.message : '登录失败，请稍后再试。' });
+      set({ loading: false, error: error instanceof Error ? error.message : '登录失败，请稍后再试' });
       return false;
     }
   },
@@ -64,13 +64,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       const json = (await response.json()) as { ok?: boolean; user?: AuthUser; error?: string };
       if (!response.ok || !json.ok) {
-        set({ loading: false, error: json.error || '注册失败，请检查填写内容。' });
+        set({ loading: false, error: json.error || '注册失败，请检查填写内容' });
         return false;
       }
       set({ user: json.user ?? null, loading: false, error: null });
       return true;
     } catch (error) {
-      set({ loading: false, error: error instanceof Error ? error.message : '注册失败，请稍后再试。' });
+      set({ loading: false, error: error instanceof Error ? error.message : '注册失败，请稍后再试' });
       return false;
     }
   },

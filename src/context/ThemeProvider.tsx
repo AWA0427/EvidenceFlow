@@ -4,7 +4,7 @@ import { applyTheme } from '../lib/theme';
 
 /**
  * 主题不是“只切一个 class”：背景、卡面、文字、分隔线、强调色、字号、
- * 高对比与减少动效都要一起变化，才能保证证据型界面在强光/暗光下都可读。
+ * 高对比与减少动效都要一起变化，才能保证证据型界面在强光/暗光下都可读
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const mode = useSettingsStore((state) => state.mode);

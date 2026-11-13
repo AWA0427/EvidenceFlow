@@ -1,13 +1,13 @@
 import type { AnalysisResult, ChatRequest, RetrievedBenchmark } from '../../shared/types';
 
 /**
- * 文本大模型客户端：DeepSeek / 任意 OpenAI 兼容接口。
+ * 文本大模型客户端：DeepSeek / 任意 OpenAI 兼容接口
  *
  * 设计约束：
  * - 不在日志里打印 Key；
  * - JSON 模式失败时自动降级为纯文本解析；
  * - 所有外部调用都有超时与一次重试；
- * - 返回的是「候选内容」，数值仍要经过 verify 层。
+ * - 返回的是「候选内容」，数值仍要经过 verify 层
  */
 
 export interface LLMConfig {
@@ -156,7 +156,7 @@ async function requestCompletion(
   }
 }
 
-/** 从可能带 Markdown 围栏的文本中提取 JSON 对象。 */
+/** 从可能带 Markdown 围栏的文本中提取 JSON 对象 */
 export function extractJSON<T = unknown>(raw: string): T {
   const trimmed = raw.trim();
   const withoutFence = trimmed
@@ -228,7 +228,7 @@ export interface ToolInvocation {
   args: Record<string, unknown>;
 }
 
-/** 非流式工具选择：让模型决定调用哪个工具，再由服务端执行。 */
+/** 非流式工具选择：让模型决定调用哪个工具，再由服务端执行 */
 export async function selectToolCall(
   config: LLMConfig,
   params: { system: string; user: string; tools: ToolDefinition[] },
@@ -252,7 +252,7 @@ export async function selectToolCall(
   return { id: call.id, name: call.function.name, args };
 }
 
-/** 流式文本生成：把 OpenAI 兼容的 SSE 转成纯文本增量。 */
+/** 流式文本生成：把 OpenAI 兼容的 SSE 转成纯文本增量 */
 export async function* streamChatText(
   config: LLMConfig,
   params: { system: string; user: string; temperature?: number; signal?: AbortSignal },

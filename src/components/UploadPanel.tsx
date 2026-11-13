@@ -10,11 +10,11 @@ interface UploadPanelProps {
 
 const SAMPLE = `【会议主题】某消费品牌 Q3 经营复盘
 【经营总盘】
-Q3 全渠道 GMV 完成 1,840 万元，季度目标 1,600 万元。整体退货率 7.2%。
+Q3 全渠道 GMV 完成 1,840 万元，季度目标 1,600 万元整体退货率 7.2%
 【风险】
-服饰滞销库存 95 万元，仓储占用成本环比上升 18%。
+服饰滞销库存 95 万元，仓储占用成本环比上升 18%
 【决议】
-11 月 3 日前启动服饰清仓直播，目标两周消化 60% 滞销库存。`;
+11 月 3 日前启动服饰清仓直播，目标两周消化 60% 滞销库存`;
 
 export function UploadPanel({ onSubmit, loading = false }: UploadPanelProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -148,7 +148,7 @@ export function UploadPanel({ onSubmit, loading = false }: UploadPanelProps) {
             className="textarea min-h-[220px] font-mono text-[11px]"
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder="粘贴会议纪要、经营复盘或渠道数据。&#10;&#10;最好写清楚：指标名、数值、时间范围、目标值。"
+            placeholder="粘贴会议纪要、经营复盘或渠道数据&#10;&#10;最好写清楚：指标名、数值、时间范围、目标值"
           />
           <div className="mt-1.5 flex items-center justify-between text-[9px] text-[var(--muted-2)]">
             <span className="inline-flex items-center gap-1">
@@ -162,7 +162,7 @@ export function UploadPanel({ onSubmit, loading = false }: UploadPanelProps) {
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] pt-3">
           <p className="max-w-[420px] text-[9px] leading-5 text-[var(--muted)]">
-            没 Key 时用本地规则，只抽带数字的句子；有 Key 时模型负责抽取和综合，数字仍由本地校验器复核。
+            没 Key 时用本地规则，只抽带数字的句子；有 Key 时模型负责抽取和综合，数字仍由本地校验器复核
           </p>
           <button
             type="button"

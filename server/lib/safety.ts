@@ -1,6 +1,6 @@
 import type { Claim, Evidence, SafetyCheck, SafetyReport } from '../../shared/types';
 
-/** 常见 PII 模式：手机号、身份证、邮箱、银行卡。 */
+/** 常见 PII 模式：手机号、身份证、邮箱、银行卡 */
 const PII_PATTERNS: Array<{ label: string; pattern: RegExp; mask: (value: string) => string }> = [
   {
     label: '手机号',
@@ -66,7 +66,7 @@ export function detectPromptInjection(input: string): { detected: boolean; match
   return { detected: matched.length > 0, matched };
 }
 
-/** 把用户材料包进明确的数据边界，降低文档内指令覆盖系统指令的风险。 */
+/** 把用户材料包进明确的数据边界，降低文档内指令覆盖系统指令的风险 */
 export function wrapUntrustedData(input: string): string {
   return `<untrusted_source_document>\n${input}\n</untrusted_source_document>`;
 }
@@ -137,7 +137,7 @@ export function buildSafetyReport(params: {
   };
 }
 
-/** 检查摘要是否引用了被拦截的主张中的数字（简单字符串包含判断）。 */
+/** 检查摘要是否引用了被拦截的主张中的数字（简单字符串包含判断） */
 export function summaryLeaksBlockedClaims(summary: string, claims: Claim[]): string[] {
   const blocked = claims.filter((claim) => claim.status === 'unsupported' || claim.status === 'partial');
   return blocked

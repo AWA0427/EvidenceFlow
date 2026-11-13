@@ -2,8 +2,8 @@ import type { AnalysisResult, ChatCitation } from '../../shared/types';
 import { searchBenchmarks } from './rag';
 
 /**
- * 无 Key 时的本地回答器。
- * 它不是“假装调用大模型”，而是明确基于当前看板的 claim / insight / action 做检索式回答。
+ * 无 Key 时的本地回答器
+ * 它不是“假装调用大模型”，而是明确基于当前看板的 claim / insight / action 做检索式回答
  */
 export function localAnswer(question: string, analysis: AnalysisResult): { answer: string; citations: ChatCitation[] } {
   const q = question.trim();
@@ -37,7 +37,7 @@ export function localAnswer(question: string, analysis: AnalysisResult): { answe
     if (risks.length > 0) {
       risks[0].claimIds.forEach(addCitation);
       return {
-        answer: `当前最需要关注的是「${risks[0].title}」。${risks[0].body.slice(0, 120)}${risks[0].body.length > 120 ? '…' : ''} 建议先把相关证据与责任人对齐，再决定是否进入正式结论。`,
+        answer: `当前最需要关注的是「${risks[0].title}」${risks[0].body.slice(0, 120)}${risks[0].body.length > 120 ? '…' : ''} 建议先把相关证据与责任人对齐，再决定是否进入正式结论`,
         citations,
       };
     }
@@ -48,7 +48,7 @@ export function localAnswer(question: string, analysis: AnalysisResult): { answe
       const action = analysis.actions[0];
       if (action.claimId) addCitation(action.claimId);
       return {
-        answer: `建议先推进「${action.task}」，责任人为 ${action.owner}，截止 ${action.deadline}。它对应的数据依据是 ${action.claimId ?? '当前看板结论'}，执行前请确认该依据仍处于「已核验」状态。`,
+        answer: `建议先推进「${action.task}」，责任人为 ${action.owner}，截止 ${action.deadline}它对应的数据依据是 ${action.claimId ?? '当前看板结论'}，执行前请确认该依据仍处于「已核验」状态`,
         citations,
       };
     }
@@ -66,7 +66,7 @@ export function localAnswer(question: string, analysis: AnalysisResult): { answe
         });
       });
       return {
-        answer: `可参考「${benchmarks[0].title}」：${benchmarks[0].excerpt.slice(0, 140)}${benchmarks[0].excerpt.length > 140 ? '…' : ''}。注意这是行业参考，不能替代本企业的口径与基期数据。`,
+        answer: `可参考「${benchmarks[0].title}」：${benchmarks[0].excerpt.slice(0, 140)}${benchmarks[0].excerpt.length > 140 ? '…' : ''}注意这是行业参考，不能替代本企业的口径与基期数据`,
         citations,
       };
     }
@@ -82,7 +82,7 @@ export function localAnswer(question: string, analysis: AnalysisResult): { answe
           ? '该数字缺少完整凭证，当前只能作为待核实线索'
           : '该数字没有找到原文依据';
     return {
-      answer: `${claim.metric} 为 ${claim.displayValue}。${statusText}${claim.formula ? `，计算式：${claim.formula}` : ''}。${claim.criticNote ? `质疑记录：${claim.criticNote}` : ''}`,
+      answer: `${claim.metric} 为 ${claim.displayValue}${statusText}${claim.formula ? `，计算式：${claim.formula}` : ''}${claim.criticNote ? `质疑记录：${claim.criticNote}` : ''}`,
       citations,
     };
   }
@@ -90,12 +90,12 @@ export function localAnswer(question: string, analysis: AnalysisResult): { answe
   const verified = analysis.claims.filter((claim) => claim.status === 'verified').slice(0, 3);
   verified.forEach((claim) => addCitation(claim.id));
   return {
-    answer: `当前材料中可确认的结论是：${verified.map((claim) => `${claim.metric} ${claim.displayValue}`).join('；')}。如果你问的是材料没有提供的指标，请补充原始数据；我不会用外部知识替你补数字。`,
+    answer: `当前材料中可确认的结论是：${verified.map((claim) => `${claim.metric} ${claim.displayValue}`).join('；')}如果你问的是材料没有提供的指标，请补充原始数据；我不会用外部知识替你补数字`,
     citations,
   };
 }
 
-/** 将回答切成适合流式渲染的小块，保留标点。 */
+/** 将回答切成适合流式渲染的小块，保留标点 */
 export function chunkAnswer(answer: string, size = 6): string[] {
   const chunks: string[] = [];
   for (let index = 0; index < answer.length; index += size) {

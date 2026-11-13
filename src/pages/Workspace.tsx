@@ -52,7 +52,7 @@ const DEMO_META = [
     index: '01',
     title: '澄野生活 Q3 经营复盘',
     meta: '消费零售 · 全渠道',
-    line: 'GMV 超额，但库存与同比口径埋着两颗雷。',
+    line: 'GMV 超额，但库存与同比口径埋着两颗雷',
     tags: ['品类达成', '库存风险', '同比缺基期'],
   },
   {
@@ -60,7 +60,7 @@ const DEMO_META = [
     index: '02',
     title: '云栈科技 Sprint 42',
     meta: 'SaaS · 研发效能',
-    line: '交付率 91.1% 不是瓶颈，14 分钟 CI 才是。',
+    line: '交付率 91.1% 不是瓶颈，14 分钟 CI 才是',
     tags: ['DORA 视角', 'CI 瓶颈', 'Safari 缺陷'],
   },
   {
@@ -68,7 +68,7 @@ const DEMO_META = [
     index: '03',
     title: '远望智能 9 月获客',
     meta: 'B2B SaaS · 市场增长',
-    line: 'CPL 最低的渠道，正在偷偷吃掉销售时间。',
+    line: 'CPL 最低的渠道，正在偷偷吃掉销售时间',
     tags: ['渠道质量', '归因污染', '预算再分配'],
   },
 ];
@@ -112,9 +112,9 @@ export function Workspace() {
         <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
           <div>
             <div className="kicker">New analysis</div>
-            <h1 className="display-md mt-3">把材料放进来，开始查证据。</h1>
+            <h1 className="display-md mt-3">把材料放进来，开始查证据</h1>
             <p className="mt-2 max-w-xl text-[12px] leading-6 text-[var(--muted)]">
-              支持粘贴文本、上传 .txt / .md / .csv。没有 API Key 也能先用三个示例。
+              支持粘贴文本、上传 .txt / .md / .csv没有 API Key 也能先用三个示例
             </p>
           </div>
           <div className="flex items-center gap-2 text-[10px] text-[var(--muted)]">
@@ -137,7 +137,7 @@ export function Workspace() {
           <Sparkles className="h-4 w-4 shrink-0 text-[var(--accent)]" />
           <p className="min-w-0 flex-1 text-[11px] leading-5 text-[var(--muted)]">
             <strong className="text-[var(--ink)]">AI 在哪工作：</strong>
-            三个示例不调用 API；上传材料并配置 Key 后，模型负责抽取和综合，数字仍由本地校验器复核。
+            三个示例不调用 API；上传材料并配置 Key 后，模型负责抽取和综合，数字仍由本地校验器复核
           </p>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => navigate('/settings')}>
             配置 API
@@ -161,7 +161,7 @@ export function Workspace() {
                 <Sparkles className="h-4 w-4 text-[var(--accent)]" />
               </div>
               <p className="mt-2 text-[10px] leading-5 text-[var(--muted)]">
-                三个案例都在工作台里，点一个直接跑。里面的数字、公式和拦截记录都能查。
+                三个案例都在工作台里，点一个直接跑里面的数字、公式和拦截记录都能查
               </p>
               <div className="mt-3 space-y-2">
                 {DEMO_META.map((demo) => (
@@ -189,10 +189,10 @@ export function Workspace() {
                 <h3 className="text-[11px] font-bold">演示顺序</h3>
               </div>
               <ol className="mt-3 space-y-2 text-[10px] leading-5 text-[var(--muted)]">
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">01</span> 打开「澄野生活 Q3」，看 KPI 和图表。</li>
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">02</span> 点一个数字，看原文和公式。</li>
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">03</span> 去「质疑室」看哪条被拦。</li>
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">04</span> 右下角追问，看回答有没有引用。</li>
+                <li className="flex gap-2"><span className="mono text-[var(--accent)]">01</span> 打开「澄野生活 Q3」，看 KPI 和图表</li>
+                <li className="flex gap-2"><span className="mono text-[var(--accent)]">02</span> 点一个数字，看原文和公式</li>
+                <li className="flex gap-2"><span className="mono text-[var(--accent)]">03</span> 去「质疑室」看哪条被拦</li>
+                <li className="flex gap-2"><span className="mono text-[var(--accent)]">04</span> 右下角追问，看回答有没有引用</li>
               </ol>
             </div>
           </div>
@@ -200,7 +200,7 @@ export function Workspace() {
 
         {phase === 'error' && (
           <div className="mt-4 flex items-center justify-between gap-3 border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-            <p className="text-[11px] text-[var(--muted)]">也可以直接查看一个完整示例，确认界面与流程。</p>
+            <p className="text-[11px] text-[var(--muted)]">也可以直接查看一个完整示例，确认界面与流程</p>
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => void runDemo('consumer-q3')}>
               打开示例 <ArrowRight className="h-3 w-3" />
             </button>
@@ -499,7 +499,7 @@ function DashboardTab({
             </div>
             <div className="mt-3 space-y-2">
               {analysis.benchmarks.length === 0 ? (
-                <p className="text-[10px] text-[var(--muted)]">本次没有召回匹配的基准。</p>
+                <p className="text-[10px] text-[var(--muted)]">本次没有召回匹配的基准</p>
               ) : (
                 analysis.benchmarks.map((item, index) => (
                   <div key={item.id} className="border-l-2 border-[var(--verified)] bg-[var(--surface-2)] px-2.5 py-2">
@@ -517,7 +517,7 @@ function DashboardTab({
           </section>
           <div className="border border-dashed border-[var(--line-strong)] p-3 text-[9px] leading-5 text-[var(--muted)]">
             <span className="font-semibold text-[var(--ink-soft)]">提示：</span>
-            点击任意数字或 claim id，右侧会打开证据抽屉；按 Esc 关闭。
+            点击任意数字或 claim id，右侧会打开证据抽屉；按 Esc 关闭
           </div>
         </aside>
       </div>
@@ -724,14 +724,14 @@ function EvidenceTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvi
               })}
               {claims.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="py-10 text-center text-[11px] text-[var(--muted)]">没有匹配的主张。</td>
+                  <td colSpan={7} className="py-10 text-center text-[11px] text-[var(--muted)]">没有匹配的主张</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
         <footer className="flex items-center justify-between border-t border-[var(--line)] px-4 py-2.5 text-[9px] text-[var(--muted)]">
-          <span>点击任意一行打开证据抽屉；被拦截的主张不会进入高管摘要。</span>
+          <span>点击任意一行打开证据抽屉；被拦截的主张不会进入高管摘要</span>
           <span className="mono">{claims.length} / {counts.all}</span>
         </footer>
       </div>
@@ -777,7 +777,7 @@ function CriticTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
               <div className="kicker">Red team</div>
               <h2 className="mt-2 font-serif text-xl font-bold">先假设结论是错的</h2>
               <p className="mt-1 max-w-xl text-[11px] leading-6 text-[var(--muted)]">
-                质疑官不负责把报告写漂亮，只负责找：缺基期、分母不清、把目标当结果、因果过度。下面是它拦下来的主张。
+                质疑官不负责把报告写漂亮，只负责找：缺基期、分母不清、把目标当结果、因果过度下面是它拦下来的主张
               </p>
             </div>
             <button type="button" className="btn btn-ghost btn-sm" onClick={copyIssues}>
@@ -791,7 +791,7 @@ function CriticTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
                 <CheckCircle2 className="h-5 w-5 text-[var(--verified)]" />
                 <div>
                   <p className="text-[11px] font-bold text-[var(--verified)]">这次没有主张被拦截</p>
-                  <p className="mt-0.5 text-[10px] text-[var(--muted)]">所有数值都通过了引文与公式校验；仍建议人工复核业务口径。</p>
+                  <p className="mt-0.5 text-[10px] text-[var(--muted)]">所有数值都通过了引文与公式校验；仍建议人工复核业务口径</p>
                 </div>
               </div>
             ) : (
@@ -814,7 +814,7 @@ function CriticTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
                     </div>
                     <div className="border-l-2 border-[var(--warning)] pl-2.5">
                       <p className="label">质疑</p>
-                      <p className="mt-1 text-[10px] leading-5 text-[var(--warning)]">{claim.criticNote ?? '需要补充凭证。'}</p>
+                      <p className="mt-1 text-[10px] leading-5 text-[var(--warning)]">{claim.criticNote ?? '需要补充凭证'}</p>
                     </div>
                   </div>
                 </article>
@@ -833,12 +833,12 @@ function CriticTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
           </div>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {[
-              ['目标当结果', '“计划清仓 60%”不能写成“已清仓 60%”。'],
-              ['缺基期', '只有同比百分比、没有去年同期绝对值，不能交叉验证。'],
+              ['目标当结果', '“计划清仓 60%”不能写成“已清仓 60%”'],
+              ['缺基期', '只有同比百分比、没有去年同期绝对值，不能交叉验证'],
               ['分母不清', '退货率、转化率的分母是订单、用户还是 GMV？'],
-              ['因果过度', '渠道 ROI 高不等于该渠道带来了增量。'],
-              ['口径冲突', '自然流量被计入投放 ROI，预算结论就不可用。'],
-              ['引用缺失', '找不到连续原文，就不允许进入高管摘要。'],
+              ['因果过度', '渠道 ROI 高不等于该渠道带来了增量'],
+              ['口径冲突', '自然流量被计入投放 ROI，预算结论就不可用'],
+              ['引用缺失', '找不到连续原文，就不允许进入高管摘要'],
             ].map(([title, body]) => (
               <div key={title} className="border border-[var(--line)] bg-[var(--surface-2)] p-3">
                 <p className="text-[10px] font-bold">{title}</p>
@@ -878,10 +878,10 @@ function CriticTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
             <h3 className="text-[11px] font-bold">可复现性说明</h3>
           </div>
           <ul className="mt-3 space-y-2 text-[9px] leading-5 text-[var(--muted)]">
-            <li>· 数值校验不依赖模型采样，同一输入在同一材料上可复现。</li>
-            <li>· 公式通过受限四则运算求值，不使用 eval。</li>
-            <li>· 检索为 BM25，可解释；引用与生成分离。</li>
-            <li>· 模型失败时降级到本地启发式，不伪造分析结果。</li>
+            <li>· 数值校验不依赖模型采样，同一输入在同一材料上可复现</li>
+            <li>· 公式通过受限四则运算求值，不使用 eval</li>
+            <li>· 检索为 BM25，可解释；引用与生成分离</li>
+            <li>· 模型失败时降级到本地启发式，不伪造分析结果</li>
           </ul>
         </section>
       </aside>
@@ -992,7 +992,7 @@ function SourceTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
           })}
         </div>
         <footer className="flex items-center justify-between border-t border-[var(--line)] px-4 py-2.5 text-[9px] text-[var(--muted)]">
-          <span>高亮块均可点击，打开对应证据抽屉。</span>
+          <span>高亮块均可点击，打开对应证据抽屉</span>
           <span className="mono">{source?.charCount.toLocaleString('zh-CN')} chars · {highlights.length} evidence spans</span>
         </footer>
       </section>
@@ -1013,7 +1013,7 @@ function SourceTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
         </div>
         <div className="border border-dashed border-[var(--line-strong)] p-3 text-[9px] leading-5 text-[var(--muted)]">
           <span className="font-semibold text-[var(--ink-soft)]">材料边界：</span>
-          原始材料只作为不可信数据输入，文档里即使出现“忽略之前指令”，也不会改变系统规则或触发工具调用。
+          原始材料只作为不可信数据输入，文档里即使出现“忽略之前指令”，也不会改变系统规则或触发工具调用
         </div>
       </aside>
     </div>
@@ -1056,10 +1056,10 @@ function LoadingView({ steps, notice }: { steps: ReturnType<typeof useAnalysisSt
           </div>
           <div className="grid gap-3 p-4 sm:grid-cols-2">
             {[
-              ['01 / 抽取', '只保留带连续引用的数字。模型改写过的句子会被丢弃。', ScanSearch],
-              ['02 / 校验', '引文必须能在原文中找到；公式必须能通过受限四则运算复算。', Fingerprint],
-              ['03 / 检索', 'BM25 从行业基准库召回片段，只为解释提供参照。', Sparkles],
-              ['04 / 闸门', '被质疑的数字不会进入高管摘要，也不会进入导出报告。', ShieldCheck],
+              ['01 / 抽取', '只保留带连续引用的数字模型改写过的句子会被丢弃', ScanSearch],
+              ['02 / 校验', '引文必须能在原文中找到；公式必须能通过受限四则运算复算', Fingerprint],
+              ['03 / 检索', 'BM25 从行业基准库召回片段，只为解释提供参照', Sparkles],
+              ['04 / 闸门', '被质疑的数字不会进入高管摘要，也不会进入导出报告', ShieldCheck],
             ].map(([title, body, Icon]) => {
               const IconComponent = Icon as typeof ScanSearch;
               return (
@@ -1072,7 +1072,7 @@ function LoadingView({ steps, notice }: { steps: ReturnType<typeof useAnalysisSt
             })}
           </div>
           <div className="mx-4 mb-4 border border-dashed border-[var(--line-strong)] p-3 text-[9px] leading-5 text-[var(--muted)]">
-            分析期间不要关闭页面。若模型超时，系统会自动降级到本地启发式模式，仍然保留原文与校验结果。
+            分析期间不要关闭页面若模型超时，系统会自动降级到本地启发式模式，仍然保留原文与校验结果
           </div>
         </section>
       </div>

@@ -61,7 +61,7 @@ export const useSettingsStore = create<SettingsState>()(
       version: 2,
       migrate: (persisted) => {
         const state = persisted as Partial<SettingsState>;
-        // v1 的默认是朱砂/系统色；升级到 Material 3 绿色默认值。
+        // v1 的默认是朱砂/系统色；升级到 Material 3 绿色默认值
         if (!state.accent || state.accent === '#c2410c') state.accent = '#2e6b34';
         if (!state.mode || state.mode === 'system') state.mode = 'light';
         if (!state.customBg || state.customBg === '#f3efe6') state.customBg = '#f7fbf3';

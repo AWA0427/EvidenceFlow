@@ -122,7 +122,7 @@ export function AppShell() {
             <History className="h-3 w-3 text-[var(--muted-2)]" />
           </div>
           {history.length === 0 ? (
-            <p className="px-1 text-[10px] leading-relaxed text-[var(--muted-2)]">还没有记录。载入一个示例，或上传你的会议纪要。</p>
+            <p className="px-1 text-[10px] leading-relaxed text-[var(--muted-2)]">还没有记录载入一个示例，或上传你的会议纪要</p>
           ) : (
             <ul className="space-y-1">
               {history.slice(0, 5).map((item) => (

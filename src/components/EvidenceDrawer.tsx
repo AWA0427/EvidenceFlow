@@ -108,7 +108,7 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
               </div>
             ) : (
               <div className="border border-dashed border-[var(--line-strong)] p-4 text-[11px] leading-relaxed text-[var(--muted)]">
-                该主张为原文直接引用，没有经过二次计算。系统已比对引文与数值是否一致。
+                该主张为原文直接引用，没有经过二次计算系统已比对引文与数值是否一致
               </div>
             )}
           </section>
@@ -130,8 +130,8 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
             </div>
             <p className="mt-2 text-[10px] leading-relaxed text-[var(--muted)]">
               {claim.status === 'verified'
-                ? '引文与数值通过确定性校验；公式类主张同时通过复算。'
-                : claim.criticNote ?? '该主张需要补充原始凭证后再发布。'}
+                ? '引文与数值通过确定性校验；公式类主张同时通过复算'
+                : claim.criticNote ?? '该主张需要补充原始凭证后再发布'}
             </p>
           </section>
 
@@ -177,8 +177,8 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
                 <p className="text-[11px] font-bold">发布闸门</p>
                 <p className="mt-1 text-[10px] leading-relaxed text-[var(--muted)]">
                   {claim.status === 'verified'
-                    ? '该数字可以进入高管摘要、图表和导出报告。'
-                    : '该数字已被排除出高管摘要；导出报告时会保留「待核实」标记，避免误用。'}
+                    ? '该数字可以进入高管摘要、图表和导出报告'
+                    : '该数字已被排除出高管摘要；导出报告时会保留「待核实」标记，避免误用'}
                 </p>
               </div>
             </div>

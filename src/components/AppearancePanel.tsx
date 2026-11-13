@@ -22,7 +22,7 @@ export function AppearancePanel() {
     { value: 'dark', label: '深色' },
   ];
 
-  // 旧版本可能持久化过 system/custom；本轮只保留浅色/深色，自动归一到浅色。
+  // 旧版本可能持久化过 system/custom；本轮只保留浅色/深色，自动归一到浅色
   useEffect(() => {
     if (settings.mode === 'system' || settings.mode === 'custom') {
       settings.setMode('light');
@@ -195,7 +195,7 @@ export function AppearancePanel() {
             <p className="mt-3 text-[10px] text-[var(--muted)]">Q3 全渠道 GMV</p>
             <p className="metric mt-1">1,840<span className="ml-1 text-[11px] font-normal text-[var(--muted)]">万元</span></p>
             <p className="mt-2 border-l-2 border-[var(--accent)] pl-2 text-[10px] leading-5 text-[var(--muted)]">
-              “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元。”
+              “Q3 全渠道 GMV 完成 <span className="highlight-quote">1,840 万元</span>，季度目标 1,600 万元”
             </p>
           </div>
           <div className="space-y-2">

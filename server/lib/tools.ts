@@ -4,10 +4,10 @@ import { searchBenchmarks } from './rag';
 import { locateQuote, truncate } from './text';
 
 /**
- * 服务端工具白名单。
+ * 服务端工具白名单
  *
- * 工具调用永远由服务端执行，参数经过校验；用户文档里的「请调用 xx」不会直接触发工具。
- * 这一层同时服务 /api/chat 的 Function Calling 和分析流水线的可解释轨迹。
+ * 工具调用永远由服务端执行，参数经过校验；用户文档里的「请调用 xx」不会直接触发工具
+ * 这一层同时服务 /api/chat 的 Function Calling 和分析流水线的可解释轨迹
  */
 
 export const TOOL_DEFINITIONS: ToolDefinition[] = [
@@ -15,7 +15,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
     type: 'function',
     function: {
       name: 'search_source',
-      description: '在用户上传的原始材料中检索关键词，返回原文片段与位置。适合回答“原文哪里提到”“谁负责”。',
+      description: '在用户上传的原始材料中检索关键词，返回原文片段与位置适合回答“原文哪里提到”“谁负责”',
       parameters: {
         type: 'object',
         properties: {
@@ -30,7 +30,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
     type: 'function',
     function: {
       name: 'get_claim',
-      description: '按 claim id 或指标名获取精确数值、校验状态和证据引用。',
+      description: '按 claim id 或指标名获取精确数值、校验状态和证据引用',
       parameters: {
         type: 'object',
         properties: {
@@ -45,7 +45,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
     type: 'function',
     function: {
       name: 'search_benchmark',
-      description: '检索行业基准知识库，返回可引用的公开资料摘要。',
+      description: '检索行业基准知识库，返回可引用的公开资料摘要',
       parameters: {
         type: 'object',
         properties: {
@@ -60,7 +60,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
     type: 'function',
     function: {
       name: 'create_action',
-      description: '把用户明确要求的执行动作整理成待办草稿；只生成草稿，不直接写入看板。',
+      description: '把用户明确要求的执行动作整理成待办草稿；只生成草稿，不直接写入看板',
       parameters: {
         type: 'object',
         properties: {
@@ -112,7 +112,7 @@ export function executeTool(name: string, args: Record<string, unknown>, analysi
 
   if (name === 'search_source') {
     const query = String(args.query ?? '').trim();
-    if (!query) return finish('缺少检索关键词。', [], 'failed');
+    if (!query) return finish('缺少检索关键词', [], 'failed');
     const hits: string[] = [];
     const citations: ChatCitation[] = [];
     for (const source of analysis.sources) {
@@ -123,7 +123,7 @@ export function executeTool(name: string, args: Record<string, unknown>, analysi
         citations.push({ id: source.id, label: source.name, sourceName: source.name, quote: location.quote });
       }
     }
-    return finish(hits.slice(0, 3).join('\n\n') || `原始材料中没有找到「${query}」。`, citations);
+    return finish(hits.slice(0, 3).join('\n\n') || `原始材料中没有找到「${query}」`, citations);
   }
 
   if (name === 'get_claim') {
@@ -132,7 +132,7 @@ export function executeTool(name: string, args: Record<string, unknown>, analysi
     const claim = analysis.claims.find(
       (item) => (claimId && item.id === claimId) || (metric && item.metric.includes(metric)),
     );
-    if (!claim) return finish('没有找到对应的 claim。', [], 'failed');
+    if (!claim) return finish('没有找到对应的 claim', [], 'failed');
     const evidence = analysis.evidence.find((item) => item.claimId === claim.id);
     const content = [
       `指标：${claim.metric}`,
@@ -150,9 +150,9 @@ export function executeTool(name: string, args: Record<string, unknown>, analysi
 
   if (name === 'search_benchmark') {
     const query = String(args.query ?? '').trim();
-    if (!query) return finish('缺少检索主题。', [], 'failed');
+    if (!query) return finish('缺少检索主题', [], 'failed');
     const results = searchBenchmarks(query, 3);
-    if (results.length === 0) return finish(`知识库中没有找到与「${query}」匹配的基准。`);
+    if (results.length === 0) return finish(`知识库中没有找到与「${query}」匹配的基准`);
     const content = results
       .map((item, index) => `[基准${index + 1}] ${item.title}（${item.source}，${item.year}）：${item.excerpt}`)
       .join('\n\n');
@@ -167,14 +167,14 @@ export function executeTool(name: string, args: Record<string, unknown>, analysi
 
   if (name === 'create_action') {
     const task = String(args.task ?? '').trim();
-    if (!task) return finish('待办内容为空。', [], 'failed');
+    if (!task) return finish('待办内容为空', [], 'failed');
     const draft = {
       task,
       owner: String(args.owner ?? '待指派'),
       deadline: String(args.deadline ?? '待定'),
       priority: String(args.priority ?? 'normal'),
       status: 'draft',
-      note: '这是草稿，需用户确认后才会写入看板。',
+      note: '这是草稿，需用户确认后才会写入看板',
     };
     return finish(JSON.stringify(draft, null, 2));
   }

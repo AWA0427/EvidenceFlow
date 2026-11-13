@@ -25,12 +25,12 @@ export function AuthCard({ className, onSuccess }: { className?: string; onSucce
     event.preventDefault();
     clearError();
     if (tab === 'register' && password !== confirm) {
-      useAuthStore.setState({ error: '两次输入的密码不一样。' });
+      useAuthStore.setState({ error: '两次输入的密码不一样' });
       return;
     }
-    const ok = tab === 'login'
-      ? await login(username, password)
-      : await register(username, password, displayName);
+    const ok = tab === 'register'
+      ? await register(username, password, displayName)
+      : await login(username, password);
     if (ok) {
       if (onSuccess) onSuccess();
       else navigate('/app');
@@ -62,27 +62,28 @@ export function AuthCard({ className, onSuccess }: { className?: string; onSucce
         </div>
       ) : (
         <form onSubmit={(event) => void submit(event)}>
-          <div className="flex rounded-full bg-[var(--surface-2)] p-1">
-            <button
-              type="button"
-              onClick={() => { setTab('login'); clearError(); }}
-              className={cn('flex-1 rounded-full px-3 py-2 text-[12px] font-semibold', tab === 'login' ? 'bg-[var(--surface)] shadow-sm' : 'text-[var(--muted)]')}
-            >
-              登录
-            </button>
-            <button
-              type="button"
-              onClick={() => { setTab('register'); clearError(); }}
-              className={cn('flex-1 rounded-full px-3 py-2 text-[12px] font-semibold', tab === 'register' ? 'bg-[var(--surface)] shadow-sm' : 'text-[var(--muted)]')}
-            >
-              注册
-            </button>
+          <div className="grid grid-cols-2 gap-1 rounded-full bg-[var(--surface-2)] p-1">
+            {([
+              ['login', '登录'],
+              ['register', '注册'],
+            ] as const).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => { setTab(value); clearError(); }}
+                className={cn('rounded-full px-3 py-2 text-[12px] font-semibold', tab === value ? 'bg-[var(--surface)] text-[var(--ink)] shadow-sm' : 'text-[var(--muted)]')}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           <div className="mt-5 flex items-center gap-2">
-            {tab === 'login' ? <LockKeyhole className="h-5 w-5 text-[var(--accent)]" /> : <UserPlus className="h-5 w-5 text-[var(--accent)]" />}
-            <h2 className="text-[18px] font-bold">{tab === 'login' ? '输入手机号或评审账号' : '创建账号'}</h2>
+            {tab === 'register' ? <UserPlus className="h-5 w-5 text-[var(--accent)]" /> : <LockKeyhole className="h-5 w-5 text-[var(--accent)]" />}
+            <h2 className="text-[18px] font-bold">{tab === 'register' ? '创建账号' : '登录'}</h2>
           </div>
+
+
 
           {tab === 'register' && (
             <>
@@ -98,17 +99,17 @@ export function AuthCard({ className, onSuccess }: { className?: string; onSucce
             </>
           )}
 
-          <label className="field-label mt-4" htmlFor="login-user">{tab === 'login' ? '手机号 / 评审账号' : '手机号'}</label>
+          <label className="field-label mt-4" htmlFor="login-user">手机号</label>
           <div className="relative">
             <UserRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
             <input
               id="login-user"
-              type={tab === 'login' ? 'text' : 'tel'}
+              type={tab === 'register' ? 'tel' : 'text'}
               className="input pl-10"
               value={username}
               onChange={(event) => { setUsername(event.target.value); clearError(); }}
-              placeholder={tab === 'login' ? '手机号或 review@evidenceflow.local' : '输入手机号'}
-              autoComplete={tab === 'login' ? 'username' : 'tel'}
+              placeholder="输入手机号"
+              autoComplete={tab === 'register' ? 'tel' : 'username'}
               maxLength={tab === 'register' ? 11 : undefined}
             />
           </div>
@@ -123,7 +124,7 @@ export function AuthCard({ className, onSuccess }: { className?: string; onSucce
               value={password}
               onChange={(event) => { setPassword(event.target.value); clearError(); }}
               placeholder={tab === 'register' ? '6–64 位' : '输入密码'}
-              autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
+              autoComplete={tab === 'register' ? 'new-password' : 'current-password'}
             />
           </div>
 
@@ -145,7 +146,7 @@ export function AuthCard({ className, onSuccess }: { className?: string; onSucce
 
           <button type="submit" className="btn btn-primary btn-lg mt-6 w-full" disabled={loading || !username || !password || (tab === 'register' && !confirm)}>
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
-            {loading ? '处理中' : tab === 'login' ? '登录' : '注册并登录'}
+            {loading ? '处理中' : tab === 'register' ? '注册并登录' : '登录'}
           </button>
 
           <button type="button" className="btn btn-ghost mt-3 w-full" onClick={() => navigate('/app')}>

@@ -50,7 +50,7 @@ export function ChartZoomModal({
           <ChartRenderer chart={chart} onEvidence={onEvidence} />
         </div>
         <footer className="flex items-center justify-between border-t border-[var(--line)] px-5 py-2.5 text-[9px] text-[var(--muted)]">
-          <span>双击图表也可以再次打开；点击柱子查看对应证据。</span>
+          <span>双击图表也可以再次打开；点击柱子查看对应证据</span>
           <span className="mono">{chart.claimIds.length} claims</span>
         </footer>
       </div>

@@ -91,7 +91,7 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
     }
     const Constructor = getSpeechRecognition();
     if (!Constructor) {
-      setError('当前浏览器不支持语音识别，请使用 Chrome / Edge 并允许麦克风权限。');
+      setError('当前浏览器不支持语音识别，请使用 Chrome / Edge 并允许麦克风权限');
       return;
     }
     try {
@@ -113,14 +113,14 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
       setListening(true);
       setError(null);
     } catch {
-      setError('无法启动语音识别，请检查浏览器麦克风权限。');
+      setError('无法启动语音识别，请检查浏览器麦克风权限');
       setListening(false);
     }
   };
 
   const speak = (text: string) => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-      setError('当前浏览器不支持语音朗读。');
+      setError('当前浏览器不支持语音朗读');
       return;
     }
     window.speechSynthesis.cancel();
@@ -237,7 +237,7 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
     if (!file) return;
     const extension = file.name.split('.').pop()?.toLowerCase() ?? '';
     if (!['txt', 'md', 'csv', 'json'].includes(extension)) {
-      setError('追问附件目前支持 .txt / .md / .csv / .json；PDF 和图片需要视觉模型，暂不伪造解析。');
+      setError('追问附件目前支持 .txt / .md / .csv / .json；PDF 和图片需要视觉模型，暂不伪造解析');
       return;
     }
     const text = await file.text();
@@ -345,7 +345,7 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
                 <span className="text-[10px] font-bold">可以问这些</span>
               </div>
               <p className="mt-1.5 text-[10px] leading-5 text-[var(--muted)]">
-                问数字、风险、行业基准或下一步。涉及数字时，回答会带引用。
+                问数字、风险、行业基准或下一步涉及数字时，回答会带引用
               </p>
             </div>
             <div className="space-y-1.5">

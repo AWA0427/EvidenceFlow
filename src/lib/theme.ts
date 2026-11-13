@@ -132,8 +132,8 @@ function mix(foreground: string, background: string, weight: number): string {
 
 /**
  * 默认底色不再写死一整片苔绿：强调色变化时，背景/卡面/分隔线
- * 从强调色混出同一色相的浅色或深色，避免“按钮变蓝、背景还是绿”。
- * 用户选择鼠尾草/深林/深蓝或自定义底色时，不调用这里。
+ * 从强调色混出同一色相的浅色或深色，避免“按钮变蓝、背景还是绿”
+ * 用户选择鼠尾草/深林/深蓝或自定义底色时，不调用这里
  */
 function accentTokens(accent: string, dark: boolean): Record<string, string> {
   if (dark) {
@@ -171,7 +171,7 @@ function accentTokens(accent: string, dark: boolean): Record<string, string> {
   };
 }
 
-/** 把设置应用到 CSS 变量；不依赖 React，方便首屏内联脚本复用。 */
+/** 把设置应用到 CSS 变量；不依赖 React，方便首屏内联脚本复用 */
 export function applyTheme(input: {
   mode: ThemeMode;
   accent: string;
@@ -194,12 +194,12 @@ export function applyTheme(input: {
   root.style.setProperty('--accent', input.accent);
   root.style.setProperty('--accent-ink', isLightColor(input.accent) ? '#1c1a16' : '#ffffff');
 
-  // light / dark / system 使用 CSS 内置调色板；自定义与预设则覆盖完整 token。
+  // light / dark / system 使用 CSS 内置调色板；自定义与预设则覆盖完整 token
   const preset = THEME_PRESETS.find(
     (item) => item.mode === effective && item.bg.toLowerCase() === input.customBg.toLowerCase() && item.surface.toLowerCase() === input.customSurface.toLowerCase(),
   );
 
-  // 默认底色跟随强调色；用户明确选了页面预设或自定义底色时，不覆盖。
+  // 默认底色跟随强调色；用户明确选了页面预设或自定义底色时，不覆盖
   const defaultLightPalette =
     input.customBg.toLowerCase() === '#f7fbf3' && input.customSurface.toLowerCase() === '#ffffff';
   const defaultDarkPalette =
