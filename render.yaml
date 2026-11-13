@@ -17,6 +17,6 @@ services:
       - key: AUTH_REQUIRED
         value: "false"
       - key: ALLOW_CLIENT_KEY
-        value: "false"
+        value: "true"
       - key: COOKIE_SECURE
         value: "true"
