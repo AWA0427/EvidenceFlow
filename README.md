@@ -8,8 +8,7 @@
 
 - 在线演示：https://evidenceflow-yvnk.onrender.com
 - 代码仓库：https://github.com/AWA0427/EvidenceFlow
-- 作品介绍 PDF：[docs/作品介绍.pdf](docs/作品介绍.pdf)
-- 技术文档 PDF：[docs/technical.pdf](docs/technical.pdf)
+- 作品与技术文档 Word：[docs/证析EvidenceFlow-作品与技术文档.docx](docs/证析EvidenceFlow-作品与技术文档.docx)
 - 当前版本：v0.9.0 / 2026-11-14
 
 ## 功能
