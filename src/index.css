@@ -1328,9 +1328,91 @@ h3,
 [data-ai="GEMINI"] .panel {
   border-radius: 20px;
   background: color-mix(in srgb, var(--surface) 92%, transparent);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(22px);
 }
 
 [data-ai="HUNYUAN"] .metric {
   font-size: 2.5rem;
+}
+
+/* 真实 AI 变体入口：同一套业务，不同版式与强调 */
+html[data-ai="GEMINI"] body {
+  background:
+    radial-gradient(ellipse at 12% 8%, #dcebff 0, transparent 34%),
+    radial-gradient(ellipse at 88% 12%, #d9f5e1 0, transparent 32%),
+    radial-gradient(ellipse at 50% 100%, #f3e6ff 0, transparent 36%),
+    #f7fbff;
+}
+
+html[data-ai="GEMINI"] .panel,
+html[data-ai="GEMINI"] .glass {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  border-radius: 24px;
+  box-shadow: 0 20px 55px -34px rgba(31, 63, 84, 0.55);
+}
+
+html[data-ai="GEMINI"] .topbar {
+  background: rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(20px);
+}
+
+html[data-ai="QWEN"] body {
+  background: #f3f7fb;
+}
+
+html[data-ai="QWEN"] .panel {
+  border-color: #d4e1ec;
+  border-radius: 10px;
+}
+
+html[data-ai="QWEN"] .metric {
+  font-size: 3rem;
+}
+
+html[data-ai="QWEN"] .metric-label {
+  font-size: 12px;
+}
+
+html[data-ai="DEEPSEEK"] body {
+  background: #fbfbf9;
+}
+
+html[data-ai="DEEPSEEK"] .panel {
+  border-radius: 0;
+  border-color: #e8e8e1;
+  box-shadow: none;
+}
+
+html[data-ai="HUNYUAN"] body {
+  background: #f7f4eb;
+}
+
+html[data-ai="HUNYUAN"] .panel {
+  border-radius: 4px;
+  border-color: #e5dcc8;
+  background: #fffdf7;
+}
+
+html[data-ai="HUNYUAN"] .display-md,
+html[data-ai="HUNYUAN"] h1 {
+  letter-spacing: -0.045em;
+}
+
+html[data-ai="SEED"] .panel {
+  border-radius: 22px;
+  border-color: #d8ead1;
+  background: linear-gradient(145deg, #ffffff, #f3faec);
+}
+
+html[data-ai="GLM"] .panel {
+  border-radius: 8px;
+  border-color: #c9dcc4;
+}
+
+html[data-ai="GROK"] .panel {
+  border-radius: 8px;
+  box-shadow: none;
 }
