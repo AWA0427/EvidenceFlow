@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowUp, Bot, Check, ChevronDown, Loader2, MessageSquareText, Mic, MicOff, Minimize2, Quote, Sparkles, Volume2, Wrench, X } from 'lucide-react';
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from 'react';
+import { ArrowUp, Bot, Check, ChevronDown, Loader2, Maximize2, MessageSquareText, Mic, MicOff, Minimize2, Move, PanelRight, Paperclip, Quote, Sparkles, Trash2, Volume2, Wrench, X } from 'lucide-react';
 import type { AnalysisResult, ChatCitation, ChatMessage, ToolCall } from '@shared/types';
 import { streamChat } from '../lib/api';
 import { cn } from '../lib/format';
@@ -9,6 +9,8 @@ interface ChatDockProps {
   analysis: AnalysisResult;
   onCitation: (claimId: string) => void;
 }
+
+type ChatWindowMode = 'dock' | 'floating' | 'half' | 'full';
 
 const SUGGESTIONS = [
   '当前最大的经营风险是什么？',
@@ -48,6 +50,8 @@ function getSpeechRecognition(): SpeechRecognitionConstructor | null {
 
 export function ChatDock({ analysis, onCitation }: ChatDockProps) {
   const [open, setOpen] = useState(false);
+  const [windowMode, setWindowMode] = useState<ChatWindowMode>('dock');
+  const [position, setPosition] = useState({ x: 40, y: 40 });
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streaming, setStreaming] = useState(false);
@@ -59,6 +63,8 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const dragRef = useRef<{ x: number; y: number; left: number; top: number } | null>(null);
   const settings = useSettingsStore();
   const speechSupported = Boolean(getSpeechRecognition());
 
@@ -197,6 +203,48 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
     }
   };
 
+  useEffect(() => {
+    if (windowMode === 'floating') {
+      setPosition({
+        x: Math.max(12, window.innerWidth - 480),
+        y: Math.max(12, window.innerHeight - 680),
+      });
+    }
+  }, [windowMode]);
+
+  const startDrag = (event: PointerEvent<HTMLElement>) => {
+    if (windowMode !== 'floating') return;
+    if ((event.target as HTMLElement).closest('button, input, textarea')) return;
+    dragRef.current = { x: event.clientX, y: event.clientY, left: position.x, top: position.y };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const moveDrag = (event: PointerEvent<HTMLElement>) => {
+    if (!dragRef.current || windowMode !== 'floating') return;
+    const dx = event.clientX - dragRef.current.x;
+    const dy = event.clientY - dragRef.current.y;
+    setPosition({
+      x: Math.max(8, Math.min(window.innerWidth - 440, dragRef.current.left + dx)),
+      y: Math.max(8, Math.min(window.innerHeight - 180, dragRef.current.top + dy)),
+    });
+  };
+
+  const endDrag = () => {
+    dragRef.current = null;
+  };
+
+  const attachFile = async (file: File | undefined) => {
+    if (!file) return;
+    const extension = file.name.split('.').pop()?.toLowerCase() ?? '';
+    if (!['txt', 'md', 'csv', 'json'].includes(extension)) {
+      setError('追问附件目前支持 .txt / .md / .csv / .json；PDF 和图片需要视觉模型，暂不伪造解析。');
+      return;
+    }
+    const text = await file.text();
+    setInput((previous) => `${previous}${previous ? '\n\n' : ''}[附件：${file.name}]\n${text.slice(0, 12000)}`);
+    setError(null);
+  };
+
   const toggleSuggestion = (suggestion: string) => {
     setSelectedSuggestions((previous) =>
       previous.includes(suggestion) ? previous.filter((item) => item !== suggestion) : [...previous, suggestion],
@@ -227,9 +275,27 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
     );
   }
 
+  const windowClass =
+    windowMode === 'floating'
+      ? 'fixed z-50 flex h-[min(640px,82vh)] w-[440px] max-w-[calc(100vw-16px)] flex-col border border-[var(--line-strong)] bg-[var(--surface)] shadow-[var(--shadow-lg)] rounded-2xl'
+      : windowMode === 'half'
+        ? 'fixed right-0 top-0 z-50 flex h-screen w-[min(50vw,760px)] flex-col border-l border-[var(--line-strong)] bg-[var(--surface)] shadow-[var(--shadow-lg)]'
+        : windowMode === 'full'
+          ? 'fixed inset-0 z-50 flex h-screen w-screen flex-col border-0 bg-[var(--surface)]'
+          : 'fixed bottom-0 right-0 z-50 flex h-[min(680px,92vh)] w-full flex-col border-l border-t border-[var(--line-strong)] bg-[var(--surface)] shadow-[var(--shadow-lg)] sm:bottom-4 sm:right-4 sm:w-[400px] sm:border';
+
   return (
-    <aside className="chat-dock no-print fixed bottom-0 right-0 z-50 flex h-[min(680px,92vh)] w-full flex-col border-l border-t border-[var(--line-strong)] bg-[var(--surface)] shadow-[var(--shadow-lg)] sm:bottom-4 sm:right-4 sm:w-[400px] sm:border">
-      <header className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
+    <aside
+      className={cn('chat-dock no-print flex flex-col', windowClass)}
+      style={windowMode === 'floating' ? { left: position.x, top: position.y } : windowMode === 'full' ? { borderRadius: 0 } : undefined}
+    >
+      <header
+        className={cn('flex items-center justify-between border-b border-[var(--line)] px-4 py-3', windowMode === 'floating' && 'cursor-move select-none')}
+        onPointerDown={startDrag}
+        onPointerMove={moveDrag}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+      >
         <div className="flex items-center gap-2">
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">
             <Bot className="h-4 w-4" />
@@ -239,7 +305,19 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
             <p className="text-[9px] text-[var(--muted)]">回答只来自当前看板与基准库</p>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
+          <button type="button" className="btn btn-icon btn-quiet" onClick={() => setWindowMode('floating')} aria-label="切换悬浮窗" title="悬浮窗">
+            <Move className="h-3.5 w-3.5" />
+          </button>
+          <button type="button" className="btn btn-icon btn-quiet" onClick={() => setWindowMode('half')} aria-label="切换半屏" title="半屏">
+            <PanelRight className="h-3.5 w-3.5" />
+          </button>
+          <button type="button" className="btn btn-icon btn-quiet" onClick={() => setWindowMode('full')} aria-label="切换全屏" title="全屏">
+            <Maximize2 className="h-3.5 w-3.5" />
+          </button>
+          <button type="button" className="btn btn-icon btn-quiet" onClick={() => setWindowMode('dock')} aria-label="停靠右下角" title="停靠右下角">
+            <Minimize2 className="h-3.5 w-3.5" />
+          </button>
           <button
             type="button"
             className="btn btn-icon btn-quiet"
@@ -250,7 +328,7 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
             aria-label="清空对话"
             title="清空对话"
           >
-            <Minimize2 className="h-3.5 w-3.5" />
+            <Trash2 className="h-3.5 w-3.5" />
           </button>
           <button type="button" className="btn btn-icon btn-quiet" onClick={() => setOpen(false)} aria-label="关闭">
             <X className="h-4 w-4" />
@@ -308,7 +386,7 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
         {messages.map((message) => (
           <div key={message.id} className={cn('flex flex-col gap-1', message.role === 'user' ? 'items-end' : 'items-start')}>
             <div className={`chat-bubble ${message.role} ${message.streaming ? 'typing-caret' : ''}`}>
-              {message.content ? renderContent(message.content, onCitation, analysis) : <span className="text-[var(--muted)]">正在检索证据…</span>}
+              {message.content ? renderMarkdown(message.content, onCitation, analysis) : <span className="text-[var(--muted)]">正在检索证据…</span>}
             </div>
             {message.toolCalls && message.toolCalls.length > 0 && (
               <div className="flex flex-wrap gap-1">
@@ -385,6 +463,25 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
             placeholder="例如：服饰库存 95 万，最该先做什么？"
             className="max-h-24 min-h-[38px] flex-1 resize-none bg-transparent px-1 py-1 text-[11px] leading-5 outline-none placeholder:text-[var(--muted-2)]"
           />
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".txt,.md,.csv,.json,text/plain,text/markdown,text/csv,application/json"
+            className="hidden"
+            onChange={(event) => {
+              void attachFile(event.target.files?.[0]);
+              event.target.value = '';
+            }}
+          />
+          <button
+            type="button"
+            className="btn btn-icon btn-quiet shrink-0"
+            onClick={() => fileRef.current?.click()}
+            aria-label="添加文本附件"
+            title="添加文本附件（txt / md / csv / json）"
+          >
+            <Paperclip className="h-3.5 w-3.5" />
+          </button>
           {speechSupported && (
             <button
               type="button"
@@ -412,29 +509,89 @@ export function ChatDock({ analysis, onCitation }: ChatDockProps) {
   );
 }
 
-function renderContent(content: string, onCitation: (claimId: string) => void, analysis: AnalysisResult) {
-  const parts = content.split(/(\[[a-zA-Z0-9_-]+\])/g);
-  return (
-    <>
-      {parts.map((part, index) => {
-        const match = part.match(/^\[([a-zA-Z0-9_-]+)\]$/);
-        if (match) {
-          const id = match[1];
-          const claim = analysis.claims.find((item) => item.id === id);
-          if (claim) {
-            return (
-              <button key={`${part}-${index}`} type="button" onClick={() => onCitation(id)} className="evidence-ref mono text-[9px]">
-                {id}
-              </button>
-            );
-          }
-        }
-        return (
-          <span key={`${part}-${index}`} className="whitespace-pre-wrap">
-            {part}
-          </span>
-        );
-      })}
-    </>
-  );
+function renderInline(text: string, onCitation: (claimId: string) => void, analysis: AnalysisResult): ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[a-zA-Z0-9_-]+\])/g);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return <strong key={index} className="font-bold">{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
+      return <code key={index} className="mono rounded bg-[var(--surface-2)] px-1 py-0.5 text-[0.9em]">{part.slice(1, -1)}</code>;
+    }
+    const citation = part.match(/^\[([a-zA-Z0-9_-]+)\]$/);
+    if (citation && analysis.claims.some((claim) => claim.id === citation[1])) {
+      return (
+        <button key={index} type="button" onClick={() => onCitation(citation[1])} className="evidence-ref mono text-[0.9em]">
+          {citation[1]}
+        </button>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+}
+
+function renderMarkdown(content: string, onCitation: (claimId: string) => void, analysis: AnalysisResult): ReactNode {
+  const lines = content.split('\n');
+  const nodes: ReactNode[] = [];
+  let list: ReactNode[] = [];
+  let listType: 'ul' | 'ol' = 'ul';
+  let code: string[] | null = null;
+
+  const flushList = () => {
+    if (list.length === 0) return;
+    const Tag = listType;
+    nodes.push(<Tag key={`list-${nodes.length}`} className="my-1.5 space-y-1 pl-4">{list}</Tag>);
+    list = [];
+  };
+
+  lines.forEach((line, index) => {
+    if (line.startsWith('```')) {
+      if (code === null) {
+        flushList();
+        code = [];
+      } else {
+        nodes.push(<pre key={`code-${index}`} className="mono my-2 overflow-x-auto rounded-lg bg-[var(--surface-2)] p-2 text-[10px] leading-5">{code.join('\n')}</pre>);
+        code = null;
+      }
+      return;
+    }
+    if (code !== null) {
+      code.push(line);
+      return;
+    }
+    const heading = line.match(/^(#{1,3})\s+(.+)$/);
+    if (heading) {
+      flushList();
+      const level = heading[1].length;
+      const className = level === 1 ? 'mt-1 text-[15px] font-bold' : level === 2 ? 'mt-2 text-[13px] font-bold' : 'mt-1.5 text-[12px] font-bold';
+      nodes.push(<p key={`h-${index}`} className={className}>{renderInline(heading[2], onCitation, analysis)}</p>);
+      return;
+    }
+    const bullet = line.match(/^\s*[-*]\s+(.+)$/);
+    if (bullet) {
+      if (listType !== 'ul') flushList();
+      listType = 'ul';
+      list.push(<li key={`li-${index}`} className="list-disc leading-5">{renderInline(bullet[1], onCitation, analysis)}</li>);
+      return;
+    }
+    const numbered = line.match(/^\s*\d+[.)]\s+(.+)$/);
+    if (numbered) {
+      if (listType !== 'ol') flushList();
+      listType = 'ol';
+      list.push(<li key={`li-${index}`} className="list-decimal leading-5">{renderInline(numbered[1], onCitation, analysis)}</li>);
+      return;
+    }
+    if (!line.trim()) {
+      flushList();
+      nodes.push(<span key={`space-${index}`} className="block h-1.5" />);
+      return;
+    }
+    flushList();
+    nodes.push(<p key={`p-${index}`} className="whitespace-pre-wrap leading-6">{renderInline(line, onCitation, analysis)}</p>);
+  });
+  flushList();
+  if (code !== null) {
+    nodes.push(<pre key="code-end" className="mono my-2 overflow-x-auto rounded-lg bg-[var(--surface-2)] p-2 text-[10px] leading-5">{(code as string[]).join(String.fromCharCode(10))}</pre>);
+  }
+  return <>{nodes}</>;
 }
