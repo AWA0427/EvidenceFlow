@@ -73,6 +73,6 @@ export function getAiVariant(): AiVariantKey | null {
   if (typeof window === 'undefined') return null;
   const query = new URLSearchParams(window.location.search).get('ai')?.toUpperCase();
   const stored = sessionStorage.getItem('evidenceflow-ai-variant')?.toUpperCase();
-  const value = query || stored || DEFAULT_AI_VARIANT;
+  const value = query || stored;
   return value && value in AI_VARIANTS ? (value as AiVariantKey) : null;
 }

@@ -8,6 +8,9 @@
 
 - 在线演示：https://evidenceflow-yvnk.onrender.com
 - 代码仓库：https://github.com/AWA0427/EvidenceFlow
+- 作品介绍 PDF：[docs/作品介绍.pdf](docs/作品介绍.pdf)
+- 技术文档 PDF：[docs/technical.pdf](docs/technical.pdf)
+- 当前版本：v0.9.0 / 2026-11-14
 
 ## 功能
 
@@ -18,7 +21,9 @@
 - **追问**：只基于当前看板回答，带 claim 引用，支持浏览器语音输入和朗读。
 - **看板**：KPI、柱/线/饼/漏斗图、洞察、待办；图表可放大查看。
 - **导出**：Markdown、打印/PDF。
-- **主题**：Material 3 圆角、苔绿主色；浅色/深色/跟随系统/自定义色、字号、减少动效、高对比。
+- **主题**：Material 3 圆角、苔绿主色；浅色/深色、强调色、字号。
+- **导航**：工作台 / 设置 / 关于；设置内分外观、API 与模型、数据与隐私。
+- **工作区**：看板、证据链、质疑室、原始材料四个页签。
 
 ## 技术栈
 

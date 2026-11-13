@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Check,
   CheckCircle2,
-  ChevronRight,
   Database,
   Eye,
   EyeOff,
@@ -28,13 +27,13 @@ import { useAnalysisStore } from '../store/analysis';
 import { useSettingsStore, type ThemeMode } from '../store/settings';
 import { cn } from '../lib/format';
 
-type Section = 'api' | 'appearance' | 'data' | 'about';
+type Section = 'appearance' | 'api' | 'data';
 
 export function Settings() {
   const settings = useSettingsStore();
   const history = useAnalysisStore((state) => state.history);
   const clearHistory = useAnalysisStore((state) => state.removeHistory);
-  const [section, setSection] = useState<Section>('api');
+  const [section, setSection] = useState<Section>('appearance');
   const [config, setConfig] = useState<ApiConfigResponse | null>(null);
   const [keyInput, setKeyInput] = useState('');
   const [showKey, setShowKey] = useState(false);
@@ -50,16 +49,15 @@ export function Settings() {
   }, []);
 
   const sections: Array<{ id: Section; label: string; icon: typeof KeyRound; note: string }> = [
-    { id: 'api', label: 'API 与模型', icon: KeyRound, note: 'Key / Base URL / Model' },
     { id: 'appearance', label: '外观', icon: Palette, note: '主题 / 底色 / 字号' },
+    { id: 'api', label: 'API 与模型', icon: KeyRound, note: 'Key / Base URL / Model' },
     { id: 'data', label: '数据与隐私', icon: Database, note: '导出 / 清除 / 存储' },
-    { id: 'about', label: '关于本项目', icon: ShieldCheck, note: '版本与边界' },
   ];
 
   return (
     <div className="container-wide py-8">
       <div className="mb-6">
-        <div className="kicker">Settings</div>
+        <div className="kicker">设置</div>
         <h1 className="display-md mt-3">设置</h1>
         <p className="mt-2 max-w-2xl text-[12px] leading-6 text-[var(--muted)]">
           这里改主题、底色、字号和模型设置会保存到当前浏览器；临时 Key 只在当前标签页有效
@@ -149,7 +147,6 @@ export function Settings() {
           )}
           {section === 'appearance' && <AppearancePanel />}
           {section === 'data' && <DataSection history={history} clearHistory={clearHistory} />}
-          {section === 'about' && <AboutSection />}
         </div>
       </div>
     </div>
@@ -197,7 +194,7 @@ function ApiSection({
       <section className="panel overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--line)] px-4 py-3">
           <div>
-            <span className="label">Model gateway</span>
+            <span className="label">模型网关</span>
             <h2 className="mt-0.5 font-serif text-lg font-bold">API 与模型</h2>
           </div>
           <span className={cn('chip', keyReady ? 'chip-verified' : 'chip-warning')}>
@@ -351,7 +348,7 @@ function ApiSection({
   );
 }
 
-function AppearanceSection() {
+function 外观Section() {
   const settings = useSettingsStore();
   const modeOptions: Array<{ value: ThemeMode; label: string; icon: typeof Sun; note: string }> = [
     { value: 'light', label: '浅色', icon: Sun, note: '新绿 / 鼠尾草' },
@@ -365,7 +362,7 @@ function AppearanceSection() {
       <section className="panel p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <span className="label">Appearance</span>
+            <span className="label">外观</span>
             <h2 className="mt-0.5 font-serif text-lg font-bold">外观与无障碍</h2>
           </div>
           <button type="button" className="btn btn-quiet btn-sm" onClick={() => settings.resetAppearance()}>
@@ -542,7 +539,7 @@ function AppearanceSection() {
 
       <section className="panel overflow-hidden">
         <div className="border-b border-[var(--line)] px-4 py-3">
-          <span className="label">Live preview</span>
+          <span className="label">实时预览</span>
           <h3 className="mt-0.5 font-serif text-[15px] font-bold">即时预览</h3>
         </div>
         <div className="grid gap-3 p-4 sm:grid-cols-[1fr_180px]">
@@ -611,7 +608,7 @@ function DataSection({ history, clearHistory }: { history: ReturnType<typeof use
         <div className="flex items-center gap-2">
           <Database className="h-4 w-4 text-[var(--accent)]" />
           <div>
-            <span className="label">Data & privacy</span>
+            <span className="label">数据与隐私</span>
             <h2 className="mt-0.5 font-serif text-lg font-bold">数据与隐私</h2>
           </div>
         </div>
@@ -688,38 +685,5 @@ function DataSection({ history, clearHistory }: { history: ReturnType<typeof use
         </ul>
       </section>
     </>
-  );
-}
-
-function AboutSection() {
-  return (
-    <section className="panel p-5">
-      <div className="flex items-center gap-3">
-        <span className="seal">证</span>
-        <div>
-          <h2 className="font-serif text-xl font-bold">证析 EvidenceFlow</h2>
-          <p className="mono text-[9px] text-[var(--muted)]">EVIDENCE-FIRST DECISION INTELLIGENCE</p>
-        </div>
-      </div>
-      <p className="mt-4 max-w-2xl text-[12px] leading-7 text-[var(--ink-soft)]">
-        AI 说的每个数字，都能点回原文证析是一套面向经营复盘与决策会的可审计工作台：抽取、校验、检索、质疑、发布闸门各司其职
-      </p>
-      <dl className="mt-5 grid gap-3 sm:grid-cols-2">
-        {[
-          ['版本', 'v0.1.0 · 2026.10'],
-          ['前端', 'React 19 + TypeScript + Vite 8 + Tailwind CSS 4'],
-          ['后端', 'Node.js + Express + SSE'],
-          ['证据', '原文引用 + 受限四则运算 + BM25'],
-        ].map(([label, value]) => (
-          <div key={label} className="flex justify-between gap-4 border-b border-[var(--line)] pb-2 text-[10px]">
-            <dt className="text-[var(--muted)]">{label}</dt>
-            <dd className="text-right font-semibold">{value}</dd>
-          </div>
-        ))}
-      </dl>
-      <p className="mt-4 text-[9px] leading-5 text-[var(--muted-2)]">
-        本项目为 2026 全国高校 AI Web 开发挑战赛参赛作品基础版AI 输出不构成审计、法律或投资建议；正式使用前请由业务负责人复核口径
-      </p>
-    </section>
   );
 }

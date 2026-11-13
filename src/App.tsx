@@ -19,11 +19,15 @@ function ScrollToTop() {
 
 function LazyFallback() {
   return (
-    <div className="flex min-h-[50vh] items-center justify-center">
-      <div className="flex items-center gap-2 text-[11px] text-[var(--muted)]">
-        <span className="h-3 w-3 animate-spin rounded-full border border-[var(--line-strong)] border-t-[var(--accent)]" />
-        正在加载…
+    <div className="container-wide py-8" aria-busy="true" aria-label="正在加载页面">
+      <div className="mb-4 h-5 w-24 animate-pulse rounded bg-[var(--surface-3)]" />
+      <div className="mb-6 h-9 w-2/3 animate-pulse rounded bg-[var(--surface-3)]" />
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {[0, 1, 2, 3].map((item) => (
+          <div key={item} className="h-24 animate-pulse rounded-xl border border-[var(--line)] bg-[var(--surface-2)]" />
+        ))}
       </div>
+      <div className="mt-4 h-40 animate-pulse rounded-xl border border-[var(--line)] bg-[var(--surface-2)]" />
     </div>
   );
 }
@@ -87,7 +91,7 @@ function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center p-6">
       <div className="max-w-md text-center">
-        <p className="mono text-[10px] tracking-[0.2em] text-[var(--muted)]">404 / LOST EVIDENCE</p>
+        <p className="mono text-[10px] tracking-[0.2em] text-[var(--muted)]">404 / 页面不存在</p>
         <h1 className="display-md mt-3">这条证据链不存在</h1>
         <p className="mt-3 text-[12px] leading-6 text-[var(--muted)]">链接可能已过期，或者你访问了一个还没有被创建的分析</p>
         <a href="/app" className="btn btn-primary mt-5">

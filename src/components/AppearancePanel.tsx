@@ -48,7 +48,7 @@ export function AppearancePanel() {
       <section className="panel p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <span className="label">Appearance</span>
+            <span className="label">外观</span>
             <h2 className="mt-0.5 text-lg font-bold">外观</h2>
           </div>
           <button type="button" className="btn btn-quiet btn-sm" onClick={() => settings.resetAppearance()}>
@@ -183,7 +183,7 @@ export function AppearancePanel() {
 
       <section className="panel overflow-hidden">
         <div className="border-b border-[var(--line)] px-4 py-3">
-          <span className="label">Live preview</span>
+          <span className="label">实时预览</span>
           <h3 className="mt-0.5 text-[15px] font-bold">即时预览</h3>
         </div>
         <div className="grid gap-3 p-4 sm:grid-cols-[1fr_180px]">

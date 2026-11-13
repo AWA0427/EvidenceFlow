@@ -83,8 +83,8 @@ export function AgentTrace({ steps, compact = false }: { steps: AgentStep[]; com
                     <div className="flex items-center gap-1.5">
                       <Wrench className="h-3 w-3 text-[var(--accent)]" />
                       <span className="mono text-[9px] font-semibold text-[var(--ink-soft)]">{tool.name}</span>
-                      <span className={cn('ml-auto text-[8px]', tool.status === 'success' ? 'text-[var(--verified)]' : 'text-[var(--danger)]')}>
-                        {tool.status}
+                      <span className={cn('ml-auto text-[10px]', tool.status === 'success' ? 'text-[var(--verified)]' : 'text-[var(--danger)]')}>
+                        {tool.status} · {formatDuration(tool.durationMs)}
                       </span>
                     </div>
                     <pre className="mono mt-1.5 max-h-20 overflow-auto whitespace-pre-wrap text-[8px] leading-4 text-[var(--muted)]">

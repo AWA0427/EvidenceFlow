@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { ArrowUpRight, Clipboard, FileText, FunctionSquare, ShieldCheck, X } from 'lucide-react';
 import type { AnalysisResult } from '@shared/types';
 import { StatusBadge } from './StatusBadge';
-import { formatNumber } from '../lib/format';
+import { cn, formatNumber } from '../lib/format';
 
 interface EvidenceDrawerProps {
   analysis: AnalysisResult;
@@ -17,11 +17,11 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
     () => analysis.evidence.find((item) => item.claimId === claimId) ?? null,
     [analysis, claimId],
   );
-  const relatedInsights = useMemo(
+  const related洞察 = useMemo(
     () => analysis.insights.filter((item) => item.claimIds.includes(claimId ?? '')),
     [analysis, claimId],
   );
-  const relatedActions = useMemo(
+  const related行动 = useMemo(
     () => analysis.actions.filter((item) => item.claimId === claimId),
     [analysis, claimId],
   );
@@ -42,6 +42,15 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
   if (!claimId || !claim) return null;
 
   const confidence = Math.round(claim.confidence * 100);
+  const strength = confidence >= 90 ? '高' : confidence >= 70 ? '中' : '低';
+  const methodLabel = evidence?.method === 'computed' ? '公式复算' : evidence?.method === 'retrieved' ? '基准检索' : '原文引用';
+  const fix = claim.status === 'verified'
+    ? '无需补证'
+    : claim.metric.includes('同比')
+      ? '补充去年同期绝对值与统计口径'
+      : claim.status === 'conflict'
+        ? '确认冲突来源，选择唯一口径'
+        : '补充基期、分母或可核验的原文段落';
 
   return (
     <>
@@ -50,7 +59,7 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
         <header className="flex items-start justify-between gap-4 border-b border-[var(--line)] px-5 py-4">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="label">Evidence / 证据</span>
+              <span className="label">证据</span>
               <StatusBadge status={claim.status} />
             </div>
             <h2 className="mt-2 truncate font-serif text-xl font-bold tracking-tight">{claim.metric}</h2>
@@ -94,6 +103,21 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
           </section>
 
           <section>
+            <div className="mb-2 flex items-center justify-between">
+              <span className="label">来源卡</span>
+              <span className={cn('chip', claim.status === 'verified' ? 'chip-verified' : 'chip-warning')}>{strength}强度</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 border border-[var(--line)] bg-[var(--surface-2)] p-3 text-[11px]">
+              <div><span className="text-[var(--muted)]">来源文件</span><p className="mt-0.5 font-semibold">{evidence?.sourceName ?? analysis.sources[0]?.name ?? '未定位'}</p></div>
+              <div><span className="text-[var(--muted)]">段落定位</span><p className="mono mt-0.5">{evidence?.locator ?? '未定位'}</p></div>
+              <div><span className="text-[var(--muted)]">检索方式</span><p className="mt-0.5">{methodLabel}</p></div>
+              <div><span className="text-[var(--muted)]">提取时间</span><p className="mt-0.5">{new Date(analysis.createdAt).toLocaleString('zh-CN')}</p></div>
+              <div><span className="text-[var(--muted)]">置信度</span><p className="mono mt-0.5">{confidence}%</p></div>
+              <div><span className="text-[var(--muted)]">证据强度</span><p className="mt-0.5">{strength}</p></div>
+            </div>
+          </section>
+
+          <section>
             <div className="mb-2 flex items-center gap-1.5">
               <FunctionSquare className="h-3.5 w-3.5 text-[var(--muted)]" />
               <span className="label">计算过程</span>
@@ -133,13 +157,18 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
                 ? '引文与数值通过确定性校验；公式类主张同时通过复算'
                 : claim.criticNote ?? '该主张需要补充原始凭证后再发布'}
             </p>
+            {claim.status !== 'verified' && (
+              <div className="mt-2 border border-[#d8b06a] bg-[#fff8e8] px-3 py-2 text-[11px] leading-5 text-[#7a4310]">
+                <b>补证建议：</b>{fix}
+              </div>
+            )}
           </section>
 
-          {relatedInsights.length > 0 && (
+          {related洞察.length > 0 && (
             <section>
               <span className="label">关联洞察</span>
               <div className="mt-2 space-y-2">
-                {relatedInsights.map((insight) => (
+                {related洞察.map((insight) => (
                   <div key={insight.id} className="border-l-2 border-[var(--accent)] bg-[var(--surface-2)] px-3 py-2">
                     <p className="text-[11px] font-bold">{insight.title}</p>
                     <p className="mt-1 line-clamp-3 text-[10px] leading-relaxed text-[var(--muted)]">{insight.body}</p>
@@ -149,11 +178,11 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
             </section>
           )}
 
-          {relatedActions.length > 0 && (
+          {related行动.length > 0 && (
             <section>
               <span className="label">关联待办</span>
               <div className="mt-2 space-y-2">
-                {relatedActions.map((action) => (
+                {related行动.map((action) => (
                   <div key={action.id} className="flex items-start justify-between gap-3 border border-[var(--line)] p-3">
                     <div>
                       <p className="text-[11px] font-semibold">{action.task}</p>
@@ -186,7 +215,7 @@ export function EvidenceDrawer({ analysis, claimId, onClose, onOpenSource }: Evi
         </div>
 
         <footer className="flex items-center justify-between gap-3 border-t border-[var(--line)] px-5 py-3">
-          <span className="mono text-[9px] text-[var(--muted-2)]">ID {claim.id}</span>
+          <span className="text-[10px] text-[var(--muted-2)]">证据可追溯到原文</span>
           {onOpenSource && (
             <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenSource}>
               <ArrowUpRight className="h-3 w-3" /> 在原文中定位

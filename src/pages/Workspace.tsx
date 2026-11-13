@@ -113,10 +113,10 @@ export function Workspace() {
       <div className="container-wide py-8">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <div className="kicker">New analysis</div>
+            <div className="kicker">开始分析</div>
             <h1 className="display-md mt-3">把材料放进来，开始查证据</h1>
             <p className="mt-2 max-w-xl text-[12px] leading-6 text-[var(--muted)]">
-              支持粘贴文本、上传 .txt / .md / .csv没有 API Key 也能先用三个示例
+              支持粘贴文本、上传 .txt / .md / .csv没有 API Key 也能先看示例
             </p>
           </div>
           <div className="flex items-center gap-2 text-[10px] text-[var(--muted)]">
@@ -130,23 +130,15 @@ export function Workspace() {
         {error && (
           <div className="mb-4 flex items-start gap-2 border border-[var(--danger)] bg-[var(--danger-soft)] px-4 py-3 text-[11px] leading-5 text-[var(--danger)]">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-            <div>
+            <div className="min-w-0 flex-1">
               <p className="font-bold">上一次分析没有完成</p>
               <p className="mt-0.5">{error}</p>
             </div>
+            <button type="button" className="btn btn-ghost btn-sm shrink-0" onClick={() => { reset(); navigate('/app?new=1'); }}>
+              重新开始
+            </button>
           </div>
         )}
-
-        <div className="mb-4 flex flex-wrap items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] px-4 py-3">
-          <Sparkles className="h-4 w-4 shrink-0 text-[var(--accent)]" />
-          <p className="min-w-0 flex-1 text-[11px] leading-5 text-[var(--muted)]">
-            <strong className="text-[var(--ink)]">AI 在哪工作：</strong>
-            三个示例不调用 API；上传材料并配置 Key 后，模型负责抽取和综合，数字仍由本地校验器复核
-          </p>
-          <button type="button" className="btn btn-ghost btn-sm" onClick={() => navigate('/settings')}>
-            配置 API
-          </button>
-        </div>
 
         <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
           <UploadPanel
@@ -159,57 +151,46 @@ export function Workspace() {
             <div className="panel p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="label">Quick start</p>
-                  <h2 className="mt-1 text-[18px] font-bold">先看示例</h2>
+                  <p className="label">示例</p>
+                  <h2 className="mt-1 text-[18px] font-bold">先看澄野生活，60 秒</h2>
                 </div>
-                <Sparkles className="h-4 w-4 text-[var(--accent)]" />
+                <span className="chip">示例</span>
               </div>
-              <p className="mt-2 text-[10px] leading-5 text-[var(--muted)]">
-                三个案例都在工作台里，点一个直接跑里面的数字、公式和拦截记录都能查
-              </p>
-              <div className="mt-3 space-y-2">
-                {DEMO_META.map((demo) => (
-                  <button
-                    key={demo.id}
-                    type="button"
-                    onClick={() => void runDemo(demo.id)}
-                    className="group flex w-full items-start gap-3 border border-[var(--line)] bg-[var(--surface-2)] p-3 text-left transition-colors hover:border-[var(--accent-border)] hover:bg-[var(--accent-soft)]"
-                  >
-                    <span className="mono mt-0.5 text-[9px] text-[var(--muted-2)]">{demo.index}</span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-[11px] font-bold">{demo.title}</span>
-                      <span className="mt-0.5 block text-[9px] text-[var(--muted)]">{demo.meta}</span>
-                      <span className="mt-1 block text-[9px] leading-4 text-[var(--muted)]">{demo.line}</span>
-                    </span>
-                    <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-[var(--muted-2)] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--accent)]" />
-                  </button>
-                ))}
-              </div>
+              <p className="mt-2 text-[11px] leading-5 text-[var(--muted)]">数字、公式和拦截记录都能查</p>
+              <button
+                type="button"
+                onClick={() => void runDemo('consumer-q3')}
+                className="mt-3 flex w-full items-center justify-between gap-3 border border-[var(--accent-border)] bg-[var(--accent-soft)] px-3 py-3 text-left transition-colors hover:bg-[var(--surface-2)]"
+              >
+                <span>
+                  <span className="mono block text-[9px] text-[var(--accent)]">01 / 示例</span>
+                  <span className="mt-0.5 block text-[12px] font-bold">澄野生活 Q3 经营复盘</span>
+                  <span className="mt-0.5 block text-[10px] text-[var(--muted)]">消费零售 · 全渠道 · 1 条拦截</span>
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0 text-[var(--accent)]" />
+              </button>
+              <details className="mt-3">
+                <summary className="cursor-pointer text-[10px] text-[var(--muted)]">其他示例</summary>
+                <div className="mt-2 space-y-1.5">
+                  {DEMO_META.slice(1).map((demo) => (
+                    <button key={demo.id} type="button" onClick={() => void runDemo(demo.id)} className="flex w-full items-center justify-between gap-2 border border-[var(--line)] bg-[var(--surface-2)] px-2.5 py-2 text-left text-[10px] hover:border-[var(--accent-border)]">
+                      <span><b>{demo.title}</b><span className="ml-1 text-[var(--muted)]">{demo.meta}</span></span>
+                      <ArrowUpRight className="h-3 w-3 text-[var(--muted)]" />
+                    </button>
+                  ))}
+                </div>
+              </details>
             </div>
-
             <div className="panel p-4">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-[var(--verified)]" />
-                <h3 className="text-[11px] font-bold">演示顺序</h3>
-              </div>
-              <ol className="mt-3 space-y-2 text-[10px] leading-5 text-[var(--muted)]">
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">01</span> 打开「澄野生活 Q3」，看 KPI 和图表</li>
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">02</span> 点一个数字，看原文和公式</li>
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">03</span> 去「质疑室」看哪条被拦</li>
-                <li className="flex gap-2"><span className="mono text-[var(--accent)]">04</span> 右下角追问，看回答有没有引用</li>
-              </ol>
+              <p className="text-[11px] font-bold">没有数据残留</p>
+              <p className="mt-1 text-[10px] leading-5 text-[var(--muted)]">示例只有点击后才载入；清空后不会自动恢复</p>
+              <button type="button" className="btn btn-ghost btn-sm mt-3" onClick={() => { try { localStorage.removeItem('evidenceflow-analysis'); } catch { /* ignore */ } reset(); }}>
+                清空本地记录
+              </button>
             </div>
           </div>
         </div>
 
-        {phase === 'error' && (
-          <div className="mt-4 flex items-center justify-between gap-3 border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-            <p className="text-[11px] text-[var(--muted)]">也可以直接查看一个完整示例，确认界面与流程</p>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => void runDemo('consumer-q3')}>
-              打开示例 <ArrowRight className="h-3 w-3" />
-            </button>
-          </div>
-        )}
       </div>
     );
   }
@@ -225,10 +206,6 @@ export function Workspace() {
           navigate('/app?new=1');
         }}
       />
-
-      {variantMeta && <VariantBanner meta={variantMeta} />}
-      {variantMeta?.process && <VariantProcess />}
-      {variantMeta?.extra && <VariantExtra type={variantMeta.extra} />}
 
       {tab === 'dashboard' && (
         <DashboardTab
@@ -288,16 +265,15 @@ function AnalysisHeader({
       <div className="mb-5 flex flex-col justify-between gap-4 xl:flex-row xl:items-start">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="kicker">Audit report</span>
+            <span className="kicker">审计报告</span>
             <span className="mono text-[9px] text-[var(--muted-2)]">{formatDate(analysis.createdAt)}</span>
+            <span className="chip chip-verified">
+              <ShieldCheck className="h-2.5 w-2.5" />
+              证据优先
+            </span>
             <span className="chip">
-              {analysis.mode === 'demo' ? '演示引擎' : analysis.mode === 'local' ? '本地启发式' : '实时模型'}
+              {analysis.mode === 'demo' ? '本地证据链' : analysis.mode === 'local' ? '本地校验' : '模型抽取'}
             </span>
-            <span className={`chip ${analysis.ai?.called ? 'chip-verified' : 'chip-warning'}`}>
-              <Sparkles className="h-2.5 w-2.5" />
-              {analysis.ai?.called ? `AI 已调用 ${analysis.ai.calls.length} 次` : 'AI 未调用（示例）'}
-            </span>
-            <span className="chip mono">{analysis.model}</span>
           </div>
           <h1 className="display-md mt-2 truncate">{analysis.title}</h1>
           <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-[var(--muted)]">
@@ -319,9 +295,7 @@ function AnalysisHeader({
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => window.print()}>
             <Printer className="h-3 w-3" /> 打印 / PDF
           </button>
-          <button type="button" className="btn btn-primary btn-sm" onClick={onNew}>
-            <FilePlus2 className="h-3 w-3" /> 新建分析
-          </button>
+
         </div>
       </div>
 
@@ -350,6 +324,70 @@ function AnalysisHeader({
   );
 }
 
+function AuditHero({ analysis, onEvidence }: { analysis: AnalysisResult; onEvidence: (id: string) => void }) {
+  const blocked = analysis.claims.find((claim) => claim.status === 'unsupported' || claim.status === 'conflict')
+    ?? analysis.claims.find((claim) => claim.status === 'partial');
+  const verified = analysis.claims.filter((claim) => claim.status === 'verified').length;
+  const stats = [
+    { label: '总主张', value: analysis.claims.length, tone: '' },
+    { label: '引用覆盖', value: percent(analysis.safety.citationCoverage), tone: 'verified' },
+    { label: '已通过', value: verified, tone: 'verified' },
+    { label: '被拦截', value: analysis.safety.blockedClaims, tone: 'warning' },
+  ];
+  return (
+    <section className="panel overflow-hidden">
+      <div className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div>
+          <p className="text-[10px] font-semibold tracking-[0.08em] text-[var(--accent)]">审计结论</p>
+          <p className="mt-2 max-w-3xl text-[13px] leading-7 text-[var(--ink-soft)]">{analysis.summary}</p>
+          {blocked && (
+            <button type="button" className="mt-3 flex max-w-2xl items-start gap-2 rounded-lg border border-[#d8b06a] bg-[#fff8e8] px-3 py-2 text-left" onClick={() => onEvidence(blocked.id)}>
+              <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#9a5a16]" />
+              <span className="text-[10px] leading-5 text-[#7a4310]"><b>被拦截：</b>{blocked.text}<span className="ml-1 underline">打开证据</span></span>
+            </button>
+          )}
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {stats.map((stat) => (
+            <button key={stat.label} type="button" className="rounded-xl border border-[var(--line)] bg-[var(--surface-2)] px-3 py-2 text-left" onClick={() => analysis.claims[0] && onEvidence(analysis.claims[0].id)}>
+              <span className="block text-[9px] text-[var(--muted)]">{stat.label}</span>
+              <span className={cn('mono mt-1 block text-[22px] font-bold', stat.tone === 'warning' ? 'text-[#9a5a16]' : stat.tone === 'verified' ? 'text-[var(--verified)]' : 'text-[var(--ink)]')}>{stat.value}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ClaimTable({ analysis, onEvidence }: { analysis: AnalysisResult; onEvidence: (id: string) => void }) {
+  return (
+    <section className="panel overflow-hidden">
+      <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
+        <div>
+          <p className="text-[10px] font-semibold tracking-[0.08em] text-[var(--accent)]">证据链主张</p>
+          <h3 className="mt-0.5 font-serif text-[15px] font-bold">每条结论都能点开</h3>
+        </div>
+        <span className="mono text-[9px] text-[var(--muted)]">{analysis.claims.length} 条</span>
+      </div>
+      <div>
+        {analysis.claims.slice(0, 7).map((claim) => (
+          <button key={claim.id} type="button" onClick={() => onEvidence(claim.id)} className="flex w-full items-start justify-between gap-3 border-b border-[var(--line)] px-4 py-2.5 text-left transition-colors last:border-0 hover:bg-[var(--surface-2)]">
+            <span className="min-w-0 text-[11px] font-semibold">{claim.text}</span>
+            <span className="flex shrink-0 items-center gap-2">
+              <span className="mono text-[10px] text-[var(--muted)]">{claim.displayValue}{claim.unit || ''}</span>
+              <span className="mono text-[10px] text-[var(--accent)]" title="点击打开证据">
+                〔{Math.max(1, analysis.evidence.findIndex((item) => item.claimId === claim.id) + 1)}〕
+              </span>
+              <StatusBadge status={claim.status} />
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function DashboardTab({
   analysis,
   onEvidence,
@@ -363,6 +401,7 @@ function DashboardTab({
 }) {
   const [actions, setActions] = useState(analysis.actions);
   const [showAllInsights, setShowAllInsights] = useState(false);
+  const [processOpen, setProcessOpen] = useState(false);
 
   const toggleAction = (id: string) => {
     setActions((prev) =>
@@ -387,10 +426,10 @@ function DashboardTab({
           <section className="panel overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--line)] px-4 py-2.5">
               <div className="flex items-center gap-2">
-                <span className="label">Executive summary</span>
+                <span className="label">高管摘要</span>
                 <span className="chip chip-verified"><CheckCircle2 className="h-2.5 w-2.5" /> 仅含已核验主张</span>
               </div>
-              <span className="mono text-[9px] text-[var(--muted-2)]">HEALTH {analysis.healthScore}/100</span>
+              <span className="mono text-[9px] text-[var(--muted-2)]">健康度 {analysis.healthScore}/100</span>
             </div>
             <div className="grid gap-4 p-4 sm:grid-cols-[1fr_150px]">
               <div>
@@ -433,7 +472,7 @@ function DashboardTab({
           <section className="panel">
             <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
               <div>
-                <span className="label">Insights</span>
+                <span className="label">洞察</span>
                 <h3 className="mt-0.5 font-serif text-[15px] font-bold">这些数字意味着什么</h3>
               </div>
               <button type="button" className="btn btn-quiet btn-sm" onClick={() => setShowAllInsights((value) => !value)}>
@@ -470,7 +509,7 @@ function DashboardTab({
           <section className="panel">
             <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3">
               <div>
-                <span className="label">Actions</span>
+                <span className="label">行动</span>
                 <h3 className="mt-0.5 font-serif text-[15px] font-bold">把结论落到下一步</h3>
               </div>
               <span className="mono text-[9px] text-[var(--muted-2)]">{actions.filter((item) => item.status === 'completed').length}/{actions.length}</span>
@@ -485,49 +524,65 @@ function DashboardTab({
 
         <aside className="workspace-aside space-y-4">
           <SafetyCard analysis={analysis} />
-          <section className="panel p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="label">Agent trace</span>
-                <h3 className="mt-0.5 font-serif text-[15px] font-bold">这次分析怎么跑的</h3>
-              </div>
-              <span className="mono text-[9px] text-[var(--muted-2)]">{analysis.agentSteps.length} STEPS</span>
-            </div>
-            <div className="mt-3">
-              <AgentTrace steps={analysis.agentSteps} compact />
-            </div>
-          </section>
-          <section className="panel p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="label">RAG / Benchmarks</span>
-                <h3 className="mt-0.5 font-serif text-[15px] font-bold">行业基准</h3>
-              </div>
-              <BookMarked className="h-4 w-4 text-[var(--muted)]" />
-            </div>
-            <div className="mt-3 space-y-2">
-              {analysis.benchmarks.length === 0 ? (
-                <p className="text-[10px] text-[var(--muted)]">本次没有召回匹配的基准</p>
-              ) : (
-                analysis.benchmarks.map((item, index) => (
-                  <div key={item.id} className="border-l-2 border-[var(--verified)] bg-[var(--surface-2)] px-2.5 py-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[10px] font-bold">基准 {String(index + 1).padStart(2, '0')}</span>
-                      <span className="mono text-[8px] text-[var(--muted-2)]">score {item.score}</span>
-                    </div>
-                    <p className="mt-1 text-[9px] font-semibold text-[var(--ink-soft)]">{item.title}</p>
-                    <p className="mt-1 line-clamp-3 text-[9px] leading-4 text-[var(--muted)]">{item.excerpt}</p>
-                    <p className="mt-1 text-[8px] text-[var(--muted-2)]">{item.source} · {item.year}</p>
+          <ToolTrace analysis={analysis} />
+          <button type="button" className="btn btn-ghost btn-sm w-full justify-between" onClick={() => setProcessOpen((value) => !value)}>
+            <span>{processOpen ? '收起 8 步回放' : `8 步已完成 · 点开回放（${analysis.agentSteps.length} 步）`}</span>
+            <ChevronRight className={cn('h-3.5 w-3.5 transition-transform', processOpen && 'rotate-90')} />
+          </button>
+          {processOpen && (
+            <>
+              <section className="panel p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="label">分析轨迹</span>
+                    <h3 className="mt-0.5 font-serif text-[15px] font-bold">这次分析怎么跑的</h3>
                   </div>
-                ))
-              )}
-            </div>
-          </section>
+                  <span className="mono text-[9px] text-[var(--muted-2)]">{analysis.agentSteps.length} STEPS</span>
+                </div>
+                <div className="mt-3">
+                  <AgentTrace steps={analysis.agentSteps} compact />
+                </div>
+              </section>
+              <section className="panel p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="label">行业基准</span>
+                    <h3 className="mt-0.5 font-serif text-[15px] font-bold">行业基准</h3>
+                  </div>
+                  <BookMarked className="h-4 w-4 text-[var(--muted)]" />
+                </div>
+                <div className="mt-3 space-y-2">
+                  {analysis.benchmarks.length === 0 ? (
+                    <p className="text-[10px] text-[var(--muted)]">本次没有召回匹配的基准</p>
+                  ) : (
+                    analysis.benchmarks.map((item, index) => (
+                      <div key={item.id} className="border-l-2 border-[var(--verified)] bg-[var(--surface-2)] px-2.5 py-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[10px] font-bold">基准 {String(index + 1).padStart(2, '0')}</span>
+                          <span className="mono text-[8px] text-[var(--muted-2)]">score {item.score}</span>
+                        </div>
+                        <p className="mt-1 text-[9px] font-semibold text-[var(--ink-soft)]">{item.title}</p>
+                        <p className="mt-1 line-clamp-3 text-[9px] leading-4 text-[var(--muted)]">{item.excerpt}</p>
+                        <p className="mt-1 text-[8px] text-[var(--muted-2)]">{item.source} · {item.year}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </section>
+            </>
+          )}
           <div className="border border-dashed border-[var(--line-strong)] p-3 text-[9px] leading-5 text-[var(--muted)]">
             <span className="font-semibold text-[var(--ink-soft)]">提示：</span>
-            点击任意数字或 claim id，右侧会打开证据抽屉；按 Esc 关闭
+            点击任意数字或证据角标，右侧会打开证据抽屉；按 Esc 关闭
           </div>
         </aside>
+      </div>
+      <div className="space-y-4 border-t border-[var(--line)] pt-5">
+        {analysis.safety.blockedClaims > 0 && <BlockedNotice analysis={analysis} onEvidence={onEvidence} />}
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <AuditHero analysis={analysis} onEvidence={onEvidence} />
+          <ClaimTable analysis={analysis} onEvidence={onEvidence} />
+        </div>
       </div>
     </div>
   );
@@ -568,13 +623,64 @@ function ActionRow({ action, onToggle, onEvidence }: { action: ActionItem; onTog
   );
 }
 
+function BlockedNotice({ analysis, onEvidence }: { analysis: AnalysisResult; onEvidence: (id: string) => void }) {
+  const blocked = analysis.claims.find((claim) => claim.status === 'unsupported' || claim.status === 'conflict')
+    ?? analysis.claims.find((claim) => claim.status === 'partial');
+  if (!blocked) return null;
+  return (
+    <section className="mb-4 flex flex-col gap-3 rounded-xl border border-[#d8b06a] bg-[#fff8e8] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-start gap-3">
+        <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-[#9a5a16]" />
+        <div>
+          <p className="text-[11px] font-bold text-[#7a4310]">先看被拦截的主张：{blocked.text}</p>
+          <p className="mt-1 text-[10px] leading-5 text-[#8a642c]">{blocked.criticNote || '缺少可核验的基期、分母或公式，暂不进入摘要'}</p>
+        </div>
+      </div>
+      <button type="button" className="btn btn-ghost btn-sm shrink-0 border-[#d8b06a] text-[#7a4310]" onClick={() => onEvidence(blocked.id)}>
+        打开证据账单 <ArrowRight className="h-3 w-3" />
+      </button>
+    </section>
+  );
+}
+
+function ToolTrace({ analysis }: { analysis: AnalysisResult }) {
+  const formula = analysis.claims.find((claim) => claim.formula)?.formula || '等待公式';
+  const tools = [
+    { name: 'calculator', label: '公式复算', result: formula },
+    { name: 'bm25_search', label: '基准检索', result: `命中 ${analysis.benchmarks.length} 篇基准` },
+    { name: 'publish_gate', label: '发布闸门', result: analysis.safety.passed ? '通过' : `拦截 ${analysis.safety.blockedClaims} 条` },
+  ];
+  return (
+    <section className="panel p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <span className="label">工具调用</span>
+          <h3 className="mt-0.5 font-serif text-[15px] font-bold">工具调用</h3>
+        </div>
+        <Wrench className="h-4 w-4 text-[var(--muted)]" />
+      </div>
+      <div className="mt-3 space-y-2">
+        {tools.map((tool) => (
+          <div key={tool.name} className="rounded-lg border border-[var(--line)] bg-[var(--surface-2)] px-2.5 py-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="mono text-[9px] font-bold text-[var(--accent)]">{tool.name}</span>
+              <span className="text-[8px] text-[var(--muted)]">{tool.label}</span>
+            </div>
+            <p className="mono mt-1 text-[9px] leading-4 text-[var(--ink-soft)]">{tool.result}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SafetyCard({ analysis }: { analysis: AnalysisResult }) {
   const ring = analysis.safety.numericConsistency;
   return (
     <section className="panel p-4">
       <div className="flex items-center justify-between">
         <div>
-          <span className="label">Publish gate</span>
+          <span className="label">发布闸门</span>
           <h3 className="mt-0.5 font-serif text-[15px] font-bold">发布闸门</h3>
         </div>
         <span className={cn('chip', analysis.safety.passed ? 'chip-verified' : 'chip-warning')}>
@@ -716,7 +822,7 @@ function EvidenceTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvi
                     <td className="mono text-[9px] text-[var(--muted-2)]">{String(index + 1).padStart(2, '0')}</td>
                     <td>
                       <p className="text-[11px] font-semibold">{claim.metric}</p>
-                      <p className="mt-0.5 text-[9px] text-[var(--muted)]">{claim.category ?? '未分类'} · {claim.id}</p>
+                      <p className="mt-0.5 text-[9px] text-[var(--muted)]">{claim.category ?? '未分类'}</p>
                     </td>
                     <td className="mono text-[12px] font-semibold">{claim.displayValue}</td>
                     <td><StatusBadge status={claim.status} /></td>
@@ -782,7 +888,7 @@ function CriticTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
         <section className="panel p-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <div className="kicker">Red team</div>
+              <div className="kicker">质疑官</div>
               <h2 className="mt-2 font-serif text-xl font-bold">先假设结论是错的</h2>
               <p className="mt-1 max-w-xl text-[11px] leading-6 text-[var(--muted)]">
                 质疑官不负责把报告写漂亮，只负责找：缺基期、分母不清、把目标当结果、因果过度下面是它拦下来的主张
@@ -834,7 +940,7 @@ function CriticTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
         <section className="panel p-4">
           <div className="flex items-center justify-between">
             <div>
-              <span className="label">Challenge rules</span>
+              <span className="label">质疑规则</span>
               <h3 className="mt-0.5 font-serif text-[15px] font-bold">质疑官在查什么</h3>
             </div>
             <Filter className="h-4 w-4 text-[var(--muted)]" />
@@ -964,7 +1070,7 @@ function SourceTab({ analysis, onEvidence }: { analysis: AnalysisResult; onEvide
       <section className="panel overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] px-4 py-3">
           <div>
-            <span className="label">Source document</span>
+            <span className="label">原始材料</span>
             <h2 className="mt-0.5 font-serif text-[15px] font-bold">{source?.name}</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -1034,7 +1140,7 @@ function LoadingView({ steps, notice }: { steps: ReturnType<typeof useAnalysisSt
     <div className="container-wide py-8">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <div className="kicker">Building evidence chain</div>
+          <div className="kicker">正在建立证据链</div>
           <h1 className="display-md mt-3">正在建立证据链</h1>
           <p className="mt-2 text-[11px] text-[var(--muted)]">抽取 → 校验 → 检索 → 综合 → 质疑 → 发布闸门</p>
         </div>
@@ -1048,10 +1154,23 @@ function LoadingView({ steps, notice }: { steps: ReturnType<typeof useAnalysisSt
         <div className="h-full bg-[var(--accent)] transition-all duration-500" style={{ width: `${progress}%` }} />
       </div>
 
+      <div className="mb-4 grid grid-cols-4 gap-1.5 md:grid-cols-8">
+        {['抽取主张', '定位原文', '公式计算', '查基准', '证据校验', '拦截', '生成摘要', '发布闸门'].map((label, index) => {
+          const done = steps.length > index;
+          const running = steps.length === index;
+          return (
+            <div key={label} className={cn('rounded-lg border px-2 py-2 text-center', done ? 'border-[var(--verified)] bg-[var(--verified-soft)]' : running ? 'border-[var(--accent)] bg-[var(--accent-soft)]' : 'border-[var(--line)] bg-[var(--surface)]')}>
+              <p className="mono text-[10px] font-bold text-[var(--accent)]">{index + 1}</p>
+              <p className="mt-0.5 text-[10px] leading-4 text-[var(--muted)]">{label}</p>
+            </div>
+          );
+        })}
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-[380px_minmax(0,1fr)]">
         <section className="panel p-4">
           <div className="mb-3 flex items-center justify-between">
-            <span className="label">Live trace</span>
+            <span className="label">实时轨迹</span>
             <span className="mono text-[9px] text-[var(--muted-2)]">SSE</span>
           </div>
           <AgentTrace steps={steps} />
@@ -1059,7 +1178,7 @@ function LoadingView({ steps, notice }: { steps: ReturnType<typeof useAnalysisSt
         </section>
         <section className="panel overflow-hidden">
           <div className="border-b border-[var(--line)] px-4 py-3">
-            <span className="label">What is happening</span>
+            <span className="label">正在发生什么</span>
             <h2 className="mt-0.5 font-serif text-lg font-bold">不是“等模型写完”，而是逐段验收</h2>
           </div>
           <div className="grid gap-3 p-4 sm:grid-cols-2">

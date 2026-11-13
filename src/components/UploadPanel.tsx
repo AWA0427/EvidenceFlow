@@ -24,8 +24,10 @@ export function UploadPanel({ onSubmit, loading = false }: UploadPanelProps) {
   const [kind, setKind] = useState<SourceKind>('transcript');
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastFile, setLastFile] = useState<File | null>(null);
 
   const loadFile = async (file: File) => {
+    setLastFile(file);
     setError(null);
     try {
       const content = await readTextFile(file);

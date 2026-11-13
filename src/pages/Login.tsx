@@ -16,7 +16,7 @@ export function Login() {
 
       <main className="container-wide grid min-h-[calc(100vh-64px)] items-center gap-10 py-10 lg:grid-cols-2">
         <section className="max-w-lg">
-          <div className="kicker">Account</div>
+          <div className="kicker">账号</div>
           <h1 className="display-lg mt-4">登录 / 注册</h1>
           <p className="mt-4 text-[13px] leading-7 text-[var(--muted)]">
             登录后可以上传自己的材料只看三个示例，不用登录

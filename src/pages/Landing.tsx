@@ -62,12 +62,10 @@ export function Landing() {
         <div className="container-wide flex h-[72px] items-center justify-between gap-4">
           <Logo />
           <nav className="hidden items-center gap-1 rounded-full border border-[var(--line)] bg-[color-mix(in_srgb,var(--surface)_55%,transparent)] px-2 py-1 text-[12px] font-semibold text-[var(--muted)] md:flex">
-            <button type="button" onClick={() => scrollTo('about')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">关于</button>
+            <button type="button" onClick={() => navigate('/app')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">工作台</button>
+            <button type="button" onClick={() => scrollTo('about')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">技术说明</button>
             <button type="button" onClick={() => scrollTo('login')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">登录</button>
           </nav>
-          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
-            在线演示 <ArrowRight className="h-4 w-4" />
-          </button>
         </div>
       </header>
 
@@ -118,7 +116,7 @@ export function Landing() {
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
-                  进入在线演示 <ArrowRight className="h-4 w-4" />
+                  进入工作台 <ArrowRight className="h-4 w-4" />
                 </button>
                 <button type="button" className="btn btn-ghost btn-lg" onClick={() => scrollTo('login')}>
                   登录
@@ -295,7 +293,7 @@ function EvidencePreview() {
             <CheckCircle2 className="h-4 w-4 text-[var(--verified)]" />
             <span className="text-[11px] font-bold text-[var(--verified)]">已核对</span>
           </div>
-          <span className="mono text-[10px] text-[var(--muted-2)]">c-gmv</span>
+          <span className="chip">证据卡</span>
         </div>
 
         <p className="mt-4 text-[11px] font-semibold text-[var(--muted)]">Q3 全渠道 GMV</p>

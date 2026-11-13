@@ -397,7 +397,7 @@ h3,
 
 .display-xl {
   font-family: var(--font-serif);
-  font-size: clamp(42px, 6.8vw, 92px);
+  font-size: clamp(38px, 5.6vw, 78px);
   line-height: 0.98;
   letter-spacing: -0.055em;
   font-weight: 700;
@@ -1415,4 +1415,42 @@ html[data-ai="GLM"] .panel {
 html[data-ai="GROK"] .panel {
   border-radius: 8px;
   box-shadow: none;
+}
+
+/* ---------- Step 5：最小设计系统 ---------- */
+/* 正文和辅助文字不再低于 12px；8/9/10/11px 的既有工具类统一抬升 */
+.text-\[8px\],
+.text-\[9px\],
+.text-\[10px\],
+.text-\[11px\] {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+}
+
+.label,
+.kicker,
+.metric-label,
+.field-hint,
+.field-label {
+  font-size: 12px;
+}
+
+.data-table th {
+  font-size: 12px;
+}
+
+.container-wide {
+  max-width: 1180px;
+}
+
+/* 阅读区优先收窄，避免长行 */
+.container-read {
+  max-width: 960px;
+}
+
+/* 状态色只使用既有语义：绿=有证据，琥珀=待核实，红=已拦截 */
+.chip,
+.status-dot,
+[class*="chip-"] {
+  --state-transition: 120ms ease;
 }

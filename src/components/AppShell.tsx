@@ -3,18 +3,15 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   ChevronRight,
   CircleHelp,
-  Command,
   FileSearch,
   History,
   Info,
   LogIn,
   Menu,
-  Moon,
   PanelLeftClose,
   PanelLeftOpen,
   Plus,
   Settings,
-  Sun,
   UserRound,
   X,
 } from 'lucide-react';
@@ -26,8 +23,8 @@ import { cn, relativeTime } from '../lib/format';
 
 const NAV = [
   { to: '/app?new=1', label: '工作台', icon: FileSearch, hint: '上传材料 / 查看证据' },
+  { to: '/settings', label: '设置', icon: Settings, hint: '外观 / API / 隐私' },
   { to: '/about', label: '关于', icon: Info, hint: '为什么做 / 怎么工作' },
-  { to: '/settings', label: '外观与 API', icon: Settings, hint: '主题 / 模型 / 隐私' },
 ];
 
 export function AppShell() {
@@ -43,8 +40,6 @@ export function AppShell() {
   const navigate = useNavigate();
   const history = useAnalysisStore((state) => state.history);
   const loadHistory = useAnalysisStore((state) => state.loadHistory);
-  const mode = useSettingsStore((state) => state.mode);
-  const setMode = useSettingsStore((state) => state.setMode);
   const user = useAuthStore((state) => state.user);
   const check = useAuthStore((state) => state.check);
 
@@ -62,15 +57,10 @@ export function AppShell() {
 
   const title =
     location.pathname.startsWith('/settings')
-      ? '外观与 API'
+      ? '设置'
       : location.pathname.startsWith('/about')
         ? '关于'
         : '工作台';
-
-  const toggleTheme = () => {
-    const isDark = document.documentElement.dataset.theme === 'dark';
-    setMode(isDark ? 'light' : 'dark');
-  };
 
   return (
     <div className={cn('app-shell', sidebarCollapsed && 'sidebar-collapsed')}>
@@ -161,7 +151,7 @@ export function AppShell() {
             {user ? `已登录 · ${user.username}` : '游客 · 可离线演示'}
           </div>
           <div className="mt-2 flex items-center justify-between">
-            <span className="mono text-[8px] tracking-wider text-[var(--muted-2)]">v0.1 / BUILD 2026.10</span>
+            <span className="mono text-[8px] tracking-wider text-[var(--muted-2)]">v0.9.0 / BUILD 2026.11.14</span>
             <button type="button" onClick={() => navigate('/about')} className="text-[9px] text-[var(--muted)] hover:text-[var(--ink)]" aria-label="关于">
               <CircleHelp className="h-3.5 w-3.5" />
             </button>
@@ -196,20 +186,8 @@ export function AppShell() {
           </div>
 
           <div className="flex items-center gap-1.5">
-            <div className="hidden items-center gap-1.5 rounded border border-[var(--line)] bg-[var(--surface)] px-2 py-1 md:flex">
-              <Command className="h-3 w-3 text-[var(--muted)]" />
-              <span className="mono text-[9px] text-[var(--muted)]">K</span>
-              <span className="text-[9px] text-[var(--muted)]">快速开始</span>
-            </div>
-            <button type="button" className="btn btn-icon btn-quiet" onClick={toggleTheme} aria-label="切换深浅色">
-              {mode === 'dark' || (mode === 'system' && document.documentElement.dataset.theme === 'dark') ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </button>
-            <button type="button" className="btn btn-icon btn-quiet" onClick={() => navigate('/settings')} aria-label="打开设置">
-              <Settings className="h-4 w-4" />
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => navigate('/app?new=1')}>
+              <Plus className="h-3.5 w-3.5" /> 新建分析
             </button>
             <button
               type="button"
@@ -220,7 +198,6 @@ export function AppShell() {
               {user ? <UserRound className="h-3.5 w-3.5" /> : <LogIn className="h-3.5 w-3.5" />}
               <span className="hidden sm:inline">{user ? user.username : '登录'}</span>
             </button>
-
           </div>
         </header>
 

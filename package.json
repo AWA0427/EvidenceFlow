@@ -1,7 +1,7 @@
 {
   "name": "evidenceflow",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.9.0",
   "type": "module",
   "description": "证析 EvidenceFlow — 可审计的 AI 经营分析工作台",
   "packageManager": "pnpm@11.28.5",

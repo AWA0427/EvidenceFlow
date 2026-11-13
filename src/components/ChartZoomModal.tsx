@@ -38,7 +38,7 @@ export function ChartZoomModal({
       >
         <header className="flex items-center justify-between border-b border-[var(--line)] px-5 py-3">
           <div>
-            <span className="label">Chart detail</span>
+            <span className="label">图表详情</span>
             <h2 className="mt-0.5 text-[18px] font-bold">{chart.title}</h2>
             <p className="mt-1 text-[11px] text-[var(--muted)]">{chart.description}</p>
           </div>

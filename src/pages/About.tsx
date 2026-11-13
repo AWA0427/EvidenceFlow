@@ -7,7 +7,7 @@ export function About() {
   return (
     <div className="container-read py-8">
       <div className="mb-8">
-        <div className="kicker">About</div>
+        <div className="kicker">关于</div>
         <h1 className="display-lg mt-4">关于证析</h1>
         <p className="mt-4 max-w-2xl text-[13px] leading-7 text-[var(--muted)]">
           证析是一个查经营数据的工具你把会议纪要、复盘或 CSV 放进来，它先找出数字和原文，再算公式、查行业基准，最后告诉你哪些结论能用、哪些缺证据
@@ -93,6 +93,35 @@ export function About() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="panel mt-4 p-5 sm:p-6">
+        <div className="flex items-center gap-3">
+          <span className="seal">证</span>
+          <div>
+            <h2 className="font-serif text-xl font-bold">关于本项目</h2>
+            <p className="mono text-[9px] text-[var(--muted)]">证据优先的经营决策</p>
+          </div>
+        </div>
+        <p className="mt-4 max-w-2xl text-[12px] leading-7 text-[var(--ink-soft)]">
+          AI 说的每个数字，都能点回原文。证析是一套面向经营复盘与决策会的可审计工作台：抽取、校验、检索、质疑、发布闸门各司其职。
+        </p>
+        <dl className="mt-5 grid gap-3 sm:grid-cols-2">
+          {[
+            ['版本', 'v0.9.0 · 2026.11.14'],
+            ['前端', 'React 19 + TypeScript + Vite 8 + Tailwind CSS 4'],
+            ['后端', 'Node.js + Express + SSE'],
+            ['证据', '原文引用 + 受限四则运算 + BM25'],
+          ].map(([label, value]) => (
+            <div key={label} className="flex justify-between gap-4 border-b border-[var(--line)] pb-2 text-[10px]">
+              <dt className="text-[var(--muted)]">{label}</dt>
+              <dd className="text-right font-semibold">{value}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-4 text-[10px] leading-5 text-[var(--muted-2)]">
+          本项目为 2026 全国高校 AI Web 开发挑战赛参赛作品。AI 输出不构成审计、法律或投资建议；正式使用前请由业务负责人复核口径。
+        </p>
       </section>
 
     </div>
