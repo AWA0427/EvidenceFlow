@@ -65,7 +65,7 @@ export function Landing() {
             <button type="button" onClick={() => scrollTo('about')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">关于</button>
             <button type="button" onClick={() => scrollTo('login')} className="rounded-full px-3 py-1.5 hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">登录</button>
           </nav>
-          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
+          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
             在线演示 <ArrowRight className="h-4 w-4" />
           </button>
         </div>
@@ -117,7 +117,7 @@ export function Landing() {
                 上传会议纪要、复盘或 CSV证析先找数字和原文，再算公式、查行业基准，最后告诉你哪些结论能用
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
+                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
                   进入在线演示 <ArrowRight className="h-4 w-4" />
                 </button>
                 <button type="button" className="btn btn-ghost btn-lg" onClick={() => scrollTo('login')}>
@@ -208,7 +208,7 @@ export function Landing() {
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface-2)] px-4 py-3">
             <p className="text-[11px] text-[var(--muted)]">三个示例已经在工作台里，不用在这里找</p>
-            <button type="button" className="btn btn-primary" onClick={() => navigate('/app?demo=consumer-q3')}>
+            <button type="button" className="btn btn-primary" onClick={() => navigate('/app')}>
               打开示例 <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>
@@ -219,7 +219,7 @@ export function Landing() {
           <h2 className="display-lg mt-5">先看证据，再信结论</h2>
           <p className="mt-3 text-[12px] text-[var(--muted)]">打开工作台，点任意数字试试</p>
           <div className="mt-5 flex justify-center gap-2">
-            <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
+            <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
               开始 <ArrowRight className="h-4 w-4" />
             </button>
             <button type="button" className="btn btn-ghost" onClick={() => navigate('/about')}>
@@ -239,7 +239,7 @@ export function Landing() {
                 登录/注册在首页下方慢慢浮现，不用跳来跳去只看三个示例，仍然不用登录
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
-                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app?demo=consumer-q3')}>
+                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/app')}>
                   先看示例 <ArrowRight className="h-4 w-4" />
                 </button>
                 <button type="button" className="btn btn-ghost" onClick={() => navigate('/login')}>

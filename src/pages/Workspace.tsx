@@ -45,6 +45,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import { ChatDock } from '../components/ChatDock';
 import { analysisToMarkdown, downloadMarkdown } from '../lib/api';
 import { cn, formatDate, formatDuration, formatNumber, percent, relativeTime } from '../lib/format';
+import { AI_VARIANTS, getAiVariant, type AiVariantMeta } from '../lib/aiVariant';
 
 const DEMO_META = [
   {
@@ -87,14 +88,15 @@ export function Workspace() {
   const [tab, setTab] = useState<'dashboard' | 'evidence' | 'critic' | 'source'>('dashboard');
   const [claimId, setClaimId] = useState<string | null>(null);
   const [zoomChart, setZoomChart] = useState<ChartSpec | null>(null);
+  const variant = getAiVariant();
+  const variantMeta = variant ? AI_VARIANTS[variant] : null;
   useEffect(() => {
-    const demo = searchParams.get('demo');
-    const isNew = searchParams.get('new');
-    if (!demo && !isNew) return;
-    if (demo) void runDemo(demo);
-    else reset();
-    setSearchParams({}, { replace: true });
-  }, [runDemo, reset, searchParams, setSearchParams]);
+    // 只允许用户主动点示例；不再根据 URL 自动拉默认项目
+    if (searchParams.get('new')) reset();
+    if (searchParams.get('demo') || searchParams.get('new')) {
+      setSearchParams({}, { replace: true });
+    }
+  }, [reset, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (analysis) setTab('dashboard');
@@ -122,6 +124,8 @@ export function Workspace() {
             无 Key 自动降级 · 示例可离线
           </div>
         </div>
+
+        {variantMeta && <VariantBanner meta={variantMeta} />}
 
         {error && (
           <div className="mb-4 flex items-start gap-2 border border-[var(--danger)] bg-[var(--danger-soft)] px-4 py-3 text-[11px] leading-5 text-[var(--danger)]">
@@ -221,6 +225,10 @@ export function Workspace() {
           navigate('/app?new=1');
         }}
       />
+
+      {variantMeta && <VariantBanner meta={variantMeta} />}
+      {variantMeta?.process && <VariantProcess />}
+      {variantMeta?.extra && <VariantExtra type={variantMeta.extra} />}
 
       {tab === 'dashboard' && (
         <DashboardTab
@@ -475,7 +483,7 @@ function DashboardTab({
           </section>
         </div>
 
-        <aside className="space-y-4">
+        <aside className="workspace-aside space-y-4">
           <SafetyCard analysis={analysis} />
           <section className="panel p-4">
             <div className="flex items-center justify-between">
@@ -1076,6 +1084,93 @@ function LoadingView({ steps, notice }: { steps: ReturnType<typeof useAnalysisSt
           </div>
         </section>
       </div>
+    </div>
+  );
+}
+
+
+function VariantBanner({ meta }: { meta: AiVariantMeta }) {
+  return (
+    <section className="mb-4 flex flex-wrap items-start justify-between gap-3 rounded-2xl border border-[var(--accent-border)] bg-[var(--accent-soft)] px-4 py-3">
+      <div className="min-w-0">
+        <div className="flex items-center gap-2">
+          <span className="mono rounded-full bg-[var(--accent)] px-2 py-0.5 text-[9px] font-bold tracking-[0.12em] text-[var(--accent-ink)]">AI / {meta.label}</span>
+          <strong className="text-[12px]">{meta.focus}</strong>
+        </div>
+        <p className="mt-1 text-[10px] leading-5 text-[var(--muted)]">{meta.note}</p>
+      </div>
+      <div className="flex max-w-full flex-wrap gap-1">
+        {meta.features.map((feature) => <span key={feature} className="chip">{feature}</span>)}
+      </div>
+    </section>
+  );
+}
+
+function VariantProcess() {
+  const steps = ['规划', '解析', '抽取', '校验', '检索', '综合', '质疑', '闸门'];
+  return (
+    <div className="mb-4 grid grid-cols-4 gap-1.5 md:grid-cols-8">
+      {steps.map((step, index) => (
+        <div key={step} className={cn('rounded-lg border bg-[var(--surface)] px-2 py-1.5 text-center', index === 7 ? 'border-[var(--warning)]' : 'border-[var(--line)]')}>
+          <p className="mono text-[9px] font-bold text-[var(--accent)]">{index + 1}</p>
+          <p className="text-[9px] text-[var(--muted)]">{step}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function VariantExtra({ type }: { type: string }) {
+  if (type === 'capabilities') {
+    return (
+      <div className="mb-4 grid gap-2 md:grid-cols-4">
+        {[
+          ['Agent 规划', '自动识别材料类型并选择分析路径', '界面模拟'],
+          ['混合 RAG', '关键词 + 向量 + rerank', '需后端'],
+          ['OCR / 语音', '截图、财报和会议录音转写', '需后端'],
+          ['MCP 工具', '函数名、入参、返回值和耗时', '界面模拟'],
+        ].map(([title, body, status]) => (
+          <div key={title} className="rounded-xl border border-[var(--line)] bg-[var(--surface)] p-3">
+            <div className="flex items-center justify-between gap-2"><strong className="text-[11px]">{title}</strong><span className="chip text-[8px]">{status}</span></div>
+            <p className="mt-1 text-[9px] leading-4 text-[var(--muted)]">{body}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (type === 'tools') {
+    return (
+      <div className="mb-4 grid gap-2 md:grid-cols-3">
+        {[
+          ['calculator', '1,840 ÷ 1,600', '115.0%'],
+          ['bm25_search', '行业基准 top-3', '命中 3 篇'],
+          ['publish_gate', '引用 + 公式 + PII', '通过'],
+        ].map(([name, input, output]) => (
+          <div key={name} className="rounded-xl border border-[var(--line)] bg-[var(--surface)] p-3">
+            <p className="mono text-[10px] font-bold text-[var(--accent)]">{name}</p>
+            <p className="mt-1 text-[9px] text-[var(--muted)]">{input}</p>
+            <p className="mono mt-1 text-[10px] text-[var(--verified)]">{output}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (type === 'bill') {
+    return (
+      <div className="mb-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <strong className="text-[12px]">证据账单</strong>
+          <span className="chip chip-verified">发布闸门通过</span>
+        </div>
+        <div className="mt-2 grid gap-2 text-[10px] text-[var(--muted)] md:grid-cols-4">
+          <span>文件：澄野生活_Q3经营复盘纪要.txt</span><span>段落：第 4 段</span><span>检索：BM25 top-3</span><span>强度：高 · 原文可定位</span>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="mb-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 text-[11px] leading-6 text-[var(--muted)]">
+      Gemini 版：增加留白和玻璃层次，保留证据抽屉与阶段骨架，不把装饰盖过数字
     </div>
   );
 }

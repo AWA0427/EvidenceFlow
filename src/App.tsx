@@ -41,6 +41,11 @@ function AiVariantBadge() {
     try { sessionStorage.setItem('evidenceflow-ai-variant', value); } catch {}
   }, [queryVariant]);
 
+  useEffect(() => {
+    document.documentElement.dataset.ai = variant;
+    return () => { delete document.documentElement.dataset.ai; };
+  }, [variant]);
+
   if (!variant) return null;
   return (
     <div className="pointer-events-none fixed bottom-5 left-5 z-[70] flex items-center gap-2 rounded-full border border-[var(--accent)] bg-[var(--accent)] px-3.5 py-2 text-[var(--accent-ink)] shadow-[var(--shadow-lg)]">

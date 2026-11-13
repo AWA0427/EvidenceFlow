@@ -1311,3 +1311,26 @@ h3,
     margin: 16mm;
   }
 }
+
+/* AI 变体对照：只改工作区布局，不改证据与校验 */
+[data-ai="GROK"] .workspace-aside,
+[data-ai="QWEN"] .workspace-aside,
+[data-ai="DEEPSEEK"] .workspace-aside {
+  display: none;
+}
+
+[data-ai="GROK"] .container-wide,
+[data-ai="QWEN"] .container-wide,
+[data-ai="DEEPSEEK"] .container-wide {
+  max-width: 1180px;
+}
+
+[data-ai="GEMINI"] .panel {
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+[data-ai="HUNYUAN"] .metric {
+  font-size: 2.5rem;
+}
