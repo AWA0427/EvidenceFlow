@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   AlertTriangle,
@@ -87,20 +87,13 @@ export function Workspace() {
   const [tab, setTab] = useState<'dashboard' | 'evidence' | 'critic' | 'source'>('dashboard');
   const [claimId, setClaimId] = useState<string | null>(null);
   const [zoomChart, setZoomChart] = useState<ChartSpec | null>(null);
-  const bootstrapped = useRef(false);
-
   useEffect(() => {
-    if (bootstrapped.current) return;
-    bootstrapped.current = true;
     const demo = searchParams.get('demo');
     const isNew = searchParams.get('new');
-    if (demo) {
-      void runDemo(demo);
-      setSearchParams({}, { replace: true });
-    } else if (isNew) {
-      reset();
-      setSearchParams({}, { replace: true });
-    }
+    if (!demo && !isNew) return;
+    if (demo) void runDemo(demo);
+    else reset();
+    setSearchParams({}, { replace: true });
   }, [runDemo, reset, searchParams, setSearchParams]);
 
   useEffect(() => {

@@ -25,7 +25,7 @@ import { useAuthStore } from '../store/auth';
 import { cn, relativeTime } from '../lib/format';
 
 const NAV = [
-  { to: '/app', label: '工作台', icon: FileSearch, hint: '上传材料 / 查看证据' },
+  { to: '/app?new=1', label: '工作台', icon: FileSearch, hint: '上传材料 / 查看证据' },
   { to: '/about', label: '关于', icon: Info, hint: '为什么做 / 怎么工作' },
   { to: '/settings', label: '外观与 API', icon: Settings, hint: '主题 / 模型 / 隐私' },
 ];
