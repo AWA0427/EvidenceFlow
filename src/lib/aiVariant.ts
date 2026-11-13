@@ -1,3 +1,5 @@
+export const DEFAULT_AI_VARIANT: AiVariantKey = 'GROK';
+
 export type AiVariantKey = 'GROK' | 'GEMINI' | 'SEED' | 'GLM' | 'DEEPSEEK' | 'HUNYUAN' | 'QWEN';
 
 export interface AiVariantMeta {
@@ -71,6 +73,6 @@ export function getAiVariant(): AiVariantKey | null {
   if (typeof window === 'undefined') return null;
   const query = new URLSearchParams(window.location.search).get('ai')?.toUpperCase();
   const stored = sessionStorage.getItem('evidenceflow-ai-variant')?.toUpperCase();
-  const value = query || stored;
+  const value = query || stored || DEFAULT_AI_VARIANT;
   return value && value in AI_VARIANTS ? (value as AiVariantKey) : null;
 }

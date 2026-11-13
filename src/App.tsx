@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AppShell } from './components/AppShell';
+import { getAiVariant } from './lib/aiVariant';
 import { Landing } from './pages/Landing';
 import { Workspace } from './pages/Workspace';
 import { Login } from './pages/Login';
@@ -31,7 +32,7 @@ function AiVariantBadge() {
   const location = useLocation();
   const queryVariant = new URLSearchParams(location.search).get('ai');
   const [variant, setVariant] = useState(() => {
-    try { return sessionStorage.getItem('evidenceflow-ai-variant') || ''; } catch { return ''; }
+    return getAiVariant() || '';
   });
 
   useEffect(() => {
