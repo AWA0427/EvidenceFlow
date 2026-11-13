@@ -90,9 +90,9 @@ function publicUser(record: UserRecord): AuthUser {
 }
 
 function seedReviewUser(users: UserRecord[]): void {
-  const username = process.env.REVIEW_USERNAME?.trim() || 'judge';
+  const username = process.env.REVIEW_USERNAME?.trim() || 'review@evidenceflow.local';
   if (users.some((user) => user.username === username)) return;
-  const password = process.env.REVIEW_PASSWORD?.trim() || 'evidence2026';
+  const password = process.env.REVIEW_PASSWORD?.trim() || 'EvidenceFlow2026';
   if (!password) return;
   const salt = crypto.randomBytes(16).toString('hex');
   users.push({

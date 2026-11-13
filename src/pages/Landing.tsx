@@ -111,7 +111,7 @@ export function Landing() {
                 <br />
                 变成一份
                 <br />
-                <span className="text-[var(--accent)]">能查证据的报告。</span>
+                <span className="text-[var(--accent)]">能查证据的报告</span>
               </h1>
               <p className="mt-5 max-w-lg text-[13px] leading-7 text-[var(--muted)]">
                 上传会议纪要、复盘或 CSV。证析先找数字和原文，再算公式、查行业基准，最后告诉你哪些结论能用。

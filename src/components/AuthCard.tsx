@@ -81,7 +81,7 @@ export function AuthCard({ className, onSuccess }: { className?: string; onSucce
 
           <div className="mt-5 flex items-center gap-2">
             {tab === 'login' ? <LockKeyhole className="h-5 w-5 text-[var(--accent)]" /> : <UserPlus className="h-5 w-5 text-[var(--accent)]" />}
-            <h2 className="text-[18px] font-bold">{tab === 'login' ? '输入手机号' : '创建账号'}</h2>
+            <h2 className="text-[18px] font-bold">{tab === 'login' ? '输入手机号或评审账号' : '创建账号'}</h2>
           </div>
 
           {tab === 'register' && (
@@ -98,18 +98,18 @@ export function AuthCard({ className, onSuccess }: { className?: string; onSucce
             </>
           )}
 
-          <label className="field-label mt-4" htmlFor="login-user">手机号</label>
+          <label className="field-label mt-4" htmlFor="login-user">{tab === 'login' ? '手机号 / 评审账号' : '手机号'}</label>
           <div className="relative">
             <UserRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
             <input
               id="login-user"
-              type="tel"
+              type={tab === 'login' ? 'text' : 'tel'}
               className="input pl-10"
               value={username}
               onChange={(event) => { setUsername(event.target.value); clearError(); }}
-              placeholder="输入手机号"
-              autoComplete="tel"
-              maxLength={11}
+              placeholder={tab === 'login' ? '手机号或 review@evidenceflow.local' : '输入手机号'}
+              autoComplete={tab === 'login' ? 'username' : 'tel'}
+              maxLength={tab === 'register' ? 11 : undefined}
             />
           </div>
 
