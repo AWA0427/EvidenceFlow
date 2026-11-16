@@ -6,9 +6,18 @@
 
 **核心原则：AI 说出的每个数字，都能点回原文。**
 
+## 团队信息
+
+- 队名：汗流浃背了对不队
+- 学校：天津商务职业学院
+- 组别：C组
+- 成员：夏亮、冯浩然、马启然
+- 指导老师：范晓东
+
 - 在线演示：https://evidenceflow-yvnk.onrender.com
 - 代码仓库：https://github.com/AWA0427/EvidenceFlow
-- 作品与技术文档 Word：[docs/证析EvidenceFlow-作品与技术文档.docx](docs/证析EvidenceFlow-作品与技术文档.docx)
+- 技术文档 PDF：https://github.com/AWA0427/EvidenceFlow/blob/main/docs/technical.pdf
+- 作品介绍与演示材料：见仓库 `docs/`
 - 当前版本：v0.9.0 / 2026-11-14
 
 ## 功能
@@ -93,7 +102,7 @@ evidenceflow/
 └─ 打开网页.bat
 ```
 
-> 本仓库只保留运行所需源码、配置和测试，不包含截图、PDF、示例素材或构建产物，避免仓库臃肿。
+> 本仓库保留运行所需源码、配置、测试和提交用技术文档 PDF；不包含截图、示例素材或构建产物，避免仓库臃肿。
 
 ## 环境要求
 
@@ -174,16 +183,21 @@ Windows 也可以直接双击根目录的 `一键启动.bat`，脚本会自动�
 | `DEEPSEEK_BASE_URL` | 否 | 默认 `https://api.deepseek.com` |
 | `DEEPSEEK_MODEL` | 否 | 默认 `deepseek-chat` |
 | `AUTH_REQUIRED` | 否 | true = 自定义材料必须先登录；示例不需要 |
-| `REVIEW_USERNAME` | 否 | 评审账号，由团队私下设置 |
-| `REVIEW_PASSWORD` | 否 | 评审密码，由团队私下设置 |
+| `REVIEW_USERNAME` | 否 | 默认 `review@evidenceflow.local` |
+| `REVIEW_PASSWORD` | 否 | 默认 `EvidenceFlow2026` |
 | `COOKIE_SECURE` | 否 | HTTPS 部署设 true |
+| `VISION_API_KEY` | 否 | 视觉模型 Key；用于 PDF/图片识别扩展 |
+| `VISION_BASE_URL` | 否 | 视觉模型 Base URL |
+| `VISION_MODEL` | 否 | 视觉模型名称 |
+| `DATA_DIR` | 否 | 用户数据目录，默认 `./data` |
 
 安全约定：仓库只提交 `.env.example`；`.env.local` / `.env` 已忽略；临时 Key 只写 sessionStorage；日志不记录材料与 Key。
 
 ## 登录
 
 - 登录页：`/login`，支持登录和注册
-- 评审账号由团队私下提供，不在登录页面展示
+- 在线演示默认 `AUTH_REQUIRED=false`，无需登录即可体验三个内置示例
+- 如需登录，默认评审账号：`review@evidenceflow.local` / `EvidenceFlow2026`
 - 登录框接受手机号；后端同时支持评审邮箱，普通注册仍要求 11 位手机号
 - 注册用户保存在 `data/users.json`，密码用 scrypt + 随机盐哈希，不存明文
 - 登录后签发 HttpOnly Session Cookie；会话存在服务端内存，重启服务后失效
@@ -203,4 +217,4 @@ pnpm test
 
 ## 说明
 
-本项目为 2026 全国高校 AI Web 开发挑战赛参赛作品。示例企业、人物、数据均为虚构；AI 输出不构成审计、法律或投资建议。代码仓库不包含提交用 PDF、截图和演示视频，这些材料单独提交。
+本项目为 2026 全国高校 AI Web 开发挑战赛参赛作品。示例企业、人物、数据均为虚构；AI 输出不构成审计、法律或投资建议。技术文档 PDF 见 `docs/technical.pdf`，截图和演示视频单独提交。

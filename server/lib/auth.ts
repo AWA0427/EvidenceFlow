@@ -219,5 +219,5 @@ export function destroySession(req: Request): void {
 export function demoAccountHint(): { username: string; password: string } | null {
   if (process.env.REVIEW_PASSWORD?.trim()) return null;
   if (process.env.NODE_ENV === 'production' && process.env.DEMO_MODE === 'false') return null;
-  return { username: 'judge', password: 'evidence2026' };
+  return { username: 'review@evidenceflow.local', password: 'EvidenceFlow2026' };
 }

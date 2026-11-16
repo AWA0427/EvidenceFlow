@@ -5,7 +5,7 @@ import type { BenchmarkDoc } from '../../shared/types';
  *
  * 说明：
  * - 这里存放的是「公开资料摘要 + 分析口径」，不是某个企业的真实经营数据；
- * - 答辩/正式提交前，团队应把 source 字段替换为自己调研到的报告链接与页码；
+ * - source 字段用于标注公开资料摘要的来源与口径；
  * - 检索层只负责找到相关片段，最终结论仍必须回到用户材料中的证据
  */
 export const BENCHMARKS: BenchmarkDoc[] = [
